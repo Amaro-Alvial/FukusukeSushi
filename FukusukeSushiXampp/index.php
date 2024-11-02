@@ -11,7 +11,31 @@
 
     <!--Inicializar el body-->
     <script>
-        
+        function inicial(){
+            categorias = [];
+            let query = `
+            query GetCategorias {
+                getCategorias {
+                    id
+                    nombre
+                }
+            }
+            `;
+            $.ajax({
+                type: "POST",
+				url: "http://localhost:8091/graphql",
+				contentType: "application/json",
+				timeout: 15000,
+                data: JSON.stringify({
+					query: query,
+					variables: {}
+				}),
+				success: function(response){
+                    meter(response.data.getCategorias, categorias);
+                    document.getElementById("categoria").innerHTML = categorias.join("");
+				}
+            })
+        }
     </script>
 
     <!--Meter elementos a un array con forEach-->
