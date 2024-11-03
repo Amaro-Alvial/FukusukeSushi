@@ -14,25 +14,27 @@
 </head>
 <body>
 <div class="container mt-3">
-<h2>Descripción de Categorías</h2>
+<h2>Escoge Producto</h2>
     <form>
         <label for="categoria" class="form-label">Categoría</label>
-        <select class="form-select" id="categoria" name="categoria" onchange="cambiarDescripcion();">
+        <select class="form-select" id="categoria" name="categoria" onchange="cambiarProductos();">
         </select>
         <br>
 
         <table class="table">
             <thead>
                 <tr>
+                    <th>Nombre</th>
                     <th>Descripción</th>
+                    <th>Foto (de momento)</th>
                 </tr>
-                <tr></tr>
             </thead>
-            <tbody>
+            <tbody id="tabla-body">
                 <tr>
                     <td id="coso">Elige una categoría</td>
+                    <td></td>
+                    <td></td>
                 </tr>
-                <tr></tr>
             </tbody>
         </table>
     </form>
