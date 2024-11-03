@@ -1,9 +1,8 @@
 #navbar-principal {
-    background-color: #FFF6F5;
+    background-color: #FFFDFD;
 }
-
-#boton-is {
-    background-color: #F4A097;
+#login-button {
+    background-color: #FF7061;
     color: white;
     font-weight: bold;
     border-radius: 75px;
@@ -11,8 +10,8 @@
     position: relative;
     z-index: 2;
 }
-#boton-reg {
-    background-color: #FFE2DF;
+#signup-button {
+    background-color: #FFD5D0;
     color: black;
     font-weight: bold;
     border-radius: 75px;
@@ -21,24 +20,37 @@
     z-index: 1;
 }
 #boton-dropdown-locales {
-    background-color: #FFF6F5;
-    color: black;
+    background-color: #FFFDFD;
     font-weight: bold;
-    border-color: #FFF6F5;
+    color: black;
+    margin: 0 20px;
 }
 #boton-dropdown-locales:hover {
-    background-color: #FFE2DF;
+    background-color: #FFD5D0;
+}
+#boton-dropdown-locales:focus {
+    border-color: #FFD5D0;
+    background-color: #FFD5D0;
 }
 #menu-dropdown-locales {
     border-color: white;
+    background-color: #FFFDFD;
 }
 .dropdown-item:hover {
-    background-color: #FFF6F5;
+    background-color: #FFD5D0;
+    width: 200px;
+    height: 50px;
+    margin: 50px 0px;
+    box-shadow: none;
 }
 .btn:focus {
-    box-shadow: none;
+    box-sizing: none;
 }
 .form-control {
     width: 400px;
     height: 30px;
+}
+#img-sushi-bienvenida {
+    width: 100%;
+    height: 400px;
 }
