@@ -43,6 +43,12 @@
     margin: 50px 0px;
     box-shadow: none;
 }
+#aviso-iniciasesion {
+    background-color: #FF7061;
+    color: white;
+    font-weight: bold;
+    padding: 5px 0px;
+}
 .btn:focus {
     box-sizing: none;
 }
