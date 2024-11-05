@@ -1,5 +1,5 @@
 #navbar-principal {
-    background-color: #FFFDFD;
+    background-color: #FFD5D0;
 }
 #login-button {
     background-color: #FF7061;
@@ -19,16 +19,16 @@
     position: relative;
     z-index: 1;
 }
-#boton-dropdown-locales {
+#button-dropdown-locales {
     background-color: #FFFDFD;
     font-weight: bold;
     color: black;
     margin: 0 20px;
 }
-#boton-dropdown-locales:hover {
+#button-dropdown-locales:hover {
     background-color: #FFD5D0;
 }
-#boton-dropdown-locales:focus {
+#button-dropdown-locales:focus {
     border-color: #FFD5D0;
     background-color: #FFD5D0;
 }
@@ -59,4 +59,8 @@
 #img-sushi-bienvenida {
     width: 100%;
     height: 400px;
+}
+#pideya-button {
+    width: 50px;
+    font-size: 30px;
 }

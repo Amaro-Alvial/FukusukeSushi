@@ -13,14 +13,14 @@
     <!-- Navbar pricipal, inicio de sesión y más opciones (hay que confirmar cuáles se necesitan). -->
     <nav class="navbar navbar-expand-sm" id="navbar-principal">
         <div class="container-fluid" id="navbar-container">
-            <div class="logo-container">
+            <div class="container-logo">
                 <a id="logotype" href="/FukusukeSushi/Proyecto/index.php">
                     <img src="/FukusukeSushi/Proyecto/img/logo.jpg" class="img-fluid" alt="Logo de la empresa">
                 </a>
             </div>
             <ul class="navbar-nav">
                 <div class="dropdown mr-4" >
-                    <button type="button" class="btn dropdown-toggle"  id="boton-dropdown-locales" data-bs-toggle="dropdown">
+                    <button type="button" class="btn dropdown-toggle"  id="button-dropdown-locales" data-bs-toggle="dropdown">
                         Locales
                     </button>
                     <ul class="dropdown-menu" id="menu-dropdown-locales">
@@ -49,7 +49,6 @@
         <!-- Carousel -->
         <div id="demo" class="carousel slide" data-bs-ride="carousel">
 
-        <!-- Indicators/dots -->
         <div class="carousel-indicators">
         <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
         <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
@@ -79,7 +78,6 @@
         </div>
     </div>
     
-
     <!-- Modal inicio de sesión -->
     <div class="modal fade" id="loginModal" tabindex="-1">
         <div class="modal-dialog">
@@ -118,7 +116,7 @@
         </div>
     </div>
 
-    <!-- Modal registro -->
+    <!-- Modal registro, llamar a addUsuario? -->
     <div class="modal fade" id="signupModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -155,4 +153,7 @@
             </div>
         </div>
     </div>
+    
+    <button class="btn" id="pideya-button">Pide Ya</button>
+    
 </body>
