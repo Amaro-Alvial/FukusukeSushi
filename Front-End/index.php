@@ -43,38 +43,39 @@
             </ul>
         </div>
     </nav>
+
     <div class="container-fluid d-flex justify-content-center" id="aviso-iniciasesion">
         Te invitamos a iniciar sesión para disfrutar de nuestra carta.
     </div>
+
     <div>
         <!-- Carousel -->
         <div id="demo" class="carousel slide" data-bs-ride="carousel">
 
-        <div class="carousel-indicators">
-        <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
-        <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
-        <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+            </div>
+
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="/FukusukeSushi/Front-End/img/imagen_sushis_bienvenida.png" class="img" id="img-sushi-bienvenida">
+                </div>
+            <div class="carousel-item">
+                <img src="/FukusukeSushi/Front-End/img/imagen_sushis_bienvenida.png" class="img" id="img-sushi-bienvenida">
+            </div>
+            <div class="carousel-item">
+                <img src="/FukusukeSushi/Front-End/img/imagen_sushis_bienvenida.png" class="img" id="img-sushi-bienvenida">
+            </div>
+            
         </div>
 
-        <!-- The slideshow/carousel -->
-        <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="/FukusukeSushi/Front-End/img/imagen_sushis_bienvenida.png" class="img-fluid" id="img-sushi-bienvenida">
-        </div>
-        <div class="carousel-item">
-            <img src="/FukusukeSushi/Front-End/img/imagen_sushis_bienvenida.png" class="img-fluid" id="img-sushi-bienvenida">
-        </div>
-        <div class="carousel-item">
-            <img src="/FukusukeSushi/Front-End/img/imagen_sushis_bienvenida.png" class="img-fluid" id="img-sushi-bienvenida">
-        </div>
-        </div>
-
-        <!-- Left and right controls/icons -->
         <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
+            <span class="carousel-control-prev-icon"></span>
         </button>
         <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
+            <span class="carousel-control-next-icon"></span>
         </button>
         </div>
     </div>
@@ -163,6 +164,10 @@
             Pide Ya<br>
             <img src="/FukusukeSushi/Front-End/img/flecha_abajo.png" style="width: 30px; margin-top: -30px">
         </button>
+    </div>
+
+    <div>
+
     </div>
 
     <!-- https://www.svgrepo.com/--, íconos con lisencia libre. -->
