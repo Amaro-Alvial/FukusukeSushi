@@ -14,8 +14,6 @@ const Usuario = require('./models/usuario');
 const Producto = require('./models/producto');
 const Boleta = require('./models/boleta');
 const DetalleCompra = require('./models/detalleCompra');
-const Cliente = require('./models/cliente');
-const Dueno = require('./models/dueno');
 const Categoria = require('./models/categoria');
 const PrecioHistorico = require('./models/precioHistorico');
 const DisponibleHistorico = require('./models/disponibleHistorico');
@@ -49,50 +47,38 @@ type Usuario{
     email: String!
     pass: String!
     nombreUsuario: String!
+    persona: String!
 }
 input UsuarioInput{
     email: String!
     pass: String!
     nombreUsuario: String!
-}
-type Cliente{
-    id: ID!
     persona: String!
-    usuario: String!
-}
-input ClienteInput{
-    persona: String!
-    usuario: String!
-}
-type Dueno{
-    id: ID!
-    persona: String!
-    usuario: String!
-}
-input DuenoInput{
-    persona: String!
-    usuario: String!
 }
 type Producto{
     id: ID!
     nombre: String!
     descripcion: String!
+    foto: String!
     categoria: String!
 }
 input ProductoInput{
     nombre: String!
     descripcion: String!
+    foto: String!
     categoria: String!
 }
 type Boleta{
     id: ID!
+    fecha: String!
     cliente: String!
-    cajeroVirtual: String!
+    horarioCaja: String!
     despacho: String!
 }
 input BoletaInput{
+    fecha: String!
     cliente: String!
-    cajeroVirtual: String!
+    horarioCaja: String!
     despacho: String!
 }
 type DetalleCompra{
@@ -148,17 +134,15 @@ type Query{
     getPersonaByRun(run: String!): Persona
     getUsuarios: [Usuario]
     getUsuarioById(id: ID!): Usuario
-    getClientes: [Cliente]
-    getClienteById(id: ID!): Cliente
-    getClienteByIdUsuario(id: ID!): Cliente
-    getDuenos: [Dueno]
-    getDuenoById(id: ID!): Dueno
+    getUsuariosByIdPersona(id: ID!): [Usuario]
     getProductos: [Producto]
     getProductoById(id: ID!): Producto
     getProductosByIdCategoria(id: ID!): [Producto]
     getBoletas: [Boleta]
     getBoletaById(id: ID!): Boleta
     getBoletasByIdCliente(id: ID!): [Boleta]
+    getBoletasByIdHorarioCaja(id: ID!): [Boleta]
+    getBoletasByIdDespacho(id: ID!): [Boleta]
     getDetalleCompras: [DetalleCompra]
     getDetalleCompraById(id: ID!): DetalleCompra
     getDetalleComprasByIdBoleta(id: ID!): [DetalleCompra]
@@ -179,12 +163,6 @@ type Mutation{
     addUsuario(input:UsuarioInput): Usuario
     updUsuario(id: ID!, input:UsuarioInput): Usuario
     delUsuario(id: ID!): Alert
-    addCliente(input:ClienteInput): Cliente
-    updCliente(id: ID!, input:ClienteInput): Cliente
-    delCliente(id: ID!): Alert
-    addDueno(input:DuenoInput): Dueno
-    updDueno(id: ID!, input:DuenoInput): Dueno
-    delDueno(id: ID!): Alert
     addProducto(input:ProductoInput): Producto
     updProducto(id: ID!, input:ProductoInput): Producto
     delProducto(id: ID!): Alert
@@ -228,25 +206,9 @@ const resolvers = {
             let usuario = await Usuario.findById(id);
             return usuario;
         },
-        async getClientes(obj){
-            let clientes = await Cliente.find();
-            return clientes;
-        },
-        async getClienteById(obj, {id}){
-            let cliente = await Cliente.findById(id);
-            return cliente;
-        },
-        async getClienteByIdUsuario(obj, {id}){
-            let cliente = await Cliente.find({usuario: id});
-            return cliente;
-        },
-        async getDuenos(obj){
-            let duenos = await Dueno.find();
-            return duenos;
-        },
-        async getDuenoById(obj, {id}){
-            let dueno = await Dueno.findById(id);
-            return dueno;
+        async getUsuariosByIdPersona(obj, {id}){
+            let usuarios = await Usuario.find({persona: id})
+            return usuarios;
         },
         async getProductos(obj){
             let productos = await Producto.find();
@@ -270,6 +232,14 @@ const resolvers = {
         },
         async getBoletasByIdCliente(obj, {id}){
             let boletas = await Boleta.find({cliente: id});
+            return boletas;
+        },
+        async getBoletasByIdHorarioCaja(obj, {id}){
+            let boletas = await Boleta.find({horarioCaja: id});
+            return boletas;
+        },
+        async getBoletasByIdDespacho(obj, {id}){
+            let boletas = await Boleta.find({despacho: id});
             return boletas;
         },
         async getDetalleCompras(obj){
@@ -338,12 +308,14 @@ const resolvers = {
             };
         },
         async addUsuario(obj, {input}){
-            let usuario = new Usuario(input);
+            let personaBus = await Persona.findById(input.persona);
+            let usuario = new Usuario({email: input.email, pass: input.pass, nombreUsuario: input.nombreUsuario, persona: personaBus._id});
             await usuario.save();
             return usuario;
         },
         async updUsuario(obj, {id, input}){
-            let usuario = await Usuario.findByIdAndUpdate(id, input, { new: true });
+            let personaBus = await Persona.findById(input.persona);
+            let usuario = await Usuario.findByIdAndUpdate(id, {email: input.email, pass: input.pass, nombreUsuario: input.nombreUsuario, persona: personaBus._id}, { new: true });
             return usuario;
         },
         async delUsuario(obj, {id}){
@@ -352,53 +324,15 @@ const resolvers = {
                 message: "Usuario eliminado"
             };
         },
-        async addCliente(obj, {input}){
-            let usuarioBus = await Usuario.findById(input.usuario);
-            let personaBus = await Persona.findById(input.persona);
-            let cliente = new Cliente({usuario: usuarioBus._id, persona: personaBus._id});
-            await cliente.save();
-            return cliente;
-        },
-        async updCliente(obj, {id, input}){
-            let usuarioBus = await Usuario.findById(input.usuario);
-            let personaBus = await Persona.findById(input.persona);
-            let cliente = await Cliente.findByIdAndUpdate(id, {usuario: usuarioBus._id, persona: personaBus._id}, { new: true });
-            return cliente;
-        },
-        async delCliente(obj, {id}){
-            await Cliente.deleteOne({_id: id});
-            return {
-                message: "Cliente eliminado"
-            };
-        },
-        async addDueno(obj, {input}){
-            let usuarioBus = await Usuario.findById(input.usuario);
-            let personaBus = await Persona.findById(input.persona);
-            let dueno = await Dueno.findByIdAndUpdate(id, {usuario: usuarioBus._id, persona: personaBus._id});
-            await dueno.save();
-            return dueno;
-        },
-        async updDueno(obj, {id, input}){
-            let usuarioBus = await Usuario.findById(input.usuario);
-            let personaBus = await Persona.findById(input.persona);
-            let dueno = await Dueno.findByIdAndUpdate(id, {usuario: usuarioBus._id, persona: personaBus._id}, { new: true });
-            return dueno;
-        },
-        async delDueno(obj, {id}){
-            await Dueno.deleteOne({_id: id});
-            return {
-                message: "Dueño eliminado"
-            };
-        },
         async addProducto(obj, {input}){
             let categoriaBus = await Categoria.findById(input.categoria);
-            let producto = new Producto({nombre: input.nombre, descripcion: input.descripcion, categoria: categoriaBus._id});
+            let producto = new Producto({nombre: input.nombre, descripcion: input.descripcion, foto: input.foto, categoria: categoriaBus._id});
             await producto.save();
             return producto;
         },
         async updProducto(obj, {id, input}){
             let categoriaBus = await Categoria.findById(input.categoria);
-            let producto = await Producto.findByIdAndUpdate(id, {nombre: input.nombre, descripcion: input.descripcion, categoria: categoriaBus._id}, { new: true });
+            let producto = await Producto.findByIdAndUpdate(id, {nombre: input.nombre, descripcion: input.descripcion, foto: input.foto, categoria: categoriaBus._id}, { new: true });
             return producto;
         },
         async delProducto(obj, {id}){
@@ -408,14 +342,18 @@ const resolvers = {
             };
         },
         async addBoleta(obj, {input}){
-            let clienteBus = await Cliente.findById(input.cliente);
-            let boleta = new Boleta({cliente: clienteBus._id, cajeroVirtual: input.cajeroVirtual, despacho: input.despacho});
+            let clienteBus = await Usuario.findById(input.cliente);
+            let horarioCajaBus = await HorarioCaja.findById(input.horarioCaja);
+            let despachoBus = await Despacho.findById(input.despacho);
+            let boleta = new Boleta({fecha: input.fecha, cliente: clienteBus._id, horarioCaja: horarioCajaBus._id, despacho: despachoBus._id});
             await boleta.save();
             return boleta;
         },
         async updBoleta(obj, {id, input}){
-            let clienteBus = await Cliente.findById(input.cliente);
-            let boleta = await Boleta.findByIdAndUpdate(id, {cliente: clienteBus._id, cajeroVirtual: input.cajeroVirtual, despacho: input.despacho}, { new: true });
+            let clienteBus = await Usuario.findById(input.cliente);
+            let horarioCajaBus = await HorarioCaja.findById(input.horarioCaja);
+            let despachoBus = await Despacho.findById(input.despacho);
+            let boleta = await Boleta.findByIdAndUpdate(id, {fecha: input.fecha, cliente: clienteBus._id, horarioCaja: horarioCajaBus._id, despacho: despachoBus._id}, { new: true });
             return boleta;
         },
         async delBoleta(obj, {id}){
