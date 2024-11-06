@@ -130,8 +130,12 @@
                     <form action="/inicioSesion.php">
                         <div class="d-flex flex-column align-items-center">
                             <div class="mb-3">
+                                <label for="nombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="nombre" name="nombreUsuario">
+                            </div>
+                            <div class="mb-3">
                                 <label for="email" class="form-label">E-Mail</label>
-                                <input type="email" class="form-control" id="email" placeholder="ejemplo@email.com" name="email">
+                                <input type="email" class="form-control" id="mail" placeholder="ejemplo@email.com" name="email">
                             </div>
                             <div class="mb-3">
                                 <label for="pwd" class="form-label">Contraseña</label>
@@ -161,6 +165,6 @@
         </button>
     </div>
 
-    <!--https://www.svgrepo.com/--, íconos con lisencia libre.>
+    <!-- https://www.svgrepo.com/--, íconos con lisencia libre. -->
     
 </body>
