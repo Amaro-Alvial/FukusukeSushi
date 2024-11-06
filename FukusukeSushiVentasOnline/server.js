@@ -384,6 +384,26 @@ const resolvers = {
         async getDisponibleHistoricosByIdProducto(obj, {id}){
             let disponibleHistoricos = await DisponibleHistorico.find({producto: id});
             return disponibleHistoricos;
+        },
+        async getCajas(obj){
+            let cajas = await Caja.find();
+            return cajas;
+        },
+        async getCajaById(obj, {id}){
+            let caja = await Caja.findById(id);
+            return caja;
+        },
+        async getDespachos(obj){
+            let despachos = await Despacho.find();
+            return despachos;
+        },
+        async getDespachoById(obj, {id}){
+            let despacho = await Despacho.findById(id);
+            return despacho;
+        },
+        async getDespachosByIdDespachador(obj, {id}){
+            let despachos = await Despacho.find({despachador: id});
+            return despachos;
         }
     },
     Mutation:{
