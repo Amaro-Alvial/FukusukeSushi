@@ -77,11 +77,13 @@ type Producto{
     id: ID!
     nombre: String!
     descripcion: String!
+    foto: String!
     categoria: String!
 }
 input ProductoInput{
     nombre: String!
     descripcion: String!
+    foto: String!
     categoria: String!
 }
 type Boleta{
@@ -392,13 +394,13 @@ const resolvers = {
         },
         async addProducto(obj, {input}){
             let categoriaBus = await Categoria.findById(input.categoria);
-            let producto = new Producto({nombre: input.nombre, descripcion: input.descripcion, categoria: categoriaBus._id});
+            let producto = new Producto({nombre: input.nombre, descripcion: input.descripcion, foto: input.foto,  categoria: categoriaBus._id});
             await producto.save();
             return producto;
         },
         async updProducto(obj, {id, input}){
             let categoriaBus = await Categoria.findById(input.categoria);
-            let producto = await Producto.findByIdAndUpdate(id, {nombre: input.nombre, descripcion: input.descripcion, categoria: categoriaBus._id}, { new: true });
+            let producto = await Producto.findByIdAndUpdate(id, {nombre: input.nombre, descripcion: input.descripcion, foto: input.foto, categoria: categoriaBus._id}, { new: true });
             return producto;
         },
         async delProducto(obj, {id}){

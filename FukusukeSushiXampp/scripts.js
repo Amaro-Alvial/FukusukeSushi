@@ -41,7 +41,8 @@ function meterProductos(respuesta, array) {
         array.push('<tr value="' + respuesta[i].id + '"><td>'  + 
             respuesta[i].nombre + '</td><td>'  + 
             respuesta[i].descripcion + '</td><td>'  + 
-            '<img width="255" height="150" alt="Imagen alternativaa" src="https://tofuu.getjusto.com/orioneat-local/resized2/4RsJcFf5nTvR5YzBb-300-x.webp"></td>');
+            '<img width="255" height="150" alt="Imagen alternativaa" src="' + 
+            respuesta[i].foto + '"></td>');
     }
 }
 
@@ -88,6 +89,7 @@ function cambiarProductos(){
             id
             nombre
             descripcion
+            foto
         }
     }
     `;
