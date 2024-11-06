@@ -25,6 +25,8 @@ const HorarioCaja = require('./models/horarioCaja');
 const Perfil = require('./models/perfil');
 const UsuarioPerfil = require('./models/usuarioPerfil');
 const Carrito = require('./models/carrito');
+const boleta = require('./models/boleta');
+const producto = require('./models/producto');
 
 const typeDefs = gql`
 type Persona{
@@ -440,6 +442,62 @@ const resolvers = {
         async getDespachosByIdDespachador(obj, {id}){
             let despachos = await Despacho.find({despachador: id});
             return despachos;
+        },
+        async getHorarioCajas(obj){
+            let horarioCajas = await HorarioCaja.find();
+            return horarioCajas;
+        },
+        async getHorarioCajaById(obj, {id}){
+            let horarioCaja = await HorarioCaja.findById(id);
+            return horarioCaja;
+        },
+        async getHorarioCajasByIdCaja(obj, {id}){
+            let horarioCajas = await HorarioCaja.find({caja: id});
+            return horarioCajas;
+        },
+        async getHorarioCajasByIdUsuario(obj, {id}){
+            let horarioCajas = await HorarioCaja.find({usuario: id});
+            return horarioCajas;
+        },
+        async getPerfils(obj){
+            let perfiles = await Perfil.find();
+            return perfiles;
+        },
+        async getPerfilById(obj, {id}){
+            let perfil = await Perfil.findById(id);
+            return perfil;
+        },
+        async getUsuarioPerfils(obj){
+            let usuarioPerfils = await UsuarioPerfil.find();
+            return usuarioPerfils;
+        },
+        async getUsuarioPerfilById(obj, {id}){
+            let usuarioPerfil = await UsuarioPerfil.findById(id);
+            return usuarioPerfil;
+        },
+        async getUsuarioPerfilByIdUsuario(obj, {id}){
+            let usuarioPerfil = await UsuarioPerfil.findById({usuario: id});
+            return usuarioPerfil;
+        },
+        async getUsuarioPerfilByIdPerfil(obj, {id}){
+            let usuarioPerfil = await UsuarioPerfil.findById({perfil: id});
+            return usuarioPerfil;
+        },
+        async getCarritos(obj){
+            let carritos = await Carrito.find();
+            return carritos;
+        },
+        async getCarritoById(obj, {id}){
+            let carrito = await Carrito.findById(id);
+            return carrito;
+        },
+        async getCarritoByIdBoleta(obj, {id}){
+            let carritos = await Carrito.findById({boleta: id});
+            return carritos;
+        },
+        async getCarritoByIdProducto(obj, {id}){
+            let carritos = await Carrito.findById({producto: id});
+            return carritos;
         }
     },
     Mutation:{
