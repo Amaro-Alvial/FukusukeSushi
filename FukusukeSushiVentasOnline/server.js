@@ -232,7 +232,10 @@ type Query{
     getHorarioCajasByIdUsuario(id: ID!): [HorarioCaja]
     getPerfils: [Perfil]
     getPerfilById(id: ID!): Perfil
-    getPerfil
+    getUsuarioPerfils: [UsuarioPerfil]
+    getUsuarioPerfilById(id: ID!): UsuarioPerfil
+    getUsuarioPerfilsByIdPerfil(id: ID!): [UsuarioPerfil]
+    getUsuarioPerfilsByIdUsuario(id: ID!): [UsuarioPerfil]
 }
 type Mutation{
     addPersona(input:PersonaInput): Persona
