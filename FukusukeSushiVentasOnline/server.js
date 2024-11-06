@@ -23,8 +23,6 @@ const HorarioCaja = require('./models/horarioCaja');
 const Perfil = require('./models/perfil');
 const UsuarioPerfil = require('./models/usuarioPerfil');
 const Carrito = require('./models/carrito');
-const boleta = require('./models/boleta');
-const producto = require('./models/producto');
 
 const typeDefs = gql`
 type Persona{
