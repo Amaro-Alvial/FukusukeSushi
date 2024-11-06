@@ -17,6 +17,14 @@ const DetalleCompra = require('./models/detalleCompra');
 const Categoria = require('./models/categoria');
 const PrecioHistorico = require('./models/precioHistorico');
 const DisponibleHistorico = require('./models/disponibleHistorico');
+const Caja = require('./models/caja');
+const Despacho = require('./models/despacho');
+const HorarioCaja = require('./models/horarioCaja');
+const Perfil = require('./models/perfil');
+const UsuarioPerfil = require('./models/usuarioPerfil');
+const Carrito = require('./models/carrito');
+const boleta = require('./models/boleta');
+const producto = require('./models/producto');
 
 const typeDefs = gql`
 type Persona{
@@ -125,6 +133,64 @@ input DisponibleHistoricoInput{
     producto: String!
     disponibilidad: Boolean!
 }
+type Caja{
+    id: ID!
+    tipo: String!
+}
+input CajaInput{
+    tipo: String!
+}
+type Despacho{
+    id: ID!
+    despachador: Usuario!
+    fecha: String!
+}
+input DespachoInput{
+    despachador: Usuario!
+    fecha: String!
+}
+type HorarioCaja{
+    id: ID!
+    horario: String!
+    encargado: Usuario!
+    caja: Caja!
+}
+input HorarioCajaInput{
+    horario: String!
+    encargado: Usuario!
+    caja: Caja!
+}
+type Perfil{
+    id: ID!
+    tipo: String!
+}
+input PerfilInput{
+    tipo: String!
+}
+type UsuarioPerfil{
+    id: ID!
+    caducidad: String!
+    usuario: Usuario!
+    perfil: Perfil!
+}
+input UsuarioPerfilInput{
+    caducidad: String!
+    usuario: Usuario!
+    perfil: Perfil!
+}
+type Carrito{
+    id: ID!
+    boleta: Boleta!
+    producto: Producto!
+    total: Float!
+    cantidad: Float!
+},
+input CarritoInput{
+    boleta: Boleta!
+    producto: Producto!
+    total: Float!
+    cantidad: Float!
+}
 type Alert{
     message: String!
 }
@@ -155,6 +221,25 @@ type Query{
     getDisponibleHistoricos: [DisponibleHistorico]
     getDisponibleHistoricoById(id: ID!): DisponibleHistorico
     getDisponibleHistoricosByIdProducto(id: ID!): [DisponibleHistorico]
+    getCajas: [Cajas]
+    getCajaById(id: ID!): Caja
+    getDespachos: [Despacho]
+    getDespachoById(id: ID!): Despacho
+    getDespachosByIdDespachador(id: ID!): [Despacho]
+    getHorarioCajas: [HorarioCaja]
+    getHorarioCajaById(id: ID!): HorarioCaja
+    getHorarioCajasByIdCaja(id: ID!): [HorarioCaja]
+    getHorarioCajasByIdUsuario(id: ID!): [HorarioCaja]
+    getPerfils: [Perfil]
+    getPerfilById(id: ID!): Perfil
+    getUsuarioPerfils: [UsuarioPerfil]
+    getUsuarioPerfilById(id: ID!): UsuarioPerfil
+    getUsuarioPerfilsByIdPerfil(id: ID!): [UsuarioPerfil]
+    getUsuarioPerfilsByIdUsuario(id: ID!): [UsuarioPerfil]
+    getCarritos: [Carrito]
+    getCarritoById(id: ID!): Carrito
+    getCarritosByIdBoleta(id: ID!): [Carrito]
+    getrCarritosByIdProducto(id: ID!): [Carrito]
 }
 type Mutation{
     addPersona(input:PersonaInput): Persona
@@ -181,6 +266,24 @@ type Mutation{
     addDisponibleHistorico(input:DisponibleHistoricoInput): DisponibleHistorico
     updDisponibleHistorico(id: ID!, input:DisponibleHistoricoInput): DisponibleHistorico
     delDisponibleHistorico(id: ID!): Alert
+    addCaja(input:CajaInput): Caja
+    updCaja(id: ID!, input:CajaInput): Caja
+    delCaja(id: ID!): Alert
+    addDespacho(input:DespachoInput): Despacho
+    updDespacho(id: ID!, input:DespachoInput): Despacho
+    delDespacho(id: ID!): Alert
+    addHorarioCaja(input:HorarioCajaInput): HorarioCaja
+    updHorarioCaja(id: ID!, input:HorarioCajaInput): HorarioCaja
+    delHorarioCaja(id: ID!): Alert
+    addPerfil(input:PerfilInput): Perfil
+    updPerfil(id: ID!, input:PerfilInput): Perfil
+    delPerfil(id: ID!): Alert
+    addUsuarioPerfil(input:UsuarioPerfilInput): UsuarioPerfil
+    updUsuarioPerfil(id: ID!, input:UsuarioPerfilInput): UsuarioPerfil
+    delUsuarioPerfil(id: ID!): Alert
+    addCarrito(input:CarritoInput): Carrito
+    updCarrito(id: ID!, input:CarritoInput): Carrito
+    delCarrito(id: ID!): Alert
 }
 `;
 
@@ -289,6 +392,82 @@ const resolvers = {
         async getDisponibleHistoricosByIdProducto(obj, {id}){
             let disponibleHistoricos = await DisponibleHistorico.find({producto: id});
             return disponibleHistoricos;
+        },
+        async getCajas(obj){
+            let cajas = await Caja.find();
+            return cajas;
+        },
+        async getCajaById(obj, {id}){
+            let caja = await Caja.findById(id);
+            return caja;
+        },
+        async getDespachos(obj){
+            let despachos = await Despacho.find();
+            return despachos;
+        },
+        async getDespachoById(obj, {id}){
+            let despacho = await Despacho.findById(id);
+            return despacho;
+        },
+        async getDespachosByIdDespachador(obj, {id}){
+            let despachos = await Despacho.find({despachador: id});
+            return despachos;
+        },
+        async getHorarioCajas(obj){
+            let horarioCajas = await HorarioCaja.find();
+            return horarioCajas;
+        },
+        async getHorarioCajaById(obj, {id}){
+            let horarioCaja = await HorarioCaja.findById(id);
+            return horarioCaja;
+        },
+        async getHorarioCajasByIdCaja(obj, {id}){
+            let horarioCajas = await HorarioCaja.find({caja: id});
+            return horarioCajas;
+        },
+        async getHorarioCajasByIdUsuario(obj, {id}){
+            let horarioCajas = await HorarioCaja.find({usuario: id});
+            return horarioCajas;
+        },
+        async getPerfils(obj){
+            let perfiles = await Perfil.find();
+            return perfiles;
+        },
+        async getPerfilById(obj, {id}){
+            let perfil = await Perfil.findById(id);
+            return perfil;
+        },
+        async getUsuarioPerfils(obj){
+            let usuarioPerfils = await UsuarioPerfil.find();
+            return usuarioPerfils;
+        },
+        async getUsuarioPerfilById(obj, {id}){
+            let usuarioPerfil = await UsuarioPerfil.findById(id);
+            return usuarioPerfil;
+        },
+        async getUsuarioPerfilByIdUsuario(obj, {id}){
+            let usuarioPerfil = await UsuarioPerfil.findById({usuario: id});
+            return usuarioPerfil;
+        },
+        async getUsuarioPerfilByIdPerfil(obj, {id}){
+            let usuarioPerfil = await UsuarioPerfil.findById({perfil: id});
+            return usuarioPerfil;
+        },
+        async getCarritos(obj){
+            let carritos = await Carrito.find();
+            return carritos;
+        },
+        async getCarritoById(obj, {id}){
+            let carrito = await Carrito.findById(id);
+            return carrito;
+        },
+        async getCarritoByIdBoleta(obj, {id}){
+            let carritos = await Carrito.findById({boleta: id});
+            return carritos;
+        },
+        async getCarritoByIdProducto(obj, {id}){
+            let carritos = await Carrito.findById({producto: id});
+            return carritos;
         }
     },
     Mutation:{
@@ -428,6 +607,108 @@ const resolvers = {
             await DisponibleHistorico.deleteOne({_id: id});
             return {
                 message: "Disponible Historico eliminado"
+            };
+        },
+        async addCaja(obj, {input}){
+            let caja = new Caja(input);
+            await caja.save();
+            return caja;
+        },
+        async updCaja(obj, {id, input}){
+            let caja = await Caja.findByIdAndUpdate(id, input, { new: true });
+            return caja;
+        },
+        async delCaja(obj, {id}){
+            await Caja.deleteOne({_id: id});
+            return {
+                message: "Caja eliminada"
+            };
+        },
+        async addDespacho(obj, {input}){
+            let despacho = new Despacho(input);
+            await despacho.save();
+            return despacho;
+        },
+        async updDespacho(obj, {id, input}){
+            let despacho = await Despacho.findByIdAndUpdate(id, input, { new: true });
+            return despacho;
+        },
+        async delDespacho(obj, {id}){
+            await Despacho.deleteOne({_id: id});
+            return {
+                message: "Despacho eliminado"
+            };
+        },
+        async addHorarioCaja(obj, {input}){
+            let cajaBus = await Caja.findById(input.caja);
+            let encargadoBus = await Usuario.findById(input.encargado);
+            let horarioCaja = new HorarioCaja({horario: input.horario, encargado: encargadoBus._id, caja: cajaBus._id});
+            await horarioCaja.save();
+            return horarioCaja;
+        },
+        async updHorarioCaja(obj, {id, input}){
+            let cajaBus = await Caja.findById(input.caja);
+            let encargadoBus = await Usuario.findById(input.encargado);
+            let horarioCaja = await HorarioCaja.findByIdAndUpdate(id, {horario: input.horario, encargado: encargadoBus._id, caja: cajaBus._id}, { new: true });
+            return horarioCaja;
+        },
+        async delHorarioCaja(obj, {id}){
+            await HorarioCaja.deleteOne({_id: id});
+            return {
+                message: "Horario de caja eliminado"
+            };
+        },
+        async addPerfil(obj, {input}){
+            let perfil = new Perfil(input);
+            await perfil.save();
+            return perfil;
+        },
+        async updPerfil(obj, {id, input}){
+            let perfil = await Perfil.findByIdAndUpdate(id, input, { new: true });
+            return perfil;
+        },
+        async delPerfil(obj, {id}){
+            await Perfil.deleteOne({_id: id});
+            return {
+                message: "Perfil eliminado"
+            };
+        },
+        async addUsuarioPerfil(obj, {input}){
+            let usuarioBus = await Usuario.findById(input.usuario);
+            let perfilBus = await Perfil.findById(input.perfil);
+            let usuarioPerfil = new UsuarioPerfil({caducidad: input.caducidad, usuario: usuarioBus._id, perfil: perfilBus._id});
+            await usuarioPerfil.save();
+            return usuarioPerfil;
+        },
+        async updUsuarioPerfil(obj, {id, input}){
+            let usuarioBus = await Usuario.findById(input.usuario);
+            let perfilBus = await Perfil.findById(input.perfil);
+            let usuarioPerfil = await UsuarioPerfil.findByIdAndUpdate(id, {caducidad: input.caducidad, usuario: usuarioBus._id, perfil: perfilBus._id}, { new: true });
+            return usuarioPerfil;
+        },
+        async delUsuarioPerfil(obj, {id}){
+            await UsuarioPerfil.deleteOne({_id: id});
+            return {
+                message: "UsuarioPerfil eliminado"
+            };
+        },
+        async addCarrito(obj, {input}){
+            let boletaBus = await Boleta.findById(input.boleta);
+            let productoBus = await Producto.findById(input.producto);
+            let carrito = new Carrito({boleta: boletaBus._id, producto: productoBus._id, total: input.total, cantidad: input.cantidad});
+            await carrito.save();
+            return carrito;
+        },
+        async updCarrito(obj, {id, input}){
+            let boletaBus = await Boleta.findById(input.boleta);
+            let productoBus = await Producto.findById(input.producto);
+            let carrito = await Carrito.findByIdAndUpdate(id, {boleta: boletaBus._id, producto: productoBus._id, total: input.total, cantidad: input.cantidad}, { new: true });
+            return carrito;
+        },
+        async delCarrito(obj, {id}){
+            await Carrito.deleteOne({_id: id});
+            return {
+                message: "Carrito eliminado"
             };
         }
     }
