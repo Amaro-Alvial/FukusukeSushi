@@ -68,7 +68,7 @@
             <div class="carousel-item">
                 <img src="/FukusukeSushi/Front-End/img/imagen_sushis_bienvenida.png" class="img" id="img-sushi-bienvenida">
             </div>
-            
+
         </div>
 
         <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
@@ -161,7 +161,7 @@
     </div>
     <div class="container-fluid d-flex justify-content-center mt-3" style="background-color: white">
         <button id="pideya-button">
-            Pide Ya<br>
+            Pide Yaa<br>
             <img src="/FukusukeSushi/Front-End/img/flecha_abajo.png" style="width: 30px; margin-top: -30px">
         </button>
     </div>
