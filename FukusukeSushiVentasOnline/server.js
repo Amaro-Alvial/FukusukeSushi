@@ -19,6 +19,11 @@ const Dueno = require('./models/dueno');
 const Categoria = require('./models/categoria');
 const PrecioHistorico = require('./models/precioHistorico');
 const DisponibleHistorico = require('./models/disponibleHistorico');
+const Caja = require('./models/caja');
+const Despacho = require('./models/despacho');
+const HorarioCaja = require('./models/horarioCaja');
+const Perfil = require('./models/perfil');
+const UsuarioPerfil = require('./models/usuarioPerfil');
 
 const typeDefs = gql`
 type Persona{
@@ -139,6 +144,51 @@ input DisponibleHistoricoInput{
     producto: String!
     disponibilidad: Boolean!
 }
+type Caja{
+    id: ID!
+    tipo: String!
+}
+input CajaInput{
+    tipo: String!
+}
+type Despacho{
+    id: ID!
+    despachador: Usuario!
+    fecha: String!
+}
+input DespachoInput{
+    despachador: Usuario!
+    fecha: String!
+}
+type HorarioCaja{
+    id: ID!
+    horario: String!
+    encargado: Usuario!
+    caja: Caja!
+}
+input HorarioCajaInput{
+    horario: String!
+    encargado: Usuario!
+    caja: Caja!
+}
+type Perfil{
+    id: ID!
+    tipo: String!
+}
+input PerfilInput{
+    tipo: String!
+}
+type UsuarioPerfil{
+    id: ID!
+    caducidad: String!
+    usuario: Usuario!
+    perfil: Perfil!
+}
+input UsuarioPerfilInput{
+    caducidad: String!
+    usuario: Usuario!
+    perfil: Perfil!
+}
 type Alert{
     message: String!
 }
@@ -171,6 +221,18 @@ type Query{
     getDisponibleHistoricos: [DisponibleHistorico]
     getDisponibleHistoricoById(id: ID!): DisponibleHistorico
     getDisponibleHistoricosByIdProducto(id: ID!): [DisponibleHistorico]
+    getCajas: [Cajas]
+    getCajaById(id: ID!): Caja
+    getDespachos: [Despacho]
+    getDespachoById(id: ID!): Despacho
+    getDespachosByIdDespachador(id: ID!): [Despacho]
+    getHorarioCajas: [HorarioCaja]
+    getHorarioCajaById(id: ID!): HorarioCaja
+    getHorarioCajasByIdCaja(id: ID!): [HorarioCaja]
+    getHorarioCajasByIdUsuario(id: ID!): [HorarioCaja]
+    getPerfils: [Perfil]
+    getPerfilById(id: ID!): Perfil
+    getPerfil
 }
 type Mutation{
     addPersona(input:PersonaInput): Persona
