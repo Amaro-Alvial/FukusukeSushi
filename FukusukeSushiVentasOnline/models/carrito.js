@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const CarritoSchema = new mongoose.Schema({
-    boleta: {type: mongoose.Schema.Types.ObjectId, ref: 'Boleta'},
-    producto: {type: mongoose.Schema.Types.ObjectId, ref: 'Producto'},
-    total: Number,
-    cantidad: Number
+    fecha: String,
+    cliente: {type: mongoose.Schema.Types.ObjectId, ref: 'Usuario'},
+    horarioCaja : {type: mongoose.Schema.Types.ObjectId, ref: 'HorarioCaja'},
+    despacho: {type: mongoose.Schema.Types.ObjectId, ref: 'Despacho'}
 });
 
 module.exports = mongoose.model('Carrito', CarritoSchema);

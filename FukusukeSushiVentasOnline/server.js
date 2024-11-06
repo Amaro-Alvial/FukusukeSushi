@@ -236,8 +236,9 @@ type Query{
     getUsuarioPerfilsByIdUsuario(id: ID!): [UsuarioPerfil]
     getCarritos: [Carrito]
     getCarritoById(id: ID!): Carrito
-    getCarritosByIdBoleta(id: ID!): [Carrito]
-    getCarritosByIdProducto(id: ID!): [Carrito]
+    getCarritosByIdCliente(id: ID!): [Carrito]
+    getCarritosByIdHorarioCaja(id: ID!): [Carrito]
+    getCarritosByIdDespacho(id: ID!): [Carrito]
 }
 type Mutation{
     addPersona(input:PersonaInput): Persona
@@ -459,12 +460,16 @@ const resolvers = {
             let carrito = await Carrito.findById(id);
             return carrito;
         },
-        async getCarritosByIdBoleta(obj, {id}){
-            let carritos = await Carrito.findById({boleta: id});
+        async getCarritosByIdCliente(obj, {id}){
+            let carritos = await Carrito.find({cliente: id});
             return carritos;
         },
-        async getCarritosByIdProducto(obj, {id}){
-            let carritos = await Carrito.findById({producto: id});
+        async getCarritosByIdHorarioCaja(obj, {id}){
+            let carritos = await Carrito.find({horarioCaja: id});
+            return carritos;
+        },
+        async getCarritosByIdDespacho(obj, {id}){
+            let carritos = await Carrito.find({despacho: id});
             return carritos;
         }
     },
@@ -693,16 +698,17 @@ const resolvers = {
             };
         },
         async addCarrito(obj, {input}){
-            let boletaBus = await Boleta.findById(input.boleta);
-            let productoBus = await Producto.findById(input.producto);
-            let carrito = new Carrito({boleta: boletaBus._id, producto: productoBus._id, total: input.total, cantidad: input.cantidad});
+            let clienteBus = await Usuario.findById(input.cliente);
+            let horarioCajaBus = await HorarioCaja.findById(input.horarioCaja);
+            let despachoBus = await Despacho.findById(input.despacho);
+            let carrito = new Carrito({fecha: input.fecha, cliente: clienteBus._id, horarioCaja: horarioCajaBus._id, despacho: despachoBus._id});
             await carrito.save();
             return carrito;
         },
         async updCarrito(obj, {id, input}){
             let boletaBus = await Boleta.findById(input.boleta);
             let productoBus = await Producto.findById(input.producto);
-            let carrito = await Carrito.findByIdAndUpdate(id, {boleta: boletaBus._id, producto: productoBus._id, total: input.total, cantidad: input.cantidad}, { new: true });
+            let carrito = await Carrito.findByIdAndUpdate(id, {fecha: input.fecha, cliente: clienteBus._id, horarioCaja: horarioCajaBus._id, despacho: despachoBus._id}, { new: true });
             return carrito;
         },
         async delCarrito(obj, {id}){
