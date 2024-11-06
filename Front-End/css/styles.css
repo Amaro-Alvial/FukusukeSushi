@@ -1,0 +1,105 @@
+/*https://paletton.com/#uid=3060u0kkeZ16E+CaE+esvVdvkSj*/
+
+#navbar-principal {
+    background-color: white;
+}
+
+/* Se define el button de html sin ningún atributo para
+    tener más control sobre él. */
+button {
+    background: none;       
+    border: none;             
+    padding: 0;               
+    color: inherit;           
+    font: inherit;            
+    cursor: pointer;          
+    outline: none;            
+}
+
+/* Botones de inicio de sesión y crear cuenta. */
+#login-button {
+    background-color: #FF745E;
+    color: white;
+    font-weight: bold;
+    height: 37px;
+    width: 120px;
+    border-radius: 75px;
+    margin-right: -40px;
+    position: relative;
+    z-index: 2;
+}
+#login-button:hover {
+    background-color: #E16653;
+}
+#signup-button {
+    background-color: #FFD1CA;
+    color: black;
+    font-weight: bold;
+    height: 37px;
+    width: 150px;
+    border-radius: 75px;
+    padding-left: 35px;
+    position: relative;
+    z-index: 1;
+}
+#signup-button:hover {
+    color: white;
+    background-color: #E16653;
+}
+/* Botón de DropDown de Locales. (quizás se quite) */
+#button-dropdown-locales {
+    background-color: white;
+    font-weight: bold;
+    color: black;
+    border-radius: 7px;
+    height: 37px;
+    width: 100px;
+    margin: 0 20px;
+    padding-top: 3px;
+}
+#button-dropdown-locales:hover {
+    background-color: #FFD1CA;
+}
+#button-dropdown-locales:focus {
+    border-color: #FFD1CA;
+    background-color: #FFD1CA;
+}
+#menu-dropdown-locales {
+    border-color: white;
+    background-color: white;
+}
+.dropdown-item:hover {
+    background-color: #FFD1CA;
+    width: 200px;
+    height: 50px;
+    margin: 50px 0px;
+    box-shadow: none;
+}
+#aviso-iniciasesion {
+    background-color: #FF745E;
+    color: white;
+    font-weight: bold;
+    padding: 5px 0px;
+}
+.form-control {
+    width: 400px;
+    height: 30px;
+}
+#img-sushi-bienvenida {
+    width: 100%;
+    height: 400px;
+}
+#pideya-button {
+    color: #FF745E;
+    width: 200px;
+    height: 75px;
+    font-size: 30px;
+    font-weight: 900;
+    border-radius: 20px;
+}
+#pideya-button:hover {
+    font-size: 32px;
+}
+#pideya-button:active {
+    background-color: white;
+}
