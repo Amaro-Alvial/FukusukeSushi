@@ -20,8 +20,9 @@
             </div>
             <ul class="navbar-nav">
                 <div class="dropdown mr-4" >
-                    <button type="button" class="btn dropdown-toggle"  id="button-dropdown-locales" data-bs-toggle="dropdown">
+                    <button type="button" id="button-dropdown-locales" data-bs-toggle="dropdown">
                         Locales
+                        <img src="/FukusukeSushi/Proyecto/img/dropdown_icon.png" class="img_fluid" alt="Ícono de DropDown" style="width: 22px; padding-bottom: 3px">
                     </button>
                     <ul class="dropdown-menu" id="menu-dropdown-locales">
                         <li><a class="dropdown-item" target="_blank" href="https://www.google.com/maps/place/Museo+Interactivo+Mirador+(MIM)/@-33.5194822,-70.611972,15z/data=!4m2!3m1!1s0x0:0x4e84cc2277ad807f?sa=X&ved=1t:2428&ictx=111">Local 1</a></li>
@@ -30,12 +31,12 @@
                     </ul>
                 </div>
                 <li class="nav-item">
-                    <button type="button" class="btn" id="login-button" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <button type="button" id="login-button" data-bs-toggle="modal" data-bs-target="#loginModal">
                         Iniciar Sesión
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button type="button" class="btn" id="signup-button" data-bs-toggle="modal" data-bs-target="#signupModal">
+                    <button type="button" id="signup-button" data-bs-toggle="modal" data-bs-target="#signupModal">
                         Crear Cuenta
                     </button>
                 </li>
@@ -153,7 +154,13 @@
             </div>
         </div>
     </div>
-    
-    <button class="btn" id="pideya-button">Pide Ya</button>
+    <div class="container-fluid d-flex justify-content-center mt-3" style="background-color: white">
+        <button id="pideya-button">
+            Pide Ya<br>
+            <img src="/FukusukeSushi/Proyecto/img/flecha_abajo.png" style="width: 30px; margin-top: -30px">
+        </button>
+    </div>
+
+    <!--https://www.svgrepo.com/--, íconos con lisencia libre.>
     
 </body>
