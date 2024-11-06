@@ -6,7 +6,7 @@
     <title>FukusukeSushi</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/FukusukeSushi/Proyecto/css/styles.css">
+    <link rel="stylesheet" href="/FukusukeSushi/Front-End/css/styles.css">
 </head>
 
 <body>
@@ -14,15 +14,15 @@
     <nav class="navbar navbar-expand-sm" id="navbar-principal">
         <div class="container-fluid" id="navbar-container">
             <div class="container-logo">
-                <a id="logotype" href="/FukusukeSushi/Proyecto/index.php">
-                    <img src="/FukusukeSushi/Proyecto/img/logo.jpg" class="img-fluid" alt="Logo de la empresa">
+                <a id="logotype" href="/FukusukeSushi/Front-End/index.php">
+                    <img src="/FukusukeSushi/Front-End/img/logo.jpg" class="img-fluid" alt="Logo de la empresa">
                 </a>
             </div>
             <ul class="navbar-nav">
                 <div class="dropdown mr-4" >
                     <button type="button" id="button-dropdown-locales" data-bs-toggle="dropdown">
                         Locales
-                        <img src="/FukusukeSushi/Proyecto/img/dropdown_icon.png" class="img_fluid" alt="Ícono de DropDown" style="width: 22px; padding-bottom: 3px">
+                        <img src="/FukusukeSushi/Front-End/img/dropdown_icon.png" class="img_fluid" alt="Ícono de DropDown" style="width: 22px; padding-bottom: 3px">
                     </button>
                     <ul class="dropdown-menu" id="menu-dropdown-locales">
                         <li><a class="dropdown-item" target="_blank" href="https://www.google.com/maps/place/Museo+Interactivo+Mirador+(MIM)/@-33.5194822,-70.611972,15z/data=!4m2!3m1!1s0x0:0x4e84cc2277ad807f?sa=X&ved=1t:2428&ictx=111">Local 1</a></li>
@@ -59,13 +59,13 @@
         <!-- The slideshow/carousel -->
         <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="/FukusukeSushi/Proyecto/img/imagen_sushis_bienvenida.png" class="img-fluid" id="img-sushi-bienvenida">
+            <img src="/FukusukeSushi/Front-End/img/imagen_sushis_bienvenida.png" class="img-fluid" id="img-sushi-bienvenida">
         </div>
         <div class="carousel-item">
-            <img src="/FukusukeSushi/Proyecto/img/imagen_sushis_bienvenida.png" class="img-fluid" id="img-sushi-bienvenida">
+            <img src="/FukusukeSushi/Front-End/img/imagen_sushis_bienvenida.png" class="img-fluid" id="img-sushi-bienvenida">
         </div>
         <div class="carousel-item">
-            <img src="/FukusukeSushi/Proyecto/img/imagen_sushis_bienvenida.png" class="img-fluid" id="img-sushi-bienvenida">
+            <img src="/FukusukeSushi/Front-End/img/imagen_sushis_bienvenida.png" class="img-fluid" id="img-sushi-bienvenida">
         </div>
         </div>
 
@@ -161,7 +161,7 @@
     <div class="container-fluid d-flex justify-content-center mt-3" style="background-color: white">
         <button id="pideya-button">
             Pide Ya<br>
-            <img src="/FukusukeSushi/Proyecto/img/flecha_abajo.png" style="width: 30px; margin-top: -30px">
+            <img src="/FukusukeSushi/Front-End/img/flecha_abajo.png" style="width: 30px; margin-top: -30px">
         </button>
     </div>
 
