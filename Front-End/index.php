@@ -166,7 +166,9 @@
         </button>
     </div>
 
-    <div>
+    <div class="col-12" style="background-color: red; height: 200px">
+        <div class="col-3" style="background-color: blue; height: 200px">
+
 
     </div>
 
