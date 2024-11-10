@@ -23,6 +23,9 @@ const HorarioCaja = require('./models/horarioCaja');
 const Perfil = require('./models/perfil');
 const UsuarioPerfil = require('./models/usuarioPerfil');
 const Carrito = require('./models/carrito');
+const Region = require('./models/region');
+const Provincia = require('./models/provincia');
+const Comuna = require('./models/comuna');
 
 const typeDefs = gql`
 type Persona{
@@ -31,8 +34,6 @@ type Persona{
     nombreCompleto: String!
     direccion: String!
     comuna: String!
-    provincia: String!
-    region: String!
     fechaNacimiento: String!
     sexo: String!
     telefono: String!
@@ -42,8 +43,6 @@ input PersonaInput{
     nombreCompleto: String!
     direccion: String!
     comuna: String!
-    provincia: String!
-    region: String!
     fechaNacimiento: String!
     sexo: String!
     telefono: String!
@@ -91,13 +90,11 @@ type DetalleCompra{
     id: ID!
     boleta: String!
     producto: String!
-    total: Float!
     cantidad: Float!
 }
 input DetalleCompraInput{
     boleta: String!
     producto: String!
-    total: Float!
     cantidad: Float!
 }
 type Categoria{
@@ -178,16 +175,48 @@ input UsuarioPerfilInput{
 }
 type Carrito{
     id: ID!
-    boleta: String!
-    producto: String
-    total: Float!
-    cantidad: Float!
-},
+    fecha: String!
+    cliente: String!
+}
 input CarritoInput{
+    fecha: String!
+    cliente: String!
+}
+type DetalleCarrito{
+    id: ID!
     boleta: String!
-    producto: String
-    total: Float!
+    producto: String!
     cantidad: Float!
+}
+input DetalleCarritoInput{
+    boleta: String!
+    producto: String!
+    cantidad: Float!
+}
+type Region{
+    id: ID!
+    nombre: String!
+}
+input RegionInput{
+    nombre: String!
+}
+type Provincia{
+    id: ID!
+    nombre: String!
+    region: String!
+}
+input ProvinciaInput{
+    nombre: String!
+    region: String!
+}
+type Comuna{
+    id: ID!
+    nombre: String!
+    provincia: String!
+}
+input ComunaInput{
+    nombre: String!
+    provincia: String!
 }
 type Alert{
     message: String!
@@ -239,8 +268,19 @@ type Query{
     getCarritosByIdCliente(id: ID!): [Carrito]
     getCarritosByIdHorarioCaja(id: ID!): [Carrito]
     getCarritosByIdDespacho(id: ID!): [Carrito]
+    getRegions: [Region]
+    getRegionById(id: ID!): Region
+    getProvincias: [Provincia]
+    getProvinciaById(id: ID!): Provincia
+    getProvinciasByIdRegion(id: ID!): [Provincia]
+    getComunas: [Comuna]
+    getComunaById(id: ID!): Comuna
+    getComunasByIdProvincia(id: ID!): [Comuna]
 }
 type Mutation{
+    addRegiones(input: [RegionInput]!): [Region]
+    addProvincias(input: [ProvinciaInput]!): [Provincia]
+    addComunas(input: [ComunaInput]!): [Comuna]
     addPersona(input:PersonaInput): Persona
     updPersona(id: ID!, input:PersonaInput): Persona
     delPersona(id: ID!): Alert
@@ -283,6 +323,15 @@ type Mutation{
     addCarrito(input:CarritoInput): Carrito
     updCarrito(id: ID!, input:CarritoInput): Carrito
     delCarrito(id: ID!): Alert
+    addRegion(input:RegionInput): Region
+    updRegion(id: ID!, input:RegionInput): Region
+    delRegion(id: ID!): Alert
+    addProvincia(input:ProvinciaInput): Provincia
+    updProvincia(id: ID!, input:ProvinciaInput): Provincia
+    delProvincia(id: ID!): Alert
+    addComuna(input:ComunaInput): Comuna
+    updComuna(id: ID!, input:ComunaInput): Comuna
+    delComuna(id: ID!): Alert
 }
 `;
 
@@ -471,6 +520,38 @@ const resolvers = {
         async getCarritosByIdDespacho(obj, {id}){
             let carritos = await Carrito.find({despacho: id});
             return carritos;
+        },
+        async getRegions(obj){
+            let regiones = await Region.find();
+            return regiones;
+        },
+        async getRegionById(obj, {id}){
+            let region = await Region.findById(id);
+            return region;
+        },
+        async getProvincias(obj){
+            let provincias = await Provincia.find();
+            return provincias;
+        },
+        async getProvinciaById(obj, {id}){
+            let provincia = await Provincia.findById(id);
+            return provincia;
+        },
+        async getProvinciasByIdRegion(obj, {id}){
+            let provincia = await Provincia.find({region: id});
+            return provincia;
+        },
+        async getComunas(obj){
+            let comunas = await Comuna.find();
+            return comunas;
+        },
+        async getComunaById(obj, {id}){
+            let comuna = await Comuna.findById(id);
+            return comuna;
+        },
+        async getComunasByIdProvincia(obj, {id}){
+            let comuna = await Comuna.find({provincia: id});
+            return comuna;
         }
     },
     Mutation:{
@@ -716,7 +797,85 @@ const resolvers = {
             return {
                 message: "Carrito eliminado"
             };
-        }
+        },
+        async addRegion(obj, {input}){
+            let region = new Region(input);
+            await region.save();
+            return region;
+        },
+        async updRegion(obj, {id, input}){
+            let region = await Region.findByIdAndUpdate(id, input, { new: true });
+            return region;
+        },
+        async delRegion(obj, {id}){
+            await Region.deleteOne({_id: id});
+            return {
+                message: "Region eliminada"
+            };
+        },
+        async addProvincia(obj, {input}){
+            let regionBus = await Region.findById(input.region);
+            let provincia = new Provincia({nombre: input.nombre, region: regionBus._id});
+            await provincia.save();
+            return provincia;
+        },
+        async updProvincia(obj, {id, input}){
+            let regionBus = await Region.findById(input.region);
+            let provincia = await Provincia.findByIdAndUpdate(id, {nombre: input.nombre, region: regionBus._id}, { new: true });
+            return provincia;
+        },
+        async delProvincia(obj, {id}){
+            await Provincia.deleteOne({_id: id});
+            return {
+                message: "Provincia eliminada"
+            };
+        },
+        async addComuna(obj, {input}){
+            let provinciaBus = await Provincia.findById(input.provincia);
+            let comuna = new Comuna({nombre: input.nombre, provincia: provinciaBus._id});
+            await comuna.save();
+            return comuna;
+        },
+        async updComuna(obj, {id, input}){
+            let provinciaBus = await Provincia.findById(input.provincia);
+            let comuna = await Comuna.findByIdAndUpdate(id, {nombre: input.nombre, provincia: provinciaBus._id}, { new: true });
+            return comuna;
+        },
+        async delComuna(obj, {id}){
+            await Comuna.deleteOne({_id: id});
+            return {
+                message: "Comuna eliminada"
+            };
+        },
+        async addRegiones(obj, {input}) {
+            const regiones = [];
+            for (const item of input) {
+                let nuevaRegion = new Region(item);
+                await nuevaRegion.save();
+                regiones.push(nuevaRegion);
+            }
+            return regiones;
+        },
+        async addProvincias(obj, {input}) {
+            const provincias = [];
+            for (const item of input) {
+                let regionBus = await Region.findById(item.region);
+                let nuevaProvincia = new Provincia({nombre: item.nombre, region: regionBus._id});
+                await nuevaProvincia.save();
+                provincias.push(nuevaProvincia);
+            }
+            return provincias;
+        },
+        async addComunas(obj, {input}) {
+            const comunas = [];
+            for (const item of input) {
+                let provinciaBus = await Provincia.findById(item.provincia);
+                let nuevaComuna = new Comuna({nombre: item.nombre, provincia: provinciaBus._id});
+                await nuevaComuna.save();
+                comunas.push(nuevaComuna);
+            }
+            return comunas;
+        }                
     }
 }
 
