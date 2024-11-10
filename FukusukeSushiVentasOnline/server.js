@@ -232,8 +232,8 @@ type Query{
     getPerfilById(id: ID!): Perfil
     getUsuarioPerfils: [UsuarioPerfil]
     getUsuarioPerfilById(id: ID!): UsuarioPerfil
-    getUsuarioPerfilsByIdPerfil(id: ID!): [UsuarioPerfil]
-    getUsuarioPerfilsByIdUsuario(id: ID!): [UsuarioPerfil]
+    getUsuarioPerfilsByIdPerfil(id: String): [UsuarioPerfil]
+    getUsuarioPerfilsByIdUsuario(id: String): [UsuarioPerfil]
     getCarritos: [Carrito]
     getCarritoById(id: ID!): Carrito
     getCarritosByIdCliente(id: ID!): [Carrito]
@@ -445,11 +445,11 @@ const resolvers = {
             return usuarioPerfil;
         },
         async getUsuarioPerfilsByIdUsuario(obj, {id}){
-            let usuarioPerfil = await UsuarioPerfil.findById({usuario: id});
+            let usuarioPerfil = await UsuarioPerfil.find({usuario: id});
             return usuarioPerfil;
         },
         async getUsuarioPerfilsByIdPerfil(obj, {id}){
-            let usuarioPerfil = await UsuarioPerfil.findById({perfil: id});
+            let usuarioPerfil = await UsuarioPerfil.find({perfil: id});
             return usuarioPerfil;
         },
         async getCarritos(obj){
