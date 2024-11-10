@@ -2,13 +2,120 @@ let contentTablePersona = [];
 let optionsPerfil = [];
 
 function trtdPersona(item){
-    contentTablePersona.push('<tr><td>' + item.run + '</td><td>' + item.nombreCompleto + '</td><td>' + item.comuna + '</td><td>' + item.direccion + '</td><td>' + item.telefono + '</td></tr>');
+    contentTablePersona.push(`
+        <tr>
+            <td>${item.run}</td>
+            <td>${item.nombreCompleto}</td>
+            <td>${item.comuna}</td>
+            <td>${item.direccion}</td>
+            <td>${item.telefono}</td>
+            <td>
+                <button class="btn btn-success btn-sm" onclick="GetConexionesByRun('${item.run}')">Editar</button>
+                <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${item.run}')">Eliminar</button>
+            </td>
+            </td>
+        </tr>
+    `);
 }
 function optionPerfil(item) {
     let idDueno = "672bf4baed29060af5294eb8";
     if (item.id !== idDueno) {
         optionsPerfil.push('<option value="' + item.id + '">' + item.tipo + '</option>');
     }
+}
+function GetConexionesByRun(runPersona){
+    let query = `
+    query miQuery($run: String!){
+        getPersonaByRun(run: $run){
+            id
+            run
+            nombreCompleto
+            direccion
+            fechaNacimiento
+            sexo
+            telefono
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {
+                run: runPersona
+            }
+        }),
+        success: function(response){
+            openEditModal(response.data.getPersonaByRun);
+        }
+    });
+}
+function GetUsuarioByIdPersona(idPersona){
+    let query = `
+    query miQuery($id: String){
+        getUsuariosByIdPersona(id: $id){
+            id
+            email
+            pass
+            nombreUsuario
+            persona
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: idPersona
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getUsuariosByIdPersona[0]); // Resuelve la promesa con los datos
+            },
+            error: function(error) {
+                reject("Error en la solicitud: " + error); // Rechaza la promesa si ocurre un error
+            }
+        });
+    });
+}
+
+function GetPersonaByRun(runPersona){
+    let query = `
+    query miQuery($run: String!){
+        getPersonaByRun(run: $run){
+            id
+            run
+            nombreCompleto
+            direccion
+            fechaNacimiento
+            sexo
+            telefono
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {
+                run: runPersona
+            }
+        }),
+        success: function(response){
+            openEditModal(response.data.getPersonaByRun);
+        }
+    });
 }
 function GetPersonaById(idPersona){
     let query = `
@@ -18,9 +125,6 @@ function GetPersonaById(idPersona){
             run
             nombreCompleto
             direccion
-            comuna
-            provincia
-            region
             fechaNacimiento
             sexo
             telefono
@@ -97,7 +201,7 @@ function GetPersonasByIdPerfil(){
         }),
         success: function(response){
             contentTablePersona = [];
-            contentTablePersona.push('<tr><td>RUN</td><td>NOMBRE</td><td>COMUNA</td><td>DIRECCIÓN</td><td>TELEFONO</td></tr>');
+            contentTablePersona.push('<tr><td>RUN</td><td>NOMBRE</td><td>COMUNA</td><td>DIRECCIÓN</td><td>TELEFONO</td><td>Editar/Eliminar</td></tr>');
             response.data.getUsuarioPerfilsByIdPerfil.forEach(item => {
                 GetUsuarioById(item.usuario);
             });
@@ -140,9 +244,6 @@ function GetPersonas(){
             run
             nombreCompleto
             direccion
-            comuna
-            provincia
-            region
             fechaNacimiento
             sexo
             telefono
@@ -159,7 +260,7 @@ function GetPersonas(){
             variables: {}
         }),
         success: function(response){
-            contentTablePersona.push('<tr><td>RUN</td><td>NOMBRE</td><td>COMUNA</td><td>DIRECCIÓN</td><td>TELEFONO</td></tr>');
+            contentTablePersona.push('<tr><td>RUN</td><td>NOMBRE</td><td>COMUNA</td><td>DIRECCIÓN</td><td>TELEFONO</td><td>Editar/Eliminar</td></tr>');
             response.data.getPersonas.forEach(trtdPersona);
             document.getElementById('tblPersona').innerHTML = contentTablePersona.join("");
         }
