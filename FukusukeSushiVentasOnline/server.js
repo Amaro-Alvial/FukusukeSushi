@@ -198,47 +198,47 @@ type Query{
     getPersonaByRun(run: String!): Persona
     getUsuarios: [Usuario]
     getUsuarioById(id: ID!): Usuario
-    getUsuariosByIdPersona(id: ID!): [Usuario]
+    getUsuariosByIdPersona(id: String): [Usuario]
     getProductos: [Producto]
     getProductoById(id: ID!): Producto
-    getProductosByIdCategoria(id: ID!): [Producto]
+    getProductosByIdCategoria(id: String): [Producto]
     getBoletas: [Boleta]
     getBoletaById(id: ID!): Boleta
-    getBoletasByIdCliente(id: ID!): [Boleta]
-    getBoletasByIdHorarioCaja(id: ID!): [Boleta]
-    getBoletasByIdDespacho(id: ID!): [Boleta]
+    getBoletasByIdCliente(id: String): [Boleta]
+    getBoletasByIdHorarioCaja(id: String): [Boleta]
+    getBoletasByIdDespacho(id: String): [Boleta]
     getDetalleCompras: [DetalleCompra]
     getDetalleCompraById(id: ID!): DetalleCompra
-    getDetalleComprasByIdBoleta(id: ID!): [DetalleCompra]
-    getDetalleComprasByIdProducto(id: ID!): [DetalleCompra]
+    getDetalleComprasByIdBoleta(id: String): [DetalleCompra]
+    getDetalleComprasByIdProducto(id: String): [DetalleCompra]
     getCategorias: [Categoria]
     getCategoriaById(id: ID!): Categoria
     getPrecioHistoricos: [PrecioHistorico]
     getPrecioHistoricoById(id: ID!): PrecioHistorico
-    getPrecioHistoricosByIdProducto(id: ID!): [PrecioHistorico]
+    getPrecioHistoricosByIdProducto(id: String): [PrecioHistorico]
     getDisponibleHistoricos: [DisponibleHistorico]
     getDisponibleHistoricoById(id: ID!): DisponibleHistorico
-    getDisponibleHistoricosByIdProducto(id: ID!): [DisponibleHistorico]
+    getDisponibleHistoricosByIdProducto(id: String): [DisponibleHistorico]
     getCajas: [Caja]
     getCajaById(id: ID!): Caja
     getDespachos: [Despacho]
     getDespachoById(id: ID!): Despacho
-    getDespachosByIdDespachador(id: ID!): [Despacho]
+    getDespachosByIdDespachador(id: String): [Despacho]
     getHorarioCajas: [HorarioCaja]
     getHorarioCajaById(id: ID!): HorarioCaja
-    getHorarioCajasByIdCaja(id: ID!): [HorarioCaja]
-    getHorarioCajasByIdUsuario(id: ID!): [HorarioCaja]
+    getHorarioCajasByIdCaja(id: String): [HorarioCaja]
+    getHorarioCajasByIdUsuario(id: String): [HorarioCaja]
     getPerfils: [Perfil]
     getPerfilById(id: ID!): Perfil
     getUsuarioPerfils: [UsuarioPerfil]
     getUsuarioPerfilById(id: ID!): UsuarioPerfil
-    getUsuarioPerfilsByIdPerfil(id: ID!): [UsuarioPerfil]
-    getUsuarioPerfilsByIdUsuario(id: ID!): [UsuarioPerfil]
+    getUsuarioPerfilsByIdPerfil(id: String): [UsuarioPerfil]
+    getUsuarioPerfilsByIdUsuario(id: String): [UsuarioPerfil]
     getCarritos: [Carrito]
     getCarritoById(id: ID!): Carrito
-    getCarritosByIdCliente(id: ID!): [Carrito]
-    getCarritosByIdHorarioCaja(id: ID!): [Carrito]
-    getCarritosByIdDespacho(id: ID!): [Carrito]
+    getCarritosByIdCliente(id: String): [Carrito]
+    getCarritosByIdHorarioCaja(id: String): [Carrito]
+    getCarritosByIdDespacho(id: String): [Carrito]
 }
 type Mutation{
     addPersona(input:PersonaInput): Persona
@@ -445,11 +445,11 @@ const resolvers = {
             return usuarioPerfil;
         },
         async getUsuarioPerfilsByIdUsuario(obj, {id}){
-            let usuarioPerfil = await UsuarioPerfil.findById({usuario: id});
+            let usuarioPerfil = await UsuarioPerfil.find({usuario: id});
             return usuarioPerfil;
         },
         async getUsuarioPerfilsByIdPerfil(obj, {id}){
-            let usuarioPerfil = await UsuarioPerfil.findById({perfil: id});
+            let usuarioPerfil = await UsuarioPerfil.find({perfil: id});
             return usuarioPerfil;
         },
         async getCarritos(obj){
