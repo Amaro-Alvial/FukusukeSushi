@@ -14,11 +14,15 @@ const Usuario = require('./models/usuario');
 const Producto = require('./models/producto');
 const Boleta = require('./models/boleta');
 const DetalleCompra = require('./models/detalleCompra');
-const Cliente = require('./models/cliente');
-const Dueno = require('./models/dueno');
 const Categoria = require('./models/categoria');
 const PrecioHistorico = require('./models/precioHistorico');
 const DisponibleHistorico = require('./models/disponibleHistorico');
+const Caja = require('./models/caja');
+const Despacho = require('./models/despacho');
+const HorarioCaja = require('./models/horarioCaja');
+const Perfil = require('./models/perfil');
+const UsuarioPerfil = require('./models/usuarioPerfil');
+const Carrito = require('./models/carrito');
 
 const typeDefs = gql`
 type Persona{
@@ -49,50 +53,38 @@ type Usuario{
     email: String!
     pass: String!
     nombreUsuario: String!
+    persona: String!
 }
 input UsuarioInput{
     email: String!
     pass: String!
     nombreUsuario: String!
-}
-type Cliente{
-    id: ID!
     persona: String!
-    usuario: String!
-}
-input ClienteInput{
-    persona: String!
-    usuario: String!
-}
-type Dueno{
-    id: ID!
-    persona: String!
-    usuario: String!
-}
-input DuenoInput{
-    persona: String!
-    usuario: String!
 }
 type Producto{
     id: ID!
     nombre: String!
     descripcion: String!
+    foto: String!
     categoria: String!
 }
 input ProductoInput{
     nombre: String!
     descripcion: String!
+    foto: String!
     categoria: String!
 }
 type Boleta{
     id: ID!
+    fecha: String!
     cliente: String!
-    cajeroVirtual: String!
+    horarioCaja: String!
     despacho: String!
 }
 input BoletaInput{
+    fecha: String!
     cliente: String!
-    cajeroVirtual: String!
+    horarioCaja: String!
     despacho: String!
 }
 type DetalleCompra{
@@ -139,6 +131,64 @@ input DisponibleHistoricoInput{
     producto: String!
     disponibilidad: Boolean!
 }
+type Caja{
+    id: ID!
+    tipo: String!
+}
+input CajaInput{
+    tipo: String!
+}
+type Despacho{
+    id: ID!
+    despachador: String!
+    fecha: String!
+}
+input DespachoInput{
+    despachador: String!
+    fecha: String!
+}
+type HorarioCaja{
+    id: ID!
+    horario: String!
+    encargado: String!
+    caja: String!
+}
+input HorarioCajaInput{
+    horario: String!
+    encargado: String!
+    caja: String!
+}
+type Perfil{
+    id: ID!
+    tipo: String!
+}
+input PerfilInput{
+    tipo: String!
+}
+type UsuarioPerfil{
+    id: ID!
+    caducidad: String
+    usuario: String!
+    perfil: String!
+}
+input UsuarioPerfilInput{
+    caducidad: String
+    usuario: String!
+    perfil: String!
+}
+type Carrito{
+    id: ID!
+    boleta: String!
+    producto: String
+    total: Float!
+    cantidad: Float!
+},
+input CarritoInput{
+    boleta: String!
+    producto: String
+    total: Float!
+    cantidad: Float!
+}
 type Alert{
     message: String!
 }
@@ -148,17 +198,15 @@ type Query{
     getPersonaByRun(run: String!): Persona
     getUsuarios: [Usuario]
     getUsuarioById(id: ID!): Usuario
-    getClientes: [Cliente]
-    getClienteById(id: ID!): Cliente
-    getClienteByIdUsuario(id: ID!): Cliente
-    getDuenos: [Dueno]
-    getDuenoById(id: ID!): Dueno
+    getUsuariosByIdPersona(id: ID!): [Usuario]
     getProductos: [Producto]
     getProductoById(id: ID!): Producto
     getProductosByIdCategoria(id: ID!): [Producto]
     getBoletas: [Boleta]
     getBoletaById(id: ID!): Boleta
     getBoletasByIdCliente(id: ID!): [Boleta]
+    getBoletasByIdHorarioCaja(id: ID!): [Boleta]
+    getBoletasByIdDespacho(id: ID!): [Boleta]
     getDetalleCompras: [DetalleCompra]
     getDetalleCompraById(id: ID!): DetalleCompra
     getDetalleComprasByIdBoleta(id: ID!): [DetalleCompra]
@@ -171,6 +219,26 @@ type Query{
     getDisponibleHistoricos: [DisponibleHistorico]
     getDisponibleHistoricoById(id: ID!): DisponibleHistorico
     getDisponibleHistoricosByIdProducto(id: ID!): [DisponibleHistorico]
+    getCajas: [Caja]
+    getCajaById(id: ID!): Caja
+    getDespachos: [Despacho]
+    getDespachoById(id: ID!): Despacho
+    getDespachosByIdDespachador(id: ID!): [Despacho]
+    getHorarioCajas: [HorarioCaja]
+    getHorarioCajaById(id: ID!): HorarioCaja
+    getHorarioCajasByIdCaja(id: ID!): [HorarioCaja]
+    getHorarioCajasByIdUsuario(id: ID!): [HorarioCaja]
+    getPerfils: [Perfil]
+    getPerfilById(id: ID!): Perfil
+    getUsuarioPerfils: [UsuarioPerfil]
+    getUsuarioPerfilById(id: ID!): UsuarioPerfil
+    getUsuarioPerfilsByIdPerfil(id: String): [UsuarioPerfil]
+    getUsuarioPerfilsByIdUsuario(id: String): [UsuarioPerfil]
+    getCarritos: [Carrito]
+    getCarritoById(id: ID!): Carrito
+    getCarritosByIdCliente(id: ID!): [Carrito]
+    getCarritosByIdHorarioCaja(id: ID!): [Carrito]
+    getCarritosByIdDespacho(id: ID!): [Carrito]
 }
 type Mutation{
     addPersona(input:PersonaInput): Persona
@@ -179,12 +247,6 @@ type Mutation{
     addUsuario(input:UsuarioInput): Usuario
     updUsuario(id: ID!, input:UsuarioInput): Usuario
     delUsuario(id: ID!): Alert
-    addCliente(input:ClienteInput): Cliente
-    updCliente(id: ID!, input:ClienteInput): Cliente
-    delCliente(id: ID!): Alert
-    addDueno(input:DuenoInput): Dueno
-    updDueno(id: ID!, input:DuenoInput): Dueno
-    delDueno(id: ID!): Alert
     addProducto(input:ProductoInput): Producto
     updProducto(id: ID!, input:ProductoInput): Producto
     delProducto(id: ID!): Alert
@@ -203,6 +265,24 @@ type Mutation{
     addDisponibleHistorico(input:DisponibleHistoricoInput): DisponibleHistorico
     updDisponibleHistorico(id: ID!, input:DisponibleHistoricoInput): DisponibleHistorico
     delDisponibleHistorico(id: ID!): Alert
+    addCaja(input:CajaInput): Caja
+    updCaja(id: ID!, input:CajaInput): Caja
+    delCaja(id: ID!): Alert
+    addDespacho(input:DespachoInput): Despacho
+    updDespacho(id: ID!, input:DespachoInput): Despacho
+    delDespacho(id: ID!): Alert
+    addHorarioCaja(input:HorarioCajaInput): HorarioCaja
+    updHorarioCaja(id: ID!, input:HorarioCajaInput): HorarioCaja
+    delHorarioCaja(id: ID!): Alert
+    addPerfil(input:PerfilInput): Perfil
+    updPerfil(id: ID!, input:PerfilInput): Perfil
+    delPerfil(id: ID!): Alert
+    addUsuarioPerfil(input:UsuarioPerfilInput): UsuarioPerfil
+    updUsuarioPerfil(id: ID!, input:UsuarioPerfilInput): UsuarioPerfil
+    delUsuarioPerfil(id: ID!): Alert
+    addCarrito(input:CarritoInput): Carrito
+    updCarrito(id: ID!, input:CarritoInput): Carrito
+    delCarrito(id: ID!): Alert
 }
 `;
 
@@ -228,25 +308,9 @@ const resolvers = {
             let usuario = await Usuario.findById(id);
             return usuario;
         },
-        async getClientes(obj){
-            let clientes = await Cliente.find();
-            return clientes;
-        },
-        async getClienteById(obj, {id}){
-            let cliente = await Cliente.findById(id);
-            return cliente;
-        },
-        async getClienteByIdUsuario(obj, {id}){
-            let cliente = await Cliente.find({usuario: id});
-            return cliente;
-        },
-        async getDuenos(obj){
-            let duenos = await Dueno.find();
-            return duenos;
-        },
-        async getDuenoById(obj, {id}){
-            let dueno = await Dueno.findById(id);
-            return dueno;
+        async getUsuariosByIdPersona(obj, {id}){
+            let usuarios = await Usuario.find({persona: id})
+            return usuarios;
         },
         async getProductos(obj){
             let productos = await Producto.find();
@@ -270,6 +334,14 @@ const resolvers = {
         },
         async getBoletasByIdCliente(obj, {id}){
             let boletas = await Boleta.find({cliente: id});
+            return boletas;
+        },
+        async getBoletasByIdHorarioCaja(obj, {id}){
+            let boletas = await Boleta.find({horarioCaja: id});
+            return boletas;
+        },
+        async getBoletasByIdDespacho(obj, {id}){
+            let boletas = await Boleta.find({despacho: id});
             return boletas;
         },
         async getDetalleCompras(obj){
@@ -319,6 +391,86 @@ const resolvers = {
         async getDisponibleHistoricosByIdProducto(obj, {id}){
             let disponibleHistoricos = await DisponibleHistorico.find({producto: id});
             return disponibleHistoricos;
+        },
+        async getCajas(obj){
+            let cajas = await Caja.find();
+            return cajas;
+        },
+        async getCajaById(obj, {id}){
+            let caja = await Caja.findById(id);
+            return caja;
+        },
+        async getDespachos(obj){
+            let despachos = await Despacho.find();
+            return despachos;
+        },
+        async getDespachoById(obj, {id}){
+            let despacho = await Despacho.findById(id);
+            return despacho;
+        },
+        async getDespachosByIdDespachador(obj, {id}){
+            let despachos = await Despacho.find({despachador: id});
+            return despachos;
+        },
+        async getHorarioCajas(obj){
+            let horarioCajas = await HorarioCaja.find();
+            return horarioCajas;
+        },
+        async getHorarioCajaById(obj, {id}){
+            let horarioCaja = await HorarioCaja.findById(id);
+            return horarioCaja;
+        },
+        async getHorarioCajasByIdCaja(obj, {id}){
+            let horarioCajas = await HorarioCaja.find({caja: id});
+            return horarioCajas;
+        },
+        async getHorarioCajasByIdUsuario(obj, {id}){
+            let horarioCajas = await HorarioCaja.find({usuario: id});
+            return horarioCajas;
+        },
+        async getPerfils(obj){
+            let perfiles = await Perfil.find();
+            return perfiles;
+        },
+        async getPerfilById(obj, {id}){
+            let perfil = await Perfil.findById(id);
+            return perfil;
+        },
+        async getUsuarioPerfils(obj){
+            let usuarioPerfils = await UsuarioPerfil.find();
+            return usuarioPerfils;
+        },
+        async getUsuarioPerfilById(obj, {id}){
+            let usuarioPerfil = await UsuarioPerfil.findById(id);
+            return usuarioPerfil;
+        },
+        async getUsuarioPerfilsByIdUsuario(obj, {id}){
+            let usuarioPerfil = await UsuarioPerfil.find({usuario: id});
+            return usuarioPerfil;
+        },
+        async getUsuarioPerfilsByIdPerfil(obj, {id}){
+            let usuarioPerfil = await UsuarioPerfil.find({perfil: id});
+            return usuarioPerfil;
+        },
+        async getCarritos(obj){
+            let carritos = await Carrito.find();
+            return carritos;
+        },
+        async getCarritoById(obj, {id}){
+            let carrito = await Carrito.findById(id);
+            return carrito;
+        },
+        async getCarritosByIdCliente(obj, {id}){
+            let carritos = await Carrito.find({cliente: id});
+            return carritos;
+        },
+        async getCarritosByIdHorarioCaja(obj, {id}){
+            let carritos = await Carrito.find({horarioCaja: id});
+            return carritos;
+        },
+        async getCarritosByIdDespacho(obj, {id}){
+            let carritos = await Carrito.find({despacho: id});
+            return carritos;
         }
     },
     Mutation:{
@@ -338,12 +490,14 @@ const resolvers = {
             };
         },
         async addUsuario(obj, {input}){
-            let usuario = new Usuario(input);
+            let personaBus = await Persona.findById(input.persona);
+            let usuario = new Usuario({email: input.email, pass: input.pass, nombreUsuario: input.nombreUsuario, persona: personaBus._id});
             await usuario.save();
             return usuario;
         },
         async updUsuario(obj, {id, input}){
-            let usuario = await Usuario.findByIdAndUpdate(id, input, { new: true });
+            let personaBus = await Persona.findById(input.persona);
+            let usuario = await Usuario.findByIdAndUpdate(id, {email: input.email, pass: input.pass, nombreUsuario: input.nombreUsuario, persona: personaBus._id}, { new: true });
             return usuario;
         },
         async delUsuario(obj, {id}){
@@ -352,53 +506,15 @@ const resolvers = {
                 message: "Usuario eliminado"
             };
         },
-        async addCliente(obj, {input}){
-            let usuarioBus = await Usuario.findById(input.usuario);
-            let personaBus = await Persona.findById(input.persona);
-            let cliente = new Cliente({usuario: usuarioBus._id, persona: personaBus._id});
-            await cliente.save();
-            return cliente;
-        },
-        async updCliente(obj, {id, input}){
-            let usuarioBus = await Usuario.findById(input.usuario);
-            let personaBus = await Persona.findById(input.persona);
-            let cliente = await Cliente.findByIdAndUpdate(id, {usuario: usuarioBus._id, persona: personaBus._id}, { new: true });
-            return cliente;
-        },
-        async delCliente(obj, {id}){
-            await Cliente.deleteOne({_id: id});
-            return {
-                message: "Cliente eliminado"
-            };
-        },
-        async addDueno(obj, {input}){
-            let usuarioBus = await Usuario.findById(input.usuario);
-            let personaBus = await Persona.findById(input.persona);
-            let dueno = await Dueno.findByIdAndUpdate(id, {usuario: usuarioBus._id, persona: personaBus._id});
-            await dueno.save();
-            return dueno;
-        },
-        async updDueno(obj, {id, input}){
-            let usuarioBus = await Usuario.findById(input.usuario);
-            let personaBus = await Persona.findById(input.persona);
-            let dueno = await Dueno.findByIdAndUpdate(id, {usuario: usuarioBus._id, persona: personaBus._id}, { new: true });
-            return dueno;
-        },
-        async delDueno(obj, {id}){
-            await Dueno.deleteOne({_id: id});
-            return {
-                message: "Dueño eliminado"
-            };
-        },
         async addProducto(obj, {input}){
             let categoriaBus = await Categoria.findById(input.categoria);
-            let producto = new Producto({nombre: input.nombre, descripcion: input.descripcion, categoria: categoriaBus._id});
+            let producto = new Producto({nombre: input.nombre, descripcion: input.descripcion, foto: input.foto, categoria: categoriaBus._id});
             await producto.save();
             return producto;
         },
         async updProducto(obj, {id, input}){
             let categoriaBus = await Categoria.findById(input.categoria);
-            let producto = await Producto.findByIdAndUpdate(id, {nombre: input.nombre, descripcion: input.descripcion, categoria: categoriaBus._id}, { new: true });
+            let producto = await Producto.findByIdAndUpdate(id, {nombre: input.nombre, descripcion: input.descripcion, foto: input.foto, categoria: categoriaBus._id}, { new: true });
             return producto;
         },
         async delProducto(obj, {id}){
@@ -408,14 +524,18 @@ const resolvers = {
             };
         },
         async addBoleta(obj, {input}){
-            let clienteBus = await Cliente.findById(input.cliente);
-            let boleta = new Boleta({cliente: clienteBus._id, cajeroVirtual: input.cajeroVirtual, despacho: input.despacho});
+            let clienteBus = await Usuario.findById(input.cliente);
+            let horarioCajaBus = await HorarioCaja.findById(input.horarioCaja);
+            let despachoBus = await Despacho.findById(input.despacho);
+            let boleta = new Boleta({fecha: input.fecha, cliente: clienteBus._id, horarioCaja: horarioCajaBus._id, despacho: despachoBus._id});
             await boleta.save();
             return boleta;
         },
         async updBoleta(obj, {id, input}){
-            let clienteBus = await Cliente.findById(input.cliente);
-            let boleta = await Boleta.findByIdAndUpdate(id, {cliente: clienteBus._id, cajeroVirtual: input.cajeroVirtual, despacho: input.despacho}, { new: true });
+            let clienteBus = await Usuario.findById(input.cliente);
+            let horarioCajaBus = await HorarioCaja.findById(input.horarioCaja);
+            let despachoBus = await Despacho.findById(input.despacho);
+            let boleta = await Boleta.findByIdAndUpdate(id, {fecha: input.fecha, cliente: clienteBus._id, horarioCaja: horarioCajaBus._id, despacho: despachoBus._id}, { new: true });
             return boleta;
         },
         async delBoleta(obj, {id}){
@@ -490,6 +610,111 @@ const resolvers = {
             await DisponibleHistorico.deleteOne({_id: id});
             return {
                 message: "Disponible Historico eliminado"
+            };
+        },
+        async addCaja(obj, {input}){
+            let caja = new Caja(input);
+            await caja.save();
+            return caja;
+        },
+        async updCaja(obj, {id, input}){
+            let caja = await Caja.findByIdAndUpdate(id, input, { new: true });
+            return caja;
+        },
+        async delCaja(obj, {id}){
+            await Caja.deleteOne({_id: id});
+            return {
+                message: "Caja eliminada"
+            };
+        },
+        async addDespacho(obj, {input}){
+            let despachadorBus = await Usuario.findById(input.despachador);
+            let despacho = new Despacho({despachador: despachadorBus._id, fecha: input.fecha});
+            await despacho.save();
+            return despacho;
+        },
+        async updDespacho(obj, {id, input}){
+            let despachadorBus = await Usuario.findById(input.despachador);
+            let despacho = await Despacho.findByIdAndUpdate(id, {despachador: despachadorBus._id, fecha: input.fecha}, { new: true });
+            return despacho;
+        },
+        async delDespacho(obj, {id}){
+            await Despacho.deleteOne({_id: id});
+            return {
+                message: "Despacho eliminado"
+            };
+        },
+        async addHorarioCaja(obj, {input}){
+            let cajaBus = await Caja.findById(input.caja);
+            let encargadoBus = await Usuario.findById(input.encargado);
+            let horarioCaja = new HorarioCaja({horario: input.horario, encargado: encargadoBus._id, caja: cajaBus._id});
+            await horarioCaja.save();
+            return horarioCaja;
+        },
+        async updHorarioCaja(obj, {id, input}){
+            let cajaBus = await Caja.findById(input.caja);
+            let encargadoBus = await Usuario.findById(input.encargado);
+            let horarioCaja = await HorarioCaja.findByIdAndUpdate(id, {horario: input.horario, encargado: encargadoBus._id, caja: cajaBus._id}, { new: true });
+            return horarioCaja;
+        },
+        async delHorarioCaja(obj, {id}){
+            await HorarioCaja.deleteOne({_id: id});
+            return {
+                message: "Horario de caja eliminado"
+            };
+        },
+        async addPerfil(obj, {input}){
+            let perfil = new Perfil(input);
+            await perfil.save();
+            return perfil;
+        },
+        async updPerfil(obj, {id, input}){
+            let perfil = await Perfil.findByIdAndUpdate(id, input, { new: true });
+            return perfil;
+        },
+        async delPerfil(obj, {id}){
+            await Perfil.deleteOne({_id: id});
+            return {
+                message: "Perfil eliminado"
+            };
+        },
+        async addUsuarioPerfil(obj, {input}){
+            let usuarioBus = await Usuario.findById(input.usuario);
+            let perfilBus = await Perfil.findById(input.perfil);
+            let usuarioPerfil = new UsuarioPerfil({caducidad: input.caducidad, usuario: usuarioBus._id, perfil: perfilBus._id});
+            await usuarioPerfil.save();
+            return usuarioPerfil;
+        },
+        async updUsuarioPerfil(obj, {id, input}){
+            let usuarioBus = await Usuario.findById(input.usuario);
+            let perfilBus = await Perfil.findById(input.perfil);
+            let usuarioPerfil = await UsuarioPerfil.findByIdAndUpdate(id, {caducidad: input.caducidad, usuario: usuarioBus._id, perfil: perfilBus._id}, { new: true });
+            return usuarioPerfil;
+        },
+        async delUsuarioPerfil(obj, {id}){
+            await UsuarioPerfil.deleteOne({_id: id});
+            return {
+                message: "UsuarioPerfil eliminado"
+            };
+        },
+        async addCarrito(obj, {input}){
+            let clienteBus = await Usuario.findById(input.cliente);
+            let horarioCajaBus = await HorarioCaja.findById(input.horarioCaja);
+            let despachoBus = await Despacho.findById(input.despacho);
+            let carrito = new Carrito({fecha: input.fecha, cliente: clienteBus._id, horarioCaja: horarioCajaBus._id, despacho: despachoBus._id});
+            await carrito.save();
+            return carrito;
+        },
+        async updCarrito(obj, {id, input}){
+            let boletaBus = await Boleta.findById(input.boleta);
+            let productoBus = await Producto.findById(input.producto);
+            let carrito = await Carrito.findByIdAndUpdate(id, {fecha: input.fecha, cliente: clienteBus._id, horarioCaja: horarioCajaBus._id, despacho: despachoBus._id}, { new: true });
+            return carrito;
+        },
+        async delCarrito(obj, {id}){
+            await Carrito.deleteOne({_id: id});
+            return {
+                message: "Carrito eliminado"
             };
         }
     }
