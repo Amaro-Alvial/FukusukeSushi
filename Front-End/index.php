@@ -171,19 +171,10 @@
         <div class="row" style="background-color: grey; height: 200px">
             <div class="col-3" style="height: 200px">
                 <label for="categoria" class="form-label">Selecciona</label> 
-                <select multiple class="form-select" id="categoria" name="categoria"></select>
+                <select multiple class="form-select" id="categoria-select" name="categoria"></select>
             </div>
             <div class="col-9">
-                <div class="row" style="background-color: lightblue">
-                    <div class="col-4">
-                        <div class="card" id="producto-card">hola</div>
-                    </div>
-                    <div class="col-4">
-                        <div class="card" id="producto-card">hola</div>
-                    </div>
-                    <div class="col-4">
-                        <div class="card" id="producto-card">hola</div>
-                    </div>
+                <div class="row" id="producto-container" style="background-color: lightblue">
                 </div>
             </div>
         </div>
