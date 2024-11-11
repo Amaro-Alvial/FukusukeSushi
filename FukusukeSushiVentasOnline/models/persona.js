@@ -4,9 +4,7 @@ const personaSchema = new mongoose.Schema({
     run: String,
     nombreCompleto: String,
     direccion: String,
-    comuna: String,
-    provincia: String,
-    region: String,
+    comuna: {type: mongoose.Schema.Types.ObjectId, ref: 'Comuna'},
     fechaNacimiento: String,
     sexo: String,
     telefono: String
