@@ -1,6 +1,4 @@
 let contentTablePersona = [];
-let optionsPerfil = [];
-
 
 async function trtdPersona(item){
     comuna = await GetComunaById(item.comuna)
@@ -181,7 +179,7 @@ function GetPersonaByRun(runPersona){
         }
     });
 }
-function GetPersonaById(idPersona){
+async function GetPersonaById(idPersona) {
     let query = `
     query miQuery($id: ID!){
         getPersonaById(id: $id){
@@ -192,27 +190,29 @@ function GetPersonaById(idPersona){
             fechaNacimiento
             sexo
             telefono
+            comuna
         }
     }
     `;
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8091/graphql",
-        contentType: "application/json",
-        timeout: 15000,
-        data: JSON.stringify({
-            query: query,
-            variables: {
-                id: idPersona
-            }
-        }),
-        success: function(response){
-            trtdPersona(response.data.getPersonaById);
-            document.getElementById('tblPersona').innerHTML = contentTablePersona.join("");
-        }
-    });
+    try {
+        const response = await $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: idPersona
+                }
+            })
+        });
+        await trtdPersona(response.data.getPersonaById);
+    } catch (error) {
+        console.error("Error al obtener persona por ID:", error);
+    }
 }
-function GetUsuarioById(idUsuario){
+async function GetUsuarioById(idUsuario) {
     let query = `
     query miQuery($id: ID!){
         getUsuarioById(id: $id){
@@ -224,23 +224,25 @@ function GetUsuarioById(idUsuario){
         }
     }
     `;
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8091/graphql",
-        contentType: "application/json",
-        timeout: 15000,
-        data: JSON.stringify({
-            query: query,
-            variables: {
-                id: idUsuario
-            }
-        }),
-        success: function(response){
-            GetPersonaById(response.data.getUsuarioById.persona);
-        }
-    });
+    try {
+        const response = await $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: idUsuario
+                }
+            })
+        });
+        await GetPersonaById(response.data.getUsuarioById.persona);
+    } catch (error) {
+        console.error("Error al obtener usuario por ID:", error);
+    }
 }
-function GetPersonasByIdPerfil(){
+async function GetPersonasByIdPerfil() {
     let perfil = document.getElementById('cmbPerfil2').value;
     let query = `
     query miQuery($input: String){
@@ -252,25 +254,35 @@ function GetPersonasByIdPerfil(){
         }
     }
     `;
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8091/graphql",
-        contentType: "application/json",
-        timeout: 15000,
-        data: JSON.stringify({
-            query: query,
-            variables: {
-                input: perfil
-            }
-        }),
-        success: function(response){
-            contentTablePersona = [];
-            contentTablePersona.push('<tr><td>RUN</td><td>NOMBRE</td><td>COMUNA</td><td>DIRECCIÓN</td><td>TELEFONO</td><td>Editar/Eliminar</td></tr>');
-            response.data.getUsuarioPerfilsByIdPerfil.forEach(item => {
-                GetUsuarioById(item.usuario);
-            });
+    try {
+        const response = await $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    input: perfil
+                }
+            })
+        });
+
+        // Inicializa la tabla y agrega los encabezados
+        contentTablePersona = [];
+        contentTablePersona.push('<tr><td>RUN</td><td>NOMBRE</td><td>COMUNA</td><td>DIRECCIÓN</td><td>TELÉFONO</td><td>Editar/Eliminar</td></tr>');
+
+        // Usa `for...of` para manejar cada usuario de forma asincrónica
+        for (const item of response.data.getUsuarioPerfilsByIdPerfil) {
+            await GetUsuarioById(item.usuario);
         }
-    });
+
+        // Renderiza la tabla solo después de que todas las personas hayan sido procesadas
+        document.getElementById('tblPersona').innerHTML = contentTablePersona.join("");
+
+    } catch (error) {
+        console.error("Error al obtener personas por perfil:", error);
+    }
 }
 function GetComunaById(idComuna){
     let query = `

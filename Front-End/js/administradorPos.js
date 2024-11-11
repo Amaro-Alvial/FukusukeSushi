@@ -3,7 +3,7 @@ GetPerfiles();
 GetRegiones();
 GetComunas();
 GetProvincias();
-document.getElementById('cmbPerfil2').addEventListener('change', function() {
+document.getElementById('cmbPerfil2').addEventListener('change', async function() {
     const perfilId = document.getElementById('cmbPerfil2').value;
     if (perfilId) {
         GetPersonasByIdPerfil();

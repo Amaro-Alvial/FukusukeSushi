@@ -112,7 +112,7 @@
                         </div>
                         <div class="mb-3 col-xxl-5">
                             <label for="editFechaNacimiento" class="form-label">Fecha de Nacimiento</label>
-                            <input type="text" class="form-control" id="editFechaNacimiento" disabled>
+                            <input type="date" class="form-control" id="editFechaNacimiento">
                         </div>
                     </div> <!-- Cierre de la Fila 1 del modal -->
                     <div class = "row"> <!-- Se abre fila 2 del modal -->

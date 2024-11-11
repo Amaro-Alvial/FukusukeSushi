@@ -6,16 +6,23 @@ async function arbirModalEditar(item) {
     let comuna = await GetComunaById(item.comuna);
     let provincia = await GetProvinciaById(comuna.provincia);
     let region = await GetRegionById(provincia.region);
+    let fecha = new Date(item.fechaNacimiento).toISOString().split('T')[0];
+    if (item3.caducidad != null) {
+        let fecha2 = new Date(item3.caducidad).toISOString().split('T')[0];
+        document.getElementById('editCaducidad').value = fecha2;
+    }
+    else {
+        document.getElementById('editCaducidad').value = "";
+    }
     document.getElementById('editRun').value = item.run;
     document.getElementById('editNombre').value = item.nombreCompleto;
     document.getElementById('editDireccion').value = item.direccion;
-    document.getElementById('editFechaNacimiento').value = item.fechaNacimiento;
+    document.getElementById('editFechaNacimiento').value = fecha;
     document.getElementById('editSexo').value = item.sexo;
     document.getElementById('editTelefono').value = item.telefono;
     document.getElementById('editEmail').value = item2.email;
     document.getElementById('editPass').value = item2.pass;
     document.getElementById('editNombreUsuario').value = item2.nombreUsuario;
-    document.getElementById('editCaducidad').value = item3.caducidad;
     document.getElementById('editTipo').value = item4.tipo;
     document.getElementById('editRegion').value = region.id;
     document.getElementById('editProvincia').value = provincia.id;
