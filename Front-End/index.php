@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" href="./css/styles.css">
+    <script src="./js/pag_principal.js"></script>
 </head>
 
 <body>
@@ -50,7 +51,6 @@
     </div>
 
     <div>
-        <!-- Carousel -->
         <div id="demo" class="carousel slide" data-bs-ride="carousel">
 
             <div class="carousel-indicators">
@@ -167,16 +167,21 @@
         </button>
     </div>
 
-    <div class="col-12" style="background-color: grey; height: 200px">
-        <div class="col-3" style="height: 200px">
-            <label for="categoria" class="form-label">Ciudad</label> 
-            <select multiple class="form-select" id="categoria" name="categoria">
-                
-            </select>
-
-
+    <div class="col-12 mr-2">
+        <div class="row" style="background-color: grey; height: 200px">
+            <div class="col-3" style="height: 200px">
+                <label for="categoria" class="form-label">Selecciona</label> 
+                <select multiple class="form-select" id="categoria-select" name="categoria"></select>
+            </div>
+            <div class="col-9">
+                <div class="row" id="productos-container" style="background-color: lightblue">
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- https://www.svgrepo.com/--, íconos con lisencia libre. -->
     
 </body>
+</html>
+<script src="./js/pag_principalPos.js"></script>

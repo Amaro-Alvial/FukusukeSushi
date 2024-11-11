@@ -103,3 +103,10 @@ button {
 #pideya-button:active {
     background-color: white;
 }
+#producto-card {
+    width: 285px; 
+    height: 150px;
+}
+.categoria-option {
+    color: red;
+}
