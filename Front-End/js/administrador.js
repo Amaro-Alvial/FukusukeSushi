@@ -1,12 +1,14 @@
 let contentTablePersona = [];
 let optionsPerfil = [];
 
-function trtdPersona(item){
+
+async function trtdPersona(item){
+    comuna = await GetComunaById(item.comuna)
     contentTablePersona.push(`
         <tr>
             <td>${item.run}</td>
             <td>${item.nombreCompleto}</td>
-            <td>${item.comuna}</td>
+            <td>${comuna.nombre}</td>
             <td>${item.direccion}</td>
             <td>${item.telefono}</td>
             <td>
@@ -23,6 +25,15 @@ function optionPerfil(item) {
         optionsPerfil.push('<option value="' + item.id + '">' + item.tipo + '</option>');
     }
 }
+function optionProvincia(item) {
+    optionsProvincia.push('<option value="' + item.id + '">' + item.nombre + '</option>');
+}
+function optionRegion(item) {
+    optionsRegion.push('<option value="' + item.id + '">' + item.nombre + '</option>');
+}
+function optionComuna(item) {
+    optionsComuna.push('<option value="' + item.id + '">' + item.nombre + '</option>');
+}
 function GetConexionesByRun(runPersona){
     let query = `
     query miQuery($run: String!){
@@ -31,6 +42,7 @@ function GetConexionesByRun(runPersona){
             run
             nombreCompleto
             direccion
+            comuna
             fechaNacimiento
             sexo
             telefono
@@ -49,7 +61,7 @@ function GetConexionesByRun(runPersona){
             }
         }),
         success: function(response){
-            openEditModal(response.data.getPersonaByRun);
+            arbirModalEditar(response.data.getPersonaByRun);
         }
     });
 }
@@ -112,7 +124,7 @@ function GetUsuarioPerfilByIdUsuario(idUsuario){
         });
     });
 }
-function getPerfilById(idPerfil){
+function GetPerfilById(idPerfil){
     let query = `
     query miQuery($id: ID!){
         getPerfilById(id: $id){
@@ -260,7 +272,228 @@ function GetPersonasByIdPerfil(){
         }
     });
 }
-// Función que llama a la función GetPersonasByIdPerfil cuando se selecciona un perfil en el ComboBox
+function GetComunaById(idComuna){
+    let query = `
+    query miQuery($id: ID!){
+        getComunaById(id: $id){
+            id
+            nombre
+            provincia
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: idComuna
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getComunaById);
+            }
+        });
+    });
+}
+function GetProvinciaById(idProvincia){
+    let query = `
+    query miQuery($id: ID!){
+        getProvinciaById(id: $id){
+            id
+            nombre
+            region
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: idProvincia
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getProvinciaById);
+            }
+        });
+    });
+}
+function GetRegionById(idRegion){
+    let query = `
+    query miQuery($id: ID!){
+        getRegionById(id: $id){
+            id
+            nombre
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: idRegion
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getRegionById);
+            }
+        });
+    });
+}
+function GetComunasByIdProvincia(idProvincia){
+    let query = `
+    query miQuery($input: String){
+        getComunasByIdProvincia(id: $input){
+            id
+            nombre
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {
+                input: idProvincia
+            }
+        }),
+        success: function(response){
+            optionsComuna = [];
+            optionsComuna.push('<option value="defaultComuna">Seleccione la Comuna</option>');
+            response.data.getComunasByIdProvincia.forEach(optionComuna);
+            document.getElementById('cmbComuna').innerHTML = optionsComuna.join("");
+            document.getElementById('editComuna').innerHTML = optionsComuna.join("");
+        }
+    });
+}
+function GetProvinciasByIdRegion(idRegion){
+    let query = `
+    query miQuery($input: String){
+        getProvinciasByIdRegion(id: $input){
+            id
+            nombre
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {
+                input: idRegion
+            }
+        }),
+        success: function(response){
+            optionsProvincia = [];
+            optionsProvincia.push('<option value="defaultProvincia">Seleccione la Provincia</option>');
+            response.data.getProvinciasByIdRegion.forEach(optionProvincia);
+            document.getElementById('cmbProvincia').innerHTML = optionsProvincia.join("");
+            document.getElementById('editProvincia').innerHTML = optionsProvincia.join("");
+        }
+    });
+}
+function GetComunas(){
+    let query = `
+    query miQuery {
+        getComunas {
+            id
+            nombre
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {}
+        }),
+        success: function(response){
+            optionsComuna = [];
+            optionsComuna.push('<option value="defaultComuna">Seleccione la Comuna</option>');
+            response.data.getComunas.forEach(optionComuna);
+            document.getElementById('cmbComuna').innerHTML = optionsComuna.join("");
+            document.getElementById('editComuna').innerHTML = optionsComuna.join("");
+        }
+    });
+}
+function GetProvincias(){
+    let query = `
+    query miQuery {
+        getProvincias {
+            id
+            nombre
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {}
+        }),
+        success: function(response){
+            optionsProvincia = [];
+            optionsProvincia.push('<option value="defaultProvincia">Seleccione la Provincia</option>');
+            response.data.getProvincias.forEach(optionProvincia);
+            document.getElementById('cmbProvincia').innerHTML = optionsProvincia.join("");
+            document.getElementById('editProvincia').innerHTML = optionsProvincia.join("");
+        }
+    });
+}
+function GetRegiones(){
+    let query = `
+    query miQuery {
+        getRegions {
+            id
+            nombre
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {}
+        }),
+        success: function(response){
+            optionsRegion = [];
+            optionsRegion.push('<option value="defaultRegion">Seleccione la region</option>');
+            response.data.getRegions.forEach(optionRegion);
+            document.getElementById('cmbRegion').innerHTML = optionsRegion.join("");
+            document.getElementById('editRegion').innerHTML = optionsRegion.join("");
+        }
+    });
+}
 function GetPerfiles(){
     let query = `
     query miQuery {
@@ -281,14 +514,14 @@ function GetPerfiles(){
         }),
         success: function(response){
             optionsPerfil = [];
-            optionsPerfil.push('<option value="">Seleccione un perfil</option>');
+            optionsPerfil.push('<option value="defaultPerfil">Seleccione un perfil</option>');
             response.data.getPerfils.forEach(optionPerfil);
             document.getElementById('cmbPerfil').innerHTML = optionsPerfil.join("");
             document.getElementById('cmbPerfil2').innerHTML = optionsPerfil.join("");
         }
     });
 }
-function GetPersonas(){
+async function GetPersonas(){
     let query = `
     query miQuery {
         getPersonas {
@@ -296,6 +529,7 @@ function GetPersonas(){
             run
             nombreCompleto
             direccion
+            comuna
             fechaNacimiento
             sexo
             telefono
@@ -311,9 +545,11 @@ function GetPersonas(){
             query: query,
             variables: {}
         }),
-        success: function(response){
+        success: async function(response){
             contentTablePersona.push('<tr><td>RUN</td><td>NOMBRE</td><td>COMUNA</td><td>DIRECCIÓN</td><td>TELEFONO</td><td>Editar/Eliminar</td></tr>');
-            response.data.getPersonas.forEach(trtdPersona);
+            for (const item of response.data.getPersonas) {
+                await trtdPersona(item);
+            }
             document.getElementById('tblPersona').innerHTML = contentTablePersona.join("");
         }
     });
@@ -322,9 +558,7 @@ function addPersona(){
     let run = document.getElementById('run').value;
     let nombreCompleto = document.getElementById('nombreCompleto').value;
     let direccion = document.getElementById('direccion').value;
-    let comuna = document.getElementById('comuna').value;
-    let provincia = document.getElementById('provincia').value;
-    let region = document.getElementById('region').value;
+    let comuna = document.getElementById('cmbComuna').value;
     let fechaNacimiento = document.getElementById('fechaNacimiento').value;
     let sexo = document.getElementById('sexo').value;
     let telefono = document.getElementById('telefono').value;
@@ -336,8 +570,6 @@ function addPersona(){
             nombreCompleto
             direccion
             comuna
-            provincia
-            region
             fechaNacimiento
             sexo
             telefono
@@ -357,8 +589,6 @@ function addPersona(){
                     nombreCompleto: nombreCompleto,
                     direccion: direccion,
                     comuna: comuna,
-                    provincia: provincia,
-                    region: region,
                     fechaNacimiento: fechaNacimiento,
                     sexo: sexo,
                     telefono: telefono

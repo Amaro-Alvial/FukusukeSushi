@@ -36,16 +36,16 @@
     </div> <!-- Cierre de la Fila 1 -->
     <div class="row"> <!-- Se abre fila 2 -->
         <div class="mb-3 mt-3 col-xxl-4">
-            <label for="region">Región:</label>
-            <input type="region" class="form-control" id="region" placeholder="Ingrese la región" name="region">
+            <label for="region">Región:</label> <br>
+            <select name="region" id="cmbRegion"></select>
         </div>
         <div class="mb-3 mt-3 col-xxl-3">
-            <label for="comuna">Comuna:</label>
-            <input type="comuna" class="form-control" id="comuna" placeholder="Ingrese la comuna" name="comuna">
+            <label for="provincia">Provincia:</label> <br>
+            <select name="provincia" id="cmbProvincia"><option value="defaultProvincia">Seleccione la Provincia</option></select>
         </div>
         <div class="mb-3 mt-3 col-xxl-3">
-            <label for="provincia">Provincia:</label>
-            <input type="provincia" class="form-control" id="provincia" placeholder="Ingrese la provincia" name="provincia">
+            <label for="comuna">Comuna:</label> <br>
+            <select name="comuna" id="cmbComuna"><option value="defaultComuna">Seleccione la Comuna</option></select>
         </div>
         <div class="mb-3 mt-3 col-xxl-2">
             <label for="telefono">Teléfono:</label>
@@ -116,12 +116,12 @@
                         </div>
                     </div> <!-- Cierre de la Fila 1 del modal -->
                     <div class = "row"> <!-- Se abre fila 2 del modal -->
-                        <div class="mb-3 col-xxl-10">
+                        <div class="mb-3 col-xxl-9">
                             <label for="editNombre" class="form-label">Nombre Completo</label>
                             <input type="text" class="form-control" id="editNombre">
                         </div>
 
-                        <div class="mb-3 col-xxl-2">
+                        <div class="mb-3 col-xxl-3">
                             <label for="editSexo" class="form-label">Sexo</label>
                             <select class="form-select" id="editSexo">
                                 <option value="M">M</option>
@@ -162,19 +162,19 @@
                     <div class="row"> <!-- Se abre fila 6 del modal -->
                         <div class="mb-3 col-12">
                             <label for="editRegion" class="form-label">Región</label>
-                            <input type="text" class="form-control" id="editRegion">
+                            <select name="region" id="editRegion"></select>
                         </div>
                     </div> <!-- Cierre de la Fila 6 del modal -->
                     <div class="row">
                         <div class="mb-3 col-12">
                             <label for="editProvincia" class="form-label">Provincia</label>
-                            <input type="text" class="form-control" id="editProvincia">
+                            <select name="provincia" id="editProvincia"><option value="defaultProvincia">Seleccione la Provincia</option></select>
                         </div>
                     </div> <!-- Cierre de la Fila 6 del modal -->
                     <div class="row"> <!-- Se abre fila 7 del modal -->
                         <div class="mb-3 col-12">
                             <label for="editComuna" class="form-label">Comuna</label>
-                            <input type="text" class="form-control" id="editComuna">
+                            <select name="comuna" id="editComuna"><option value="defaultComuna">Seleccione la Comuna</option></select>
                         </div>
                     </div> <!-- Cierre de la Fila 7 del modal -->
                     <div class="row"> <!-- Se abre fila 8 del modal -->
@@ -214,4 +214,4 @@
 </body>
 </html>
 <script src="./js/administradorPos.js"></script>
-<script src="./js/modals.js"></script>
+<script src="./js/modalsAdministrador.js"></script>

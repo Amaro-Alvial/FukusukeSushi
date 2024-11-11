@@ -1,11 +1,13 @@
-async function openEditModal(item) {
+async function arbirModalEditar(item) {
     // Llena los campos del modal de edición con los datos de la persona seleccionada
     let item2 = await GetUsuarioByIdPersona(item.id); 
     let item3 = await GetUsuarioPerfilByIdUsuario(item2.id);
-    let item4 = await getPerfilById(item3.perfil);
+    let item4 = await GetPerfilById(item3.perfil);
+    let comuna = await GetComunaById(item.comuna);
+    let provincia = await GetProvinciaById(comuna.provincia);
+    let region = await GetRegionById(provincia.region);
     document.getElementById('editRun').value = item.run;
     document.getElementById('editNombre').value = item.nombreCompleto;
-    document.getElementById('editComuna').value = item.comuna;
     document.getElementById('editDireccion').value = item.direccion;
     document.getElementById('editFechaNacimiento').value = item.fechaNacimiento;
     document.getElementById('editSexo').value = item.sexo;
@@ -15,7 +17,10 @@ async function openEditModal(item) {
     document.getElementById('editNombreUsuario').value = item2.nombreUsuario;
     document.getElementById('editCaducidad').value = item3.caducidad;
     document.getElementById('editTipo').value = item4.tipo;
-    
+    document.getElementById('editRegion').value = region.id;
+    document.getElementById('editProvincia').value = provincia.id;
+    document.getElementById('editComuna').value = comuna.id;
+
     // Muestra el modal de edición
     var editModal = new bootstrap.Modal(document.getElementById('editModal'));
     editModal.show();
