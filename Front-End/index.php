@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" href="./css/styles.css">
-    <script src="./js/pag_principal.js"></script>
+    <script src="./js/pagPrincipal.js"></script>
 </head>
 
 <body>
@@ -102,7 +102,7 @@
                                 <input type="password" class="form-control" id="pwd" name="pswd">
                             </div>
                             <div class="mt-2 mb-3">
-                                <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                                <button type="submit" class="btn btn-primary" id="login-button-modal">Iniciar Sesión</button>
                             </div>
                             <div>
                                 Si no tienes una cuenta aún,
@@ -184,4 +184,4 @@
     
 </body>
 </html>
-<script src="./js/pag_principalPos.js"></script>
+<script src="./js/pagPrincipalPos.js"></script>
