@@ -1,6 +1,8 @@
 async function openEditModal(item) {
     // Llena los campos del modal de edición con los datos de la persona seleccionada
     let item2 = await GetUsuarioByIdPersona(item.id); 
+    let item3 = await GetUsuarioPerfilByIdUsuario(item2.id);
+    let item4 = await getPerfilById(item3.perfil);
     document.getElementById('editRun').value = item.run;
     document.getElementById('editNombre').value = item.nombreCompleto;
     document.getElementById('editComuna').value = item.comuna;
@@ -9,7 +11,10 @@ async function openEditModal(item) {
     document.getElementById('editSexo').value = item.sexo;
     document.getElementById('editTelefono').value = item.telefono;
     document.getElementById('editEmail').value = item2.email;
+    document.getElementById('editPass').value = item2.pass;
     document.getElementById('editNombreUsuario').value = item2.nombreUsuario;
+    document.getElementById('editCaducidad').value = item3.caducidad;
+    document.getElementById('editTipo').value = item4.tipo;
     
     // Muestra el modal de edición
     var editModal = new bootstrap.Modal(document.getElementById('editModal'));

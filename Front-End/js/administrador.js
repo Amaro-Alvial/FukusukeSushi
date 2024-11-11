@@ -78,15 +78,67 @@ function GetUsuarioByIdPersona(idPersona){
                 }
             }),
             success: function(response){
-                resolve(response.data.getUsuariosByIdPersona[0]); // Resuelve la promesa con los datos
-            },
-            error: function(error) {
-                reject("Error en la solicitud: " + error); // Rechaza la promesa si ocurre un error
+                resolve(response.data.getUsuariosByIdPersona[0]);
             }
         });
     });
 }
-
+function GetUsuarioPerfilByIdUsuario(idUsuario){
+    let query = `
+    query miQuery($id: String){
+        getUsuarioPerfilsByIdUsuario(id: $id){
+            id
+            usuario
+            perfil
+            caducidad
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: idUsuario
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getUsuarioPerfilsByIdUsuario[0]);
+            }
+        });
+    });
+}
+function getPerfilById(idPerfil){
+    let query = `
+    query miQuery($id: ID!){
+        getPerfilById(id: $id){
+            id
+            tipo
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: idPerfil
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getPerfilById);
+            }
+        });
+    });
+}
 function GetPersonaByRun(runPersona){
     let query = `
     query miQuery($run: String!){
