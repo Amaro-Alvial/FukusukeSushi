@@ -201,7 +201,7 @@ type Query{
     getUsuariosByIdPersona(id: ID!): [Usuario]
     getProductos: [Producto]
     getProductoById(id: ID!): Producto
-    getProductosByIdCategoria(id: ID!): [Producto]
+    getProductosByIdCategoria(id: String): [Producto]
     getBoletas: [Boleta]
     getBoletaById(id: ID!): Boleta
     getBoletasByIdCliente(id: ID!): [Boleta]

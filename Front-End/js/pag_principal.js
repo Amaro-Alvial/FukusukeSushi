@@ -3,11 +3,11 @@
 let optionCategorias = [];
 
 function optionCategoria(item){
-    optionCategorias.push('<option id="categoria-option" "value="' + item.id + '">' + item.nombre + '</option>');
+    optionCategorias.push('<option class="categoria-option" value="' + item.id + '">' + item.nombre + '</option>');
 }
 
 function getCategorias(){
-    const query=`
+    let query=`
     query getCategorias{
         getCategorias{
             id
@@ -30,22 +30,23 @@ function getCategorias(){
     })
 }
 
+
 let cardProductos = [];
 
 function cardProducto(item) {
     cardProductos.push(`
         <div class="col-4">
-            <div class="card">
+            <div class="card" value="${item.id}">
                 ${item.nombre}
             </div>
         </div>
     `);
 }
 
-function getProductos() {
+function getProductosByIdCategoria(categoria) {
     const query = `
-    query getProductos {
-        getProductos {
+    query getProductosByIdCategoria($id: String){
+        getProductosByIdCategoria(id: $id){
             id
             nombre
         }
@@ -57,12 +58,13 @@ function getProductos() {
         url: "http://localhost:8091/graphql",
         data: JSON.stringify({
             query: query,
-            variables: {}
+            variables: {
+                id: categoria
+            }
         }),
         success: function(response) {
             cardProductos = [];
-            console.log(response);
-            response.data.getProductos.forEach(cardProducto);
+            response.data.getProductosByIdCategoria.forEach(cardProducto);
             document.getElementById('productos-container').innerHTML = cardProductos.join("");
         },
     });

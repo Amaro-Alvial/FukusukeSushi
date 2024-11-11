@@ -107,6 +107,6 @@ button {
     width: 285px; 
     height: 150px;
 }
-#categoria-option {
+.categoria-option {
     color: red;
 }

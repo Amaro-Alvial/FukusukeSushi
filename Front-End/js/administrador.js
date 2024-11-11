@@ -93,7 +93,7 @@ function GetPersonasByIdPerfil(){
             query: query,
             variables: {
                 input: perfil
-            }
+            },
         }),
         success: function(response){
             contentTablePersona = [];

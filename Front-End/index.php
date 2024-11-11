@@ -174,7 +174,7 @@
                 <select multiple class="form-select" id="categoria-select" name="categoria"></select>
             </div>
             <div class="col-9">
-                <div class="row" id="producto-container" style="background-color: lightblue">
+                <div class="row" id="productos-container" style="background-color: lightblue">
                 </div>
             </div>
         </div>
