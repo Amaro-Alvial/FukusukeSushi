@@ -63,21 +63,21 @@
                 <div class="carousel-item active">
                     <img src="./img/imagen_sushis_bienvenida.png" class="img" id="img-sushi-bienvenida">
                 </div>
-                <div class="carousel-item">
-                    <img src="./img/imagen_sushis_bienvenida.png" class="img" id="img-sushi-bienvenida">
-                </div>
-                <div class="carousel-item">
-                    <img src="./img/imagen_sushis_bienvenida.png" class="img" id="img-sushi-bienvenida">
-                </div>
-
+            <div class="carousel-item">
+                <img src="./img/imagen_sushis_bienvenida.png" class="img" id="img-sushi-bienvenida">
+            </div>
+            <div class="carousel-item">
+                <img src="./img/imagen_sushis_bienvenida.png" class="img" id="img-sushi-bienvenida">
             </div>
 
-            <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
-                <span class="carousel-control-next-icon"></span>
-            </button>
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
         </div>
     </div>
     
@@ -162,7 +162,7 @@
     </div>
     <div class="container-fluid d-flex justify-content-center mt-3" style="background-color: white">
         <button id="pideya-button">
-            Pide Ya<br>
+            Pide Yaa<br>
             <img src="./img/flecha_abajo.png" style="width: 30px; margin-top: -30px">
         </button>
     </div>
@@ -173,9 +173,10 @@
             <select multiple class="form-select" id="categoria" name="categoria">
                 
             </select>
-        </div>
+
+
     </div>
 
-    <!-- https://www.svgrepo.com/--, íconos con licencia libre. -->
+    <!-- https://www.svgrepo.com/--, íconos con lisencia libre. -->
     
 </body>
