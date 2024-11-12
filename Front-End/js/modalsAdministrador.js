@@ -1,5 +1,6 @@
-async function arbirModalEditar(item) {
+async function abrirModalEditar(run) {
     // Llena los campos del modal de edición con los datos de la persona seleccionada
+    let item = await GetPersonaByRun(run);
     let item2 = await GetUsuarioByIdPersona(item.id); 
     let item3 = await GetUsuarioPerfilByIdUsuario(item2.id);
     let item4 = await GetPerfilById(item3.perfil);
@@ -27,10 +28,27 @@ async function arbirModalEditar(item) {
     document.getElementById('editRegion').value = region.id;
     document.getElementById('editProvincia').value = provincia.id;
     document.getElementById('editComuna').value = comuna.id;
-
-    // Muestra el modal de edición
     var editModal = new bootstrap.Modal(document.getElementById('editModal'));
     editModal.show();
+}
+async function UpdConexiones(){
+    run = document.getElementById('editRun').value;
+    caducidad = document.getElementById('editCaducidad').value;
+    email = document.getElementById('editEmail').value;
+    pass = document.getElementById('editPass').value;
+    nombreUsuario = document.getElementById('editNombreUsuario').value;
+    nombreCompleto = document.getElementById('editNombre').value;
+    direccion = document.getElementById('editDireccion').value;
+    fechaNacimiento = document.getElementById('editFechaNacimiento').value;
+    sexo = document.getElementById('editSexo').value;
+    telefono = document.getElementById('editTelefono').value;
+    comuna = document.getElementById('editComuna').value
+    let item = await GetPersonaByRun(run);
+    let item2 = await GetUsuarioByIdPersona(item.id); 
+    let item3 = await GetUsuarioPerfilByIdUsuario(item2.id);
+    UpdUsuarioPerfil(item3.id, item3.usuario, item3.perfil, caducidad);
+    UpdUsuario(item2.id, email, pass, nombreUsuario, item2.persona);
+    UpdPersona(item.id, run, nombreCompleto, direccion, fechaNacimiento, sexo, telefono, comuna);
 }
 
 function openDeleteModal(run) {

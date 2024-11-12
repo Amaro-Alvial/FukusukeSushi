@@ -10,8 +10,8 @@ async function trtdPersona(item){
             <td>${item.direccion}</td>
             <td>${item.telefono}</td>
             <td>
-                <button class="btn btn-success btn-sm" onclick="GetConexionesByRun('${item.run}')">Editar</button>
-                <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${item.run}')">Eliminar</button>
+                <button class="btn btn-success btn-sm" onclick="abrirModalEditar('${item.run}')">Editar</button>
+                <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${item.id}')">Eliminar</button>
             </td>
             </td>
         </tr>
@@ -31,37 +31,6 @@ function optionRegion(item) {
 }
 function optionComuna(item) {
     optionsComuna.push('<option value="' + item.id + '">' + item.nombre + '</option>');
-}
-function GetConexionesByRun(runPersona){
-    let query = `
-    query miQuery($run: String!){
-        getPersonaByRun(run: $run){
-            id
-            run
-            nombreCompleto
-            direccion
-            comuna
-            fechaNacimiento
-            sexo
-            telefono
-        }
-    }
-    `;
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8091/graphql",
-        contentType: "application/json",
-        timeout: 15000,
-        data: JSON.stringify({
-            query: query,
-            variables: {
-                run: runPersona
-            }
-        }),
-        success: function(response){
-            arbirModalEditar(response.data.getPersonaByRun);
-        }
-    });
 }
 function GetUsuarioByIdPersona(idPersona){
     let query = `
@@ -149,34 +118,41 @@ function GetPerfilById(idPerfil){
         });
     });
 }
-function GetPersonaByRun(runPersona){
+function GetPersonaByRun(run) {
     let query = `
-    query miQuery($run: String!){
-        getPersonaByRun(run: $run){
+    query miQuery($run: String!) {
+        getPersonaByRun(run: $run) {
             id
             run
             nombreCompleto
             direccion
+            comuna
             fechaNacimiento
             sexo
             telefono
         }
-    }
-    `;
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8091/graphql",
-        contentType: "application/json",
-        timeout: 15000,
-        data: JSON.stringify({
-            query: query,
-            variables: {
-                run: runPersona
+    }`;
+    
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    run: run
+                }
+            }),
+            success: function(response) {
+                resolve(response.data.getPersonaByRun);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error("Error en la solicitud:", textStatus, errorThrown);
+                reject(new Error(`Error en la solicitud: ${textStatus}`));
             }
-        }),
-        success: function(response){
-            openEditModal(response.data.getPersonaByRun);
-        }
+        });
     });
 }
 async function GetPersonaById(idPersona) {
@@ -565,6 +541,112 @@ async function GetPersonas(){
             document.getElementById('tblPersona').innerHTML = contentTablePersona.join("");
         }
     });
+}
+function UpdPersona(idPersona, run, nombreCompleto, direccion, fechaNacimiento, sexo, telefono, comuna){
+    let mutation = `
+    mutation miMutation($id: ID!, $input: PersonaInput){
+        updPersona(id: $id ,input: $input){
+            id
+            run
+            nombreCompleto
+            direccion
+            comuna
+            fechaNacimiento
+            sexo
+            telefono
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: mutation,
+            variables: {
+                id: idPersona,
+                input: {
+                    run: run,
+                    nombreCompleto: nombreCompleto,
+                    direccion: direccion,
+                    comuna: comuna,
+                    fechaNacimiento: fechaNacimiento,
+                    sexo: sexo,
+                    telefono: telefono
+                }
+            }
+        }),
+        success: function(response){
+            alert("Persona actualizada exitosamente");
+        }
+    });
+}
+function UpdUsuario(idUsuario, email, pass, nombreUsuario, idPersona){
+    let mutation = `
+    mutation miMutation($id: ID! ,$input: UsuarioInput){
+        updUsuario(id: $id, input: $input){
+            id
+            email
+            pass
+            nombreUsuario
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: mutation,
+            variables: {
+                id: idUsuario,
+                input: {
+                    email: email,
+                    pass: pass,
+                    nombreUsuario: nombreUsuario,
+                    persona: idPersona
+                }
+            }
+        }),
+        success: function(response){
+            alert("Usuario actualizado exitosamente");
+        }
+    });
+}
+function UpdUsuarioPerfil(idUsuarioPerfil, idUsuario, idPerfil, caducidad){
+    let mutation = `
+    mutation miMutation($id: ID! ,$input: UsuarioPerfilInput){
+        updUsuarioPerfil(id: $id, input: $input){
+            id
+            usuario
+            perfil
+            caducidad
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: mutation,
+            variables: {
+                id: idUsuarioPerfil,
+                input: {
+                    usuario: idUsuario,
+                    perfil: idPerfil,
+                    caducidad: caducidad
+                }
+            }
+        }),
+        success: function(response){
+            alert("Usuario perfil actualizado exitosamente");
+        }
+    })
+
 }
 function addPersona(){
     let run = document.getElementById('run').value;
