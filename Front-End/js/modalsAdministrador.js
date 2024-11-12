@@ -28,6 +28,7 @@ async function abrirModalEditar(run) {
     document.getElementById('editRegion').value = region.id;
     document.getElementById('editProvincia').value = provincia.id;
     document.getElementById('editComuna').value = comuna.id;
+
     var editModal = new bootstrap.Modal(document.getElementById('editModal'));
     editModal.show();
 }
@@ -51,36 +52,20 @@ async function UpdConexiones(){
     UpdPersona(item.id, run, nombreCompleto, direccion, fechaNacimiento, sexo, telefono, comuna);
 }
 
-function openDeleteModal(run) {
-    // Guarda el RUN de la persona a eliminar en una variable global o en el modal si es necesario
-    window.runToDelete = run;
-    
-    // Muestra el modal de eliminación
+async function openDeleteModal(idPersona, rutPersona) {
+    document.getElementById('delConfirmacion').textContent = `¿Estás seguro de que deseas eliminar al usuario de rut: ${rutPersona}?`;
+    document.getElementById('delConfirmacion').value = idPersona;
     var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
     deleteModal.show();
 }
 
-function saveChanges() {
-    // Aquí puedes obtener los valores del modal de edición y enviarlos a tu backend
-    const run = document.getElementById('editRun').value;
-    const nombre = document.getElementById('editNombre').value;
-    const comuna = document.getElementById('editComuna').value;
-    const direccion = document.getElementById('editDireccion').value;
-    const telefono = document.getElementById('editTelefono').value;
-    
-    // Lógica para guardar los cambios en el backend (por ejemplo, una petición AJAX)
-    console.log("Guardando cambios para:", { run, nombre, comuna, direccion, telefono });
-    
-    // Cerrar el modal
-    var editModal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
-    editModal.hide();
-}
-
-function confirmDelete() {
-    // Aquí puedes hacer una llamada para eliminar el usuario en el backend usando el RUN almacenado
-    console.log("Eliminando persona con RUN:", window.runToDelete);
-
-    // Cerrar el modal
+async function DelConexiones(){
     var deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+    let idPersona = document.getElementById('delConfirmacion').value;
+    let usuario = await GetUsuarioByIdPersona(idPersona);
+    let usuarioPerfil = await GetUsuarioPerfilByIdUsuario(usuario.id);
+    DelUsuarioPerfil(usuarioPerfil.id);
+    DelUsuario(usuario.id);
+    DelPersona(idPersona);
     deleteModal.hide();
 }

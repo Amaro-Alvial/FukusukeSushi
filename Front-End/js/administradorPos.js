@@ -4,9 +4,11 @@ GetRegiones();
 GetComunas();
 GetProvincias();
 document.getElementById('cmbPerfil2').addEventListener('change', async function() {
-    const perfilId = document.getElementById('cmbPerfil2').value;
-    if (perfilId) {
-        GetPersonasByIdPerfil();
+    let perfilId = document.getElementById('cmbPerfil2').value;
+    if (perfilId === "defaultPerfil") {
+        await GetPersonas();
+    } else if (perfilId) {
+        await GetPersonasByIdPerfil();
     }
 });
 document.getElementById('cmbRegion').addEventListener('change', function() {

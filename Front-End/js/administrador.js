@@ -11,7 +11,7 @@ async function trtdPersona(item){
             <td>${item.telefono}</td>
             <td>
                 <button class="btn btn-success btn-sm" onclick="abrirModalEditar('${item.run}')">Editar</button>
-                <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${item.id}')">Eliminar</button>
+                <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${item.id}', '${item.run}')">Eliminar</button>
             </td>
             </td>
         </tr>
@@ -534,6 +534,7 @@ async function GetPersonas(){
             variables: {}
         }),
         success: async function(response){
+            contentTablePersona = [];
             contentTablePersona.push('<tr><td>RUN</td><td>NOMBRE</td><td>COMUNA</td><td>DIRECCIÓN</td><td>TELEFONO</td><td>Editar/Eliminar</td></tr>');
             for (const item of response.data.getPersonas) {
                 await trtdPersona(item);
@@ -541,6 +542,79 @@ async function GetPersonas(){
             document.getElementById('tblPersona').innerHTML = contentTablePersona.join("");
         }
     });
+}
+function DelUsuarioPerfil(idUsuarioPerfil){
+    let mutation = `
+    mutation miMutation($id: ID!){
+        delUsuarioPerfil(id: $id){
+        message
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: mutation,
+            variables: {
+                id: idUsuarioPerfil
+            }
+        }),
+        success: function(response){
+            alert("Usuario perfil eliminado exitosamente");
+        }
+    });
+}
+function DelUsuario(idUsuario){
+    let mutation = `
+    mutation miMutation($id: ID!){
+        delUsuario(id: $id){
+        message
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: mutation,
+            variables: {
+                id: idUsuario
+            }
+        }),
+        success: function(response){
+            alert("Usuario eliminado exitosamente");
+        }
+    });
+}
+function DelPersona(idPersona){
+    let mutation = `
+    mutation miMutation($id: ID!){
+        delPersona(id: $id){
+        message
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: mutation,
+            variables: {
+                id: idPersona
+            }
+        }),
+        success: function(response){
+            alert("Persona eliminada exitosamente");
+        }
+    });
+
 }
 function UpdPersona(idPersona, run, nombreCompleto, direccion, fechaNacimiento, sexo, telefono, comuna){
     let mutation = `
