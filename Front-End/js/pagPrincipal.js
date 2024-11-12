@@ -36,9 +36,9 @@ let cardProductos = [];
 function cardProducto(item) {
     cardProductos.push(`
         <div class="col-4">
-            <div class="card" value="${item.id}">
+            <button class="producto-button" value="${item.id}">
                 ${item.nombre}
-            </div>
+            </button>
         </div>
     `);
 }
@@ -49,6 +49,7 @@ function getProductosByIdCategoria(categoria) {
         getProductosByIdCategoria(id: $id){
             id
             nombre
+            foto
         }
     }
     `;
@@ -64,6 +65,7 @@ function getProductosByIdCategoria(categoria) {
         }),
         success: function(response) {
             cardProductos = [];
+            let precio = getPrecioHistoricosByIdProducto(id)
             response.data.getProductosByIdCategoria.forEach(cardProducto);
             document.getElementById('productos-container').innerHTML = cardProductos.join("");
         },

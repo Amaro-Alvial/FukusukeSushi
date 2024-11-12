@@ -118,6 +118,7 @@ button {
     width: 60px;
     height: 60px;
     border-radius: 50%;
+    margin-right: 15px;
 }
 
 #carrito-button span{
@@ -130,4 +131,15 @@ button {
     border-radius: 50%;
     margin-left: -10px;
     margin-top: -10px;
+}
+
+/* Botones de poductos los productos. */
+
+.producto-button {
+    background-color: white;
+    box-shadow: 0 0 10px lightgrey;
+    width: 275px;
+    height: 100px;
+    margin: 10px 0;
+    border-radius: 10px;
 }

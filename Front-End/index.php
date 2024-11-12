@@ -168,20 +168,20 @@
         </button>
     </div>
 
-    <div class="col-12 mr-2">
-        <div class="row" style="background-color: grey; height: 200px">
+    <div class="container-fluid">
+        <div class="row">
             <div class="col-3" style="height: 200px">
                 <label for="categoria" class="form-label">Selecciona</label> 
                 <select multiple class="form-select" id="categoria-select" name="categoria"></select>
             </div>
             <div class="col-9">
-                <div class="row" id="productos-container" style="background-color: lightblue">
+                <div class="row" id="productos-container">
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="fixed-bottom d-flex justify-content-end mb-3 me-3">
+    <div class="fixed-bottom d-flex justify-content-end mb-3">
         <button id="carrito-button">
             <img src="./img/carrito.png" style="width: 45px;">
             <span>1</span>
