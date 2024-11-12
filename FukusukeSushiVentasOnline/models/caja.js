@@ -4,4 +4,4 @@ const cajaSchema = new mongoose.Schema({
     tipo: String
 });
 
-module.exports = mongoose.model('caja', cajaSchema);
+module.exports = mongoose.model('Caja', cajaSchema);

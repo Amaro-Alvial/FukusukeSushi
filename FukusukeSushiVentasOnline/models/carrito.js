@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-const CarritoSchema = new mongoose.Schema({
+const carritoSchema = new mongoose.Schema({
     fecha: String,
     cliente: {type: mongoose.Schema.Types.ObjectId, ref: 'Usuario'},
 });
 
-module.exports = mongoose.model('Carrito', CarritoSchema);
+module.exports = mongoose.model('Carrito', carritoSchema);

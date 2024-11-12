@@ -243,6 +243,9 @@ type Query{
     getCarritos: [Carrito]
     getCarritoById(id: ID!): Carrito
     getCarritosByIdCliente(id: ID!): [Carrito]
+    getDetalleCarritos: [DetalleCarrito]
+    getDetalleCarritoById(id: ID!): DetalleCarrito
+    getDetalleCarritosByIdCarrito(id: ID!): [DetalleCarrito]
 }
 type Mutation{
     addPersona(input:PersonaInput): Persona
@@ -470,6 +473,18 @@ const resolvers = {
         async getCarritosByIdCliente(obj, {id}){
             let carritos = await Carrito.find({cliente: id});
             return carritos;
+        },
+        async getDetalleCarritos(obj){
+            let detalleCarritos = await DetalleCarrito.find();
+            return detalleCarritos;
+        },
+        async getDetalleCarritoById(obj, {id}){
+            let detalleCarrito = await DetalleCarrito.findById(id);
+            return detalleCarrito;
+        },
+        async getDetalleCarritosByIdCarrito(obj, {id}){
+            let detalleCarritos = await DetalleCarrito.find({carrito: id});
+            return detalleCarritos;
         }
     },
     Mutation:{
