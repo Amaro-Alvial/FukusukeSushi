@@ -110,3 +110,24 @@ button {
 .categoria-option {
     color: red;
 }
+
+/* Botón carrito. */
+
+#carrito-button{
+    background-color: #FF745E;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+#carrito-button span{
+    position: absolute;
+    background-color: white;
+    color: #FF745E;
+    font-weight: bold;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-left: -10px;
+    margin-top: -10px;
+}

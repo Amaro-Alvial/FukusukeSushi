@@ -160,6 +160,7 @@
             </div>
         </div>
     </div>
+
     <div class="container-fluid d-flex justify-content-center mt-3" style="background-color: white">
         <button id="pideya-button">
             Pide Yaa<br>
@@ -180,7 +181,14 @@
         </div>
     </div>
 
-    <!-- https://www.svgrepo.com/--, íconos con lisencia libre. -->
+    <div class="fixed-bottom d-flex justify-content-end mb-3 me-3">
+        <button id="carrito-button">
+            <img src="./img/carrito.png" style="width: 45px;">
+            <span>1</span>
+        </button>
+    </div>
+
+    <!--https://www.svgrepo.com/collection/dazzle-line-icons/, íconos con lisencia libre. -->
     
 </body>
 </html>
