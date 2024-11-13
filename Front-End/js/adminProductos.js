@@ -1,25 +1,25 @@
 let contentContainerProductos =[]
 let optionsCategoria = [];
 
-async function cardProductos(item){
-    // let precio = await GetUltimoPrecioHistoricoByIdProducto(item.id);
-    // let disponibilidad = await GetUltimoDisponibleHistoricoByIdProducto(item.id);
-    let precio = {precio: 0};
-    let disponibilidad = {disponibilidad: 0};
-    contentContainerProductos.push(`
-        <div class ="card col-xxl-3 card-dark p-2">
+async function cardProductos(item) {
+    let precio = await GetUltimoPrecioHistoricoByIdProducto(item.id);
+    let disponibilidad = await GetUltimoDisponibleHistoricoByIdProducto(item.id);
+    let stock = disponibilidad.disponibilidad ? "Disponible" : "No disponible";
+
+    let cardProducto = `
+        <div class="card col-xxl-3 card-dark p-2">
             <div class="card-header">
                 <h4 class="card-title">${item.nombre}</h4>
             </div>
             <div class="card-body">
-                <img src = ${item.foto} alt = "Foto de ${item.nombre}" style="width: 100%">
+                <img src="${item.foto}" alt="Foto de ${item.nombre}" style="width: 100%">
                 <h5 class="card-title">Descripción:</h5>
-                <p class="card-text">${item.descripcion} </p>
+                <p class="card-text">${item.descripcion}</p>
             </div>
             <div class="card-footer">
                 <div class="row"> 
                     <p class="card-text col-6">$${precio.precio}</p>
-                    <p class="card-text col-6">Stock: ${disponibilidad.disponibilidad}</p>
+                    <h5 class="card-text col-6">${stock}</h5>
                 </div>
                 <div class="row justify-content-center">
                     <button class="btn btn-success col-4" data-bs-toggle="modal" data-bs-target="#updModal" onclick="modalActualizarProducto('${item.id}')">Actualizar</button>
@@ -28,7 +28,8 @@ async function cardProductos(item){
                 </div>
             </div>
         </div>
-    `);
+    `;
+    document.getElementById('filaProductos').insertAdjacentHTML('beforeend', cardProducto);
 }
 function optionCategoria(item) {
     optionsCategoria.push('<option value="' + item.id + '">' + item.nombre + '</option>');
@@ -92,8 +93,8 @@ function GetUltimoPrecioHistoricoByIdProducto(idProducto){
 }
 async function GetProductosByIdCategoria(idCategoria) {
     let query = `
-    query miQuery($id: String){
-        getProductosByIdCategoria(id: $id){
+    query miQuery($id: String) {
+        getProductosByIdCategoria(id: $id) {
             id
             nombre
             descripcion
@@ -102,30 +103,28 @@ async function GetProductosByIdCategoria(idCategoria) {
         }
     }
     `;
-    try {
-        const response = await $.ajax({
-            type: "POST",
-            url: "http://localhost:8091/graphql",
-            contentType: "application/json",
-            timeout: 15000,
-            data: JSON.stringify({
-                query: query,
-                variables: {
-                    id: idCategoria
-                }
-            })
-        });
 
-        // Inicializa el contenedor de productos
-        contentContainerProductos = [];
-        contentContainerProductos.push('<div class="row">');
-        for (const item of response.data.getProductosByIdCategoria) {
-            await cardProductos(item);
+    // Limpiamos el contenedor y comenzamos la fila de tarjetas
+    document.getElementById('contProductos').innerHTML = '<div class="row" id="filaProductos"></div>';
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {
+                id: idCategoria
+            }
+        }),
+        success: async function(response) {
+            // Procesar y mostrar los productos obtenidos de la categoría seleccionada
+            for (const item of response.data.getProductosByIdCategoria) {
+                await cardProductos(item);
+            }
         }
-        document.getElementById('contProductos').innerHTML = contentContainerProductos.join("");
-    } catch (error) {
-        console.error("Error al obtener productos por categoría:", error);
-    }
+    });
 }
 async function GetProductoById(idProducto){
     let query = `
@@ -212,7 +211,7 @@ function GetCategorias(){
         }
     });
 }
-async function GetProductos(){
+async function GetProductos() {
     let query = `
     query miQuery {
         getProductos {
@@ -223,6 +222,10 @@ async function GetProductos(){
             categoria
         }
     }`;
+    
+    // Limpiamos el contenedor y comenzamos la fila de tarjetas
+    document.getElementById('contProductos').innerHTML = '<div class="row" id="filaProductos"></div>';
+
     $.ajax({
         type: "POST",
         url: "http://localhost:8091/graphql",
@@ -232,15 +235,10 @@ async function GetProductos(){
             query: query,
             variables: {}
         }),
-        success: async function(response){
-            contentContainerProductos = [];
-            contentContainerProductos.push('<div class="row">');
+        success: async function(response) {
             for (const item of response.data.getProductos) {
                 await cardProductos(item);
             }
-            contentContainerProductos.push('</div>');
-            document.getElementById('contProductos').innerHTML = contentContainerProductos.join("");
-            
         }
     });
 }

@@ -46,19 +46,19 @@
             </div>
         </div> <!-- Se cierra la fila 2 --> 
         <button type="button" class="btn btn-primary mt-3" onclick="AddProducto();">Agregar Producto</button>
-  </form> <!-- Se cierra el Formulario -->
-  <h2 class="mt-5 mb-3">Navegación de Productos</h2>
-  <div class="row">
-    <div class="mb-3 mt-3 col-xxl-2">
-        <label for="Categorias2">Categorias:</label> <br>
-        <select class="form-select" name="Categorias2" id="cmbCategorias2"></select>
+    </form> <!-- Se cierra el Formulario -->
+    <h2 class="mt-5 mb-3">Navegación de Productos</h2>
+    <div class="row">
+        <div class="mb-3 mt-3 col-xxl-3">
+            <label for="Categorias2">Categorias:</label> <br>
+            <select class="form-select" name="Categorias2" id="cmbCategorias2"></select>
+        </div>
     </div>
-  </div>
-  <div class="row"> 
-      <div class="container mt-3" id="contProductos">
+    <div class="row"> 
+        <div class="container mt-3" id="contProductos">
 
-      </div>
-  </div> 
+        </div>
+    </div>
 </div> <!-- Cierre del Container -->
 <!-- Modal de Actualizar Producto -->
 <div class="modal fade" id="updModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
