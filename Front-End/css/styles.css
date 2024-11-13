@@ -113,15 +113,17 @@ button {
 
 /* Botón carrito. */
 
-#carrito-button{
+#carrito-button {
     background-color: #FF745E;
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    margin-right: 15px;
 }
 
-#carrito-button span{
+#carrito-button span {
     position: absolute;
     background-color: white;
     color: #FF745E;
@@ -138,8 +140,9 @@ button {
 .producto-button {
     background-color: white;
     box-shadow: 0 0 10px lightgrey;
-    width: 275px;
-    height: 100px;
+    display: flex;
+    width: 325px;
+    height: 150px;
     margin: 10px 0;
     border-radius: 10px;
 }

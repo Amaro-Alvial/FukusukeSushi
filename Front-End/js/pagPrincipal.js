@@ -37,7 +37,12 @@ function cardProducto(item) {
     cardProductos.push(`
         <div class="col-4">
             <button class="producto-button" value="${item.id}">
-                ${item.nombre}
+                <div>
+                    <img src="${item.foto}" style="height: 100%">
+                </div>
+                <div>
+                    ${item.nombre}
+                </div>
             </button>
         </div>
     `);

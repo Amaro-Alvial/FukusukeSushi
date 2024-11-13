@@ -170,23 +170,21 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-3" style="height: 200px">
+            <div class="col-2" style="height: 200px">
                 <label for="categoria" class="form-label">Selecciona</label> 
                 <select multiple class="form-select" id="categoria-select" name="categoria"></select>
             </div>
-            <div class="col-9">
+            <div class="col-10">
                 <div class="row" id="productos-container">
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="fixed-bottom d-flex justify-content-end mb-3">
-        <button id="carrito-button">
-            <img src="./img/carrito.png" style="width: 45px;">
-            <span>1</span>
-        </button>
-    </div>
+    
+    <button id="carrito-button">
+        <img src="./img/carrito.png" style="width: 45px;">
+        <span>1</span>
+    </button>
 
     <!--https://www.svgrepo.com/collection/dazzle-line-icons/, íconos con lisencia libre. -->
     
