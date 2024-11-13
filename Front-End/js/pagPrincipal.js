@@ -65,7 +65,6 @@ function getProductosByIdCategoria(categoria) {
         }),
         success: function(response) {
             cardProductos = [];
-            let precio = getPrecioHistoricosByIdProducto(id)
             response.data.getProductosByIdCategoria.forEach(cardProducto);
             document.getElementById('productos-container').innerHTML = cardProductos.join("");
         },
