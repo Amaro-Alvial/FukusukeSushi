@@ -1,7 +1,7 @@
 /*https://paletton.com/#uid=3060u0kkeZ16E+CaE+esvVdvkSj*/
 
 #navbar-principal {
-    background-color: white;
+    background-color: #ffffff;
 }
 
 /* Se define el button de html sin ningún atributo para
@@ -107,8 +107,11 @@ button {
     width: 285px; 
     height: 150px;
 }
-.categoria-option {
-    color: red;
+#categoria-select:focus {
+    box-shadow: unset;
+    border-color: unset;
+    border: unset;
+
 }
 
 /* Botón carrito. */
@@ -146,3 +149,11 @@ button {
     margin: 10px 0;
     border-radius: 10px;
 }
+
+/* Footer */
+
+#footer-container {
+    background-color: #FF745E;
+    color: white;
+}
+

@@ -161,10 +161,9 @@
         </div>
     </div>
 
-    <div class="container-fluid d-flex justify-content-center mt-3" style="background-color: white">
+    <div class="container-fluid d-flex justify-content-center mt-2 mb-2" style="background-color: white">
         <button id="pideya-button">
-            Pide Yaa<br>
-            <img src="./img/flecha_abajo.png" style="width: 30px; margin-top: -30px">
+            ¡Pide Ya!<br>
         </button>
     </div>
 
@@ -185,6 +184,12 @@
         <img src="./img/carrito.png" style="width: 45px;">
         <span>1</span>
     </button>
+
+    <footer>
+        <div class="container-fluid" id="footer-container">
+            <div class="col"
+        </div>
+    </footer>
 
     <!--https://www.svgrepo.com/collection/dazzle-line-icons/, íconos con lisencia libre. -->
     
