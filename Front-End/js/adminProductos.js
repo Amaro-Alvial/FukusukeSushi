@@ -23,8 +23,8 @@ async function cardProductos(item) {
                 </div>
                 <div class="row justify-content-center">
                     <button class="btn btn-success col-4" data-bs-toggle="modal" data-bs-target="#updModal" onclick="modalActualizarProducto('${item.id}')">Actualizar</button>
-                    <button class="btn btn-warning col-4" data-bs-toggle="modal" data-bs-target="#editModal" onclick="modalEditarProducto('${item.id}', '${item.nombre}')">Editar</button>
-                    <button class="btn btn-danger col-4" data-bs-toggle="modal" data-bs-target="#delModal" onclick="modalBorrarProducto('${item.id}', '${item.nombre}')">Eliminar</button>
+                    <button class="btn btn-warning col-4" data-bs-toggle="modal" data-bs-target="#editModal" onclick="modalEditarProducto('${item.id}')">Editar</button>
+                    <button class="btn btn-danger col-4" data-bs-toggle="modal" data-bs-target="#delModal" onclick="modalBorrarProducto('${item.id}')">Eliminar</button>
                 </div>
             </div>
         </div>
@@ -208,6 +208,7 @@ function GetCategorias(){
             response.data.getCategorias.forEach(optionCategoria);
             document.getElementById('cmbCategorias').innerHTML = optionsCategoria.join("");
             document.getElementById('cmbCategorias2').innerHTML = optionsCategoria.join("");
+            document.getElementById('editCategorias').innerHTML = optionsCategoria.join("");
         }
     });
 }
@@ -239,6 +240,39 @@ async function GetProductos() {
             for (const item of response.data.getProductos) {
                 await cardProductos(item);
             }
+        }
+    });
+}
+async function UpdProducto(idProducto, nombre, descripcion, foto, categoria){
+    let query = `
+    mutation miMutation($id: ID!, $input: ProductoInput!){
+        updProducto(id: $id, input: $input){
+            id
+            nombre
+            descripcion
+            foto
+            categoria
+        }
+    }`;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {
+                id: idProducto,
+                input: {
+                    nombre: nombre,
+                    descripcion: descripcion,
+                    foto: foto,
+                    categoria: categoria
+                }
+            }
+        }),
+        success: function(response){
+            alert("Producto actualizado exitosamente");
         }
     });
 }

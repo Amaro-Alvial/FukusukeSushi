@@ -61,11 +61,11 @@
     </div>
 </div> <!-- Cierre del Container -->
 <!-- Modal de Actualizar Producto -->
-<div class="modal fade" id="updModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+<div class="modal fade" id="updModal" tabindex="-1" aria-labelledby="updModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Actualizar Disponibilidad/Precio</h5>
+                <h5 class="modal-title" id="updModalLabel">Actualizar Disponibilidad/Precio</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="cerrarModalUpd()"></button>
             </div>
             <div class="modal-body"> <!-- Se abre el Modal Body -->
@@ -81,6 +81,7 @@
                                 <p class="card-text" id="updDescripcion"></p>
                             </div>
                         </div>
+                    </div> <!-- Cierre de la Fila 1 del modal -->
                     <div class ="row"> <!-- Se abre fila 2 del modal -->
                         <div class="mb-3 col-12">
                             <label for="updPrecio" class="form-label">Precio:</label>
@@ -105,7 +106,92 @@
         </div>
     </div>
 </div>
-<!-- Modal de Eliminar Usuario -->
+<!-- Modal de editar Producto -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Editar Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="cerrarModalEdit()"></button>
+            </div>
+            <div class="modal-body"> <!-- Se abre el Modal Body -->
+                <form id="editForm">
+                    <div class="row justify-content-center"> <!-- Se abre fila 1 del modal -->
+                        <div class="card col-xxl-8 card-dark p-2">
+                            <div class="card-header">
+                                <h5 id="editId">ID Producto:</h5>
+                            </div>
+                            <img src="" class="card-img-top" id="editFoto" alt="Foto del producto a Editar">
+                            <div class="card-body">
+                                <h5 class="card-title" id="editNombre"></h5>
+                                <p class="card-text" id="editDescripcion"></p>
+                            </div>
+                        </div>
+                    </div> <!-- Cierre de la Fila 1 del modal -->
+                    <div class="row"> <!-- Se abre fila 2 del modal -->
+                        <div class="mb-3 col-12">
+                            <label for="editNombre2" class="form-label">Nombre:</label>
+                            <input type="text" class="form-control" id="editNombre2">
+                        </div>
+                    </div> <!-- Cierre de la Fila 2 del modal -->
+                    <div class="row"> <!-- Se abre fila 3 del modal -->
+                        <div class="mb-3 col-12">
+                            <label for="editDescripcion2" class="form-label">Descripción:</label>
+                            <input type="text" class="form-control" id="editDescripcion2">
+                        </div>
+                    </div> <!-- Cierre de la Fila 3 del modal -->
+                    <div class="row"> <!-- Se abre fila 4 del modal -->
+                        <div class="mb-3 col-12">
+                            <label for="editFoto2" class="form-label">Foto:</label>
+                            <input type="text" class="form-control" id="editFoto2">
+                        </div>
+                    </div> <!-- Cierre de la Fila 4 del modal -->
+                    <div class ="row"> <!-- Se abre fila 5 del modal -->
+                        <div class="mb-3 col-6">
+                            <label for="editPrecio" class="form-label">Precio:</label>
+                            <input type="number" class="form-control" id="editPrecio" step="any">
+                        </div>
+                        <div class="mb-3 col-xxl-6">
+                            <label for="editDisponibilidad" class="form-label">Disponibilidad</label>
+                            <select class="form-select" name="editDisponibilidad" id="editDisponibilidad">
+                                <option value="true">Si</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                    </div> <!-- Cierre de la Fila 5 del modal -->
+                    <div class="row">
+                        <div class="mb-3 col-12">
+                            <label for="editCategorias" class="form-label">Categoria:</label>
+                            <select class="form-select" name="editCategorias" id="editCategorias"></select>
+                        </div>
+                    </div>
+                </form>
+            </div> <!-- Cierre del Modal Body -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" onclick="cerrarModalEdit()">Cancelar</button>
+                <button type="button" class="btn btn-success" onclick="editProducto()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal de Confirmación de Eliminación de Producto -->
+<div class="modal fade" id="delModal" tabindex="-1" aria-labelledby="delModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="delModalLabel">Eliminar Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="cerrarModalDel()"></button>
+            </div>
+            <div class="modal-body">
+                <p id="delConfirmacion"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" onclick="cerrarModalDel()">Cancelar</button>
+                <button type="button" class="btn btn-danger" onclick="DelConexionProducto()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
 <script src="./js/adminProductosPos.js"></script>
