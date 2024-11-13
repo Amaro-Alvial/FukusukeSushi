@@ -245,9 +245,11 @@ type Query{
     getPrecioHistoricos: [PrecioHistorico]
     getPrecioHistoricoById(id: ID!): PrecioHistorico
     getPrecioHistoricosByIdProducto(id: String): [PrecioHistorico]
+    getUltimoPrecioHistoricoByIdProducto(id: String): PrecioHistorico
     getDisponibleHistoricos: [DisponibleHistorico]
     getDisponibleHistoricoById(id: ID!): DisponibleHistorico
     getDisponibleHistoricosByIdProducto(id: String): [DisponibleHistorico]
+    getUltimoDisponibleHistoricoByIdProducto(id: String): DisponibleHistorico
     getCajas: [Caja]
     getCajaById(id: ID!): Caja
     getDespachos: [Despacho]
@@ -426,6 +428,10 @@ const resolvers = {
             let precioHistoricos = await PrecioHistorico.find({producto: id});
             return precioHistoricos;
         },
+        async getUltimoPrecioHistoricoByIdProducto(obj, {id}){
+            let precioHistoricos = await PrecioHistorico.find({producto: id}).sort({fecha: -1}).limit(1);
+            return precioHistoricos[0];
+        },
         async getDisponibleHistoricos(obj){
             let disponibleHistoricos = await DisponibleHistorico.find();
             return disponibleHistoricos;
@@ -437,6 +443,10 @@ const resolvers = {
         async getDisponibleHistoricosByIdProducto(obj, {id}){
             let disponibleHistoricos = await DisponibleHistorico.find({producto: id});
             return disponibleHistoricos;
+        },
+        async getUltimoDisponibleHistoricoByIdProducto(obj, {id}){
+            let disponibleHistoricos = await DisponibleHistorico.find({producto: id}).sort({fecha: -1}).limit(1);
+            return disponibleHistoricos[0];
         },
         async getCajas(obj){
             let cajas = await Caja.find();

@@ -2,7 +2,10 @@ let contentContainerProductos =[]
 let optionsCategoria = [];
 
 async function cardProductos(item){
-    let categoria = await GetCategoriaById(item.categoria);
+    // let precio = await GetUltimoPrecioHistoricoByIdProducto(item.id);
+    // let disponibilidad = await GetUltimoDisponibleHistoricoByIdProducto(item.id);
+    let precio = {precio: 0};
+    let disponibilidad = {disponibilidad: 0};
     contentContainerProductos.push(`
         <div class ="card col-xxl-3 card-dark p-2">
             <div class="card-header">
@@ -13,15 +16,80 @@ async function cardProductos(item){
                 <h5 class="card-title">Descripción:</h5>
                 <p class="card-text">${item.descripcion} </p>
             </div>
-            <div class="card-footer">${categoria.nombre}</div>
+            <div class="card-footer">
+                <div class="row"> 
+                    <p class="card-text col-6">$${precio.precio}</p>
+                    <p class="card-text col-6">Stock: ${disponibilidad.disponibilidad}</p>
+                </div>
+                <div class="row justify-content-center">
+                    <button class="btn btn-success col-4" data-bs-toggle="modal" data-bs-target="#updModal" onclick="modalActualizarProducto('${item.id}')">Actualizar</button>
+                    <button class="btn btn-warning col-4" data-bs-toggle="modal" data-bs-target="#editModal" onclick="modalEditarProducto('${item.id}', '${item.nombre}')">Editar</button>
+                    <button class="btn btn-danger col-4" data-bs-toggle="modal" data-bs-target="#delModal" onclick="modalBorrarProducto('${item.id}', '${item.nombre}')">Eliminar</button>
+                </div>
+            </div>
         </div>
     `);
 }
-
 function optionCategoria(item) {
     optionsCategoria.push('<option value="' + item.id + '">' + item.nombre + '</option>');
 }
+function GetUltimoDisponibleHistoricoByIdProducto(idProducto){
+    let query = `
+    query miQuery($id: String){
+        getUltimoDisponibleHistoricoByIdProducto(id: $id){
+            id
+            disponibilidad
+            fecha
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: idProducto
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getUltimoDisponibleHistoricoByIdProducto);
+            }
+        });
+    });
+}
+function GetUltimoPrecioHistoricoByIdProducto(idProducto){
+    let query = `
+    query miQuery($id: String){
+        getUltimoPrecioHistoricoByIdProducto(id: $id){
+            id
+            precio
+            fecha
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: idProducto
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getUltimoPrecioHistoricoByIdProducto);
+            }
+        });
+    });
 
+}
 async function GetProductosByIdCategoria(idCategoria) {
     let query = `
     query miQuery($id: String){
@@ -58,6 +126,36 @@ async function GetProductosByIdCategoria(idCategoria) {
     } catch (error) {
         console.error("Error al obtener productos por categoría:", error);
     }
+}
+async function GetProductoById(idProducto){
+    let query = `
+    query miQuery($id: ID!){
+        getProductoById(id: $id){
+            id
+            nombre
+            descripcion
+            foto
+            categoria
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: idProducto
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getProductoById);
+            }
+        });
+    });
 }
 function GetCategoriaById(idCategoria){
     let query = `
@@ -143,6 +241,108 @@ async function GetProductos(){
             contentContainerProductos.push('</div>');
             document.getElementById('contProductos').innerHTML = contentContainerProductos.join("");
             
+        }
+    });
+}
+async function AddDisponibleHistorico(idProducto, disponibilidad){
+    let bool = (disponibilidad === "true");
+    let fecha = new Date().toISOString();
+    let query = `
+    mutation miMutation($input: DisponibleHistoricoInput!){
+        addDisponibleHistorico(input: $input){
+            id
+            disponibilidad
+            fecha
+        }
+    }`;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {
+                input: {
+                    disponibilidad: bool,
+                    fecha: fecha,
+                    producto: idProducto
+                }
+            }
+        }),
+        success: function(response){
+            alert("Disponibilidad agregada exitosamente");
+        }
+    });
+}
+async function AddPrecioHistorico(idProducto, precio){
+    let fecha = new Date().toISOString();
+    valor = parseFloat(precio);
+    let query = `
+    mutation miMutation($input: PrecioHistoricoInput!){
+        addPrecioHistorico(input: $input){
+            id
+            precio
+            fecha
+        }
+    }`;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {
+                input: {
+                    precio: valor,
+                    fecha: fecha,
+                    producto: idProducto
+                }
+            }
+        }),
+        success: function(response){
+            alert("Precio agregado exitosamente");
+        }
+    });
+}
+async function AddProducto(){
+    let nombre = document.getElementById('Nombre').value;
+    let descripcion = document.getElementById('Descripcion').value;
+    let foto = document.getElementById('Foto').value;
+    let categoria = document.getElementById('cmbCategorias').value;
+    let precio = document.getElementById('Precio').value;
+    let disponibilidad = document.getElementById('Disponibilidad').value;
+    let query = `
+    mutation miMutation($input: ProductoInput!){
+        addProducto(input: $input){
+            id
+            nombre
+            descripcion
+            foto
+            categoria
+        }
+    }`;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {
+                input: {
+                    nombre: nombre,
+                    descripcion: descripcion,
+                    foto: foto,
+                    categoria: categoria
+                }
+            }
+        }),
+        success: async function(response){
+            await AddPrecioHistorico(response.data.addProducto.id, precio);
+            await AddDisponibleHistorico(response.data.addProducto.id, disponibilidad);
+            alert("Producto agregado exitosamente");
         }
     });
 }

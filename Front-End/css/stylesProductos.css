@@ -93,3 +93,92 @@ button {
 button:hover {
     background-color: #f0c75e; /* Dorado más claro al pasar el cursor */
 }
+
+/* Modal Header */
+.modal-header {
+    background-color: #2c2f33; /* Fondo oscuro para el encabezado */
+    color: #d4af37; /* Texto dorado oscuro */
+    border-bottom: 1px solid #d4af37; /* Borde inferior dorado */
+}
+
+.modal-title {
+    color: #d4af37; /* Título en dorado oscuro */
+    font-weight: bold;
+}
+
+/* Botón de Cerrar */
+.modal-header .btn-close {
+    filter: brightness(0.8); /* Ajusta el color del botón de cierre */
+}
+
+/* Modal Body */
+.modal-body {
+    background-color: #2c2f33; /* Fondo oscuro para el cuerpo */
+    color: #f5f5f5; /* Texto claro */
+}
+
+/* Tarjeta dentro del Modal */
+.card-dark {
+    background-color: #3c3f43; /* Fondo oscuro de la tarjeta */
+    color: #f5f5f5;
+    border: 1px solid #d4af37; /* Borde dorado */
+}
+
+.card-dark .card-header {
+    background-color: #2c2f33; /* Fondo para el encabezado de la tarjeta */
+    color: #d4af37;
+    border-bottom: 1px solid #d4af37;
+}
+
+.card-dark .card-title {
+    color: #d4af37; /* Color del título en dorado */
+}
+
+.card-dark .card-text {
+    color: #f5f5f5; /* Texto blanco suave */
+}
+
+/* Inputs y Selects */
+input[type="number"], select {
+    background-color: #3c3f43; /* Fondo gris oscuro */
+    color: #f5f5f5;
+    border: 1px solid #d4af37; /* Borde dorado oscuro */
+}
+
+input[type="number"]:focus, select:focus {
+    border-color: #f0c75e; /* Borde dorado claro al enfocar */
+    box-shadow: 0 0 5px 0 #f0c75e;
+    outline: none;
+}
+
+/* Modal Footer */
+.modal-footer {
+    background-color: #2c2f33; /* Fondo oscuro para el pie del modal */
+    border-top: 1px solid #d4af37;
+}
+
+/* Botones de Cancelar y Confirmar */
+.modal-footer .btn-secondary {
+    background-color: #3c3f43;
+    color: #f5f5f5;
+    border: 1px solid #d4af37;
+}
+
+.modal-footer .btn-secondary:hover {
+    background-color: #2c2f33;
+}
+
+.modal-footer .btn-success {
+    background-color: #d4af37;
+    color: #fff;
+    border: none;
+}
+
+.modal-footer .btn-success:hover {
+    background-color: #f0c75e;
+}
+
+/* Etiquetas */
+label {
+    color: #d4af37; /* Dorado oscuro para las etiquetas */
+}

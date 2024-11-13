@@ -724,7 +724,7 @@ function addPersona(){
     let sexo = document.getElementById('sexo').value;
     let telefono = document.getElementById('telefono').value;
     let mutation = `
-    mutation miMutation($input: PersonaInput){
+    mutation miMutation($input: PersonaInput!){
         addPersona(input: $input){
             id
             run
@@ -766,7 +766,7 @@ function AddUsuario(idPersona){
     let pass = document.getElementById('pass').value;
     let nombreUsuario = document.getElementById('nombreUsuario').value;
     let mutation = `
-    mutation miMutation($input: UsuarioInput){
+    mutation miMutation($input: UsuarioInput!){
         addUsuario(input: $input){
             id
             email
@@ -803,7 +803,7 @@ function AddUsuarioPerfil(idUsuario){
         caducidad = null;
     }
     let mutation = `
-    mutation miMutation($input: UsuarioPerfilInput){
+    mutation miMutation($input: UsuarioPerfilInput!){
         addUsuarioPerfil(input: $input){
             id
             usuario
