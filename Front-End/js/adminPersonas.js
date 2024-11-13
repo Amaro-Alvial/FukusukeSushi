@@ -243,19 +243,12 @@ async function GetPersonasByIdPerfil() {
                 }
             })
         });
-
-        // Inicializa la tabla y agrega los encabezados
         contentTablePersona = [];
         contentTablePersona.push('<tr><td>RUN</td><td>NOMBRE</td><td>COMUNA</td><td>DIRECCIÓN</td><td>TELÉFONO</td><td>Editar/Eliminar</td></tr>');
-
-        // Usa `for...of` para manejar cada usuario de forma asincrónica
         for (const item of response.data.getUsuarioPerfilsByIdPerfil) {
             await GetUsuarioById(item.usuario);
         }
-
-        // Renderiza la tabla solo después de que todas las personas hayan sido procesadas
         document.getElementById('tblPersona').innerHTML = contentTablePersona.join("");
-
     } catch (error) {
         console.error("Error al obtener personas por perfil:", error);
     }

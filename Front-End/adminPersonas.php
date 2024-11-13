@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administración</title>
+    <title>Admin Personas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="./js/administrador.js"></script>
+    <script src="./js/adminPersonas.js"></script>
 </head>
 <body>
 <div class="container mt-3"> <!-- Se abre el Container -->
@@ -28,7 +28,7 @@
         </div>
         <div class="mb-3 mt-3 col-xxl-1">
             <label for="sexo">Sexo: </label> <br>
-            <select name="sexo" id="sexo">
+            <select class="form-select" name="sexo" id="sexo">
                 <option value="M">M</option>
                 <option value="F">F</option>
             </select>
@@ -37,15 +37,15 @@
     <div class="row"> <!-- Se abre fila 2 -->
         <div class="mb-3 mt-3 col-xxl-4">
             <label for="region">Región:</label> <br>
-            <select name="region" id="cmbRegion"></select>
+            <select class="form-select" name="region" id="cmbRegion"></select>
         </div>
         <div class="mb-3 mt-3 col-xxl-3">
             <label for="provincia">Provincia:</label> <br>
-            <select name="provincia" id="cmbProvincia"><option value="defaultProvincia">Seleccione la Provincia</option></select>
+            <select class="form-select" name="provincia" id="cmbProvincia"><option value="defaultProvincia">Seleccione la Provincia</option></select>
         </div>
         <div class="mb-3 mt-3 col-xxl-3">
             <label for="comuna">Comuna:</label> <br>
-            <select name="comuna" id="cmbComuna"><option value="defaultComuna">Seleccione la Comuna</option></select>
+            <select class="form-select" name="comuna" id="cmbComuna"><option value="defaultComuna">Seleccione la Comuna</option></select>
         </div>
         <div class="mb-3 mt-3 col-xxl-2">
             <label for="telefono">Teléfono:</label>
@@ -65,7 +65,7 @@
     <div class="row"> <!-- Se abre fila 4 -->
         <div class="mb-3 mt-3 col-xxl-2">
             <label for="tipo">Tipo:</label> <br>
-            <select name="tipos" id="cmbPerfil"></select>
+            <select class="form-select" name="tipos" id="cmbPerfil"></select>
         </div>
         <div class="mb-3 mt-3 col-xxl-2">
             <label for="caducidad">Caducidad (opcional):</label> <br>
@@ -87,7 +87,7 @@
   <div class="row"> <!-- Se abre fila 5 -->
     <div class="mb-3 mt-3 col-xxl-2">
         <label for="tipos2">Rol:</label> <br>
-        <select name="tipos2" id="cmbPerfil2"></select>
+        <select class="form-select" name="tipos2" id="cmbPerfil2"></select>
     </div>
   </div> <!-- Cierre de la Fila 5 -->
   <div class="row"> <!-- Se abre fila 6 -->
@@ -162,19 +162,19 @@
                     <div class="row"> <!-- Se abre fila 6 del modal -->
                         <div class="mb-3 col-12">
                             <label for="editRegion" class="form-label">Región</label>
-                            <select name="region" id="editRegion"></select>
+                            <select class="form-select" name="region" id="editRegion"></select>
                         </div>
                     </div> <!-- Cierre de la Fila 6 del modal -->
                     <div class="row">
                         <div class="mb-3 col-12">
                             <label for="editProvincia" class="form-label">Provincia</label>
-                            <select name="provincia" id="editProvincia"><option value="defaultProvincia">Seleccione la Provincia</option></select>
+                            <select class="form-select" name="provincia" id="editProvincia"><option value="defaultProvincia">Seleccione la Provincia</option></select>
                         </div>
                     </div> <!-- Cierre de la Fila 6 del modal -->
                     <div class="row"> <!-- Se abre fila 7 del modal -->
                         <div class="mb-3 col-12">
                             <label for="editComuna" class="form-label">Comuna</label>
-                            <select name="comuna" id="editComuna"><option value="defaultComuna">Seleccione la Comuna</option></select>
+                            <select class="form-select" name="comuna" id="editComuna"><option value="defaultComuna">Seleccione la Comuna</option></select>
                         </div>
                     </div> <!-- Cierre de la Fila 7 del modal -->
                     <div class="row"> <!-- Se abre fila 8 del modal -->
@@ -211,7 +211,9 @@
         </div>
     </div>
 </div>
+<!-- Fin administración de Personas -->
+ 
 </body>
 </html>
-<script src="./js/administradorPos.js"></script>
-<script src="./js/modalsAdministrador.js"></script>
+<script src="./js/adminPersonasPos.js"></script>
+<script src="./js/modalsAdminPersonas.js"></script>

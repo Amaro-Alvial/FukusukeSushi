@@ -28,7 +28,6 @@ async function abrirModalEditar(run) {
     document.getElementById('editRegion').value = region.id;
     document.getElementById('editProvincia').value = provincia.id;
     document.getElementById('editComuna').value = comuna.id;
-
     var editModal = new bootstrap.Modal(document.getElementById('editModal'));
     editModal.show();
 }
@@ -50,6 +49,8 @@ async function UpdConexiones(){
     UpdUsuarioPerfil(item3.id, item3.usuario, item3.perfil, caducidad);
     UpdUsuario(item2.id, email, pass, nombreUsuario, item2.persona);
     UpdPersona(item.id, run, nombreCompleto, direccion, fechaNacimiento, sexo, telefono, comuna);
+    var editModal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
+    editModal.hide();
 }
 
 async function openDeleteModal(idPersona, rutPersona) {

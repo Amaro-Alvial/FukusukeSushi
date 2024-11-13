@@ -1,0 +1,95 @@
+.card-dark {
+    background-color: #2c2f33; /* Fondo gris oscuro de la tarjeta */
+    border: 1px solid #3c3f43; /* Borde gris oscuro */
+    color: #f5f5f5; /* Texto blanco suave */
+    border-radius: 8px;
+}
+
+.card-dark .card-header {
+    background-color: #3c3f43; /* Fondo un poco más oscuro para el encabezado */
+    color: #d4af37; /* Texto dorado oscuro */
+    border-bottom: 1px solid #d4af37; /* Borde inferior dorado */
+    font-weight: bold;
+}
+
+.card-dark .card-title {
+    color: #d4af37; /* Título en dorado oscuro */
+    font-weight: bold;
+}
+
+.card-dark .card-body {
+    color: #f5f5f5; /* Texto blanco suave */
+}
+
+.card-dark .card-text {
+    color: #f5f5f5; /* Texto de descripción en blanco suave */
+}
+
+.card-dark .card-footer {
+    background-color: #3c3f43; /* Fondo oscuro para el pie */
+    color: #d4af37; /* Texto del pie en dorado oscuro */
+    border-top: 1px solid #d4af37; /* Borde superior dorado */
+    font-size: 0.9em;
+}
+
+body {
+    background-color: #1e1e1e; /* Fondo general gris oscuro */
+    color: #f0f0f0; /* Color de texto claro */
+}
+
+.container {
+    background-color: #2c2f33; /* Fondo del contenedor, un gris oscuro */
+    padding: 20px;
+    border-radius: 8px;
+    color: #f5f5f5; /* Texto en blanco suave */
+}
+
+h2 {
+    color: #d4af37; /* Dorado oscuro para los títulos */
+}
+
+label {
+    color: #d4af37; /* Dorado oscuro para los labels */
+}
+
+input[type="text"], select {
+    background-color: #3c3f43; /* Fondo gris oscuro para campos de texto y selects */
+    border: 1px solid #d4af37; /* Borde dorado oscuro */
+    color: #f5f5f5; /* Texto claro */
+}
+
+input[type="text"]::placeholder {
+    color: #c4c4c4; /* Placeholder en gris claro */
+}
+
+input[type="text"]:focus, select:focus {
+    border-color: #f0c75e; /* Dorado claro al enfocar */
+    outline: none;
+    box-shadow: 0 0 5px 0 #f0c75e;
+}
+
+#contProductos {
+    background-color: #2c2f33;
+    padding: 15px;
+    border-radius: 8px;
+    color: #f5f5f5;
+    border: 1px solid #3c3f43; /* Borde gris oscuro */
+}
+
+.mb-3, .mt-3 {
+    color: #d4af37; /* Dorado oscuro */
+}
+
+/* Estilos para el botón de navegación */
+button {
+    background-color: #d4af37; /* Fondo dorado */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #f0c75e; /* Dorado más claro al pasar el cursor */
+}
