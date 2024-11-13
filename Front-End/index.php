@@ -169,25 +169,24 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-2" style="height: 200px">
-                <label for="categoria" class="form-label">Selecciona</label> 
-                <select multiple class="form-select" id="categoria-select" name="categoria"></select>
-            </div>
             <div class="col-10">
                 <div class="row" id="productos-container">
                 </div>
+            </div>
+            <div class="col-2">
+                <select multiple id="categoria-select" name="categoria"></select>
             </div>
         </div>
     </div>
     
     <button id="carrito-button">
-        <img src="./img/carrito.png" style="width: 45px;">
+        <img src="./img/carrito.png" style="width: 45px">
         <span>1</span>
     </button>
 
     <footer>
         <div class="container-fluid" id="footer-container">
-            <div class="col"
+            <div
         </div>
     </footer>
 
