@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const {ApolloServer, gql} = require('apollo-server-express');
+const mailjet = require('node-mailjet').apiConnect(process.env.API_KEY, process.env.SECRET_KEY);
 
 mongoose.connect(`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@${process.env.MONGODB_CLUSTER}/${process.env.MONGODB_DB}?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
@@ -577,9 +578,14 @@ const resolvers = {
                 message: "Persona eliminada"
             };
         },
-        async addUsuario(obj, {input}){
-            let personaBus = await Persona.findById(input.persona);
-            let usuario = new Usuario({email: input.email, pass: input.pass, nombreUsuario: input.nombreUsuario, persona: personaBus._id});
+        async addUsuario(obj, { input }) {
+            const personaBus = await Persona.findById(input.persona);
+            console.log("Enviando correo a:", input.email);
+            const correoEnviado = await enviarCorreoConfirmacion(input.email, input.nombreUsuario);
+            if (!correoEnviado) {
+                return null;
+            }
+            const usuario = new Usuario({email: input.email, pass: input.pass, nombreUsuario: input.nombreUsuario, persona: personaBus._id,});
             await usuario.save();
             return usuario;
         },
@@ -854,6 +860,60 @@ const resolvers = {
                 message: "Comuna eliminada"
             };
         }               
+    }
+}
+
+async function enviarCorreoConfirmacion(email, nombreUsuario) {
+    const correoValido = await verificarCorreoConServicioExterno(email);
+    if (!correoValido) {
+        console.log("No se puede crear el usuario, correo inválido.");
+        return false;
+    }
+    try {
+        const request = mailjet.post("send", { 'version': 'v3.1' }).request({
+            "Messages": [
+                {
+                    "From": {
+                        "Email": "no.reply.fukusukesushi@gmail.com",
+                        "Name": "Fukusuke Sushi"
+                    },
+                    "To": [
+                        {
+                            "Email": email,
+                            "Name": nombreUsuario
+                        }
+                    ],
+                    "Subject": "Confirmación de Registro",
+                    "TextPart": `Hola ${nombreUsuario}!,\n\nTu registro ha sido exitoso. ¡Bienvenido a nuestra plataforma!`,
+                    "HTMLPart": `<h3>Hola ${nombreUsuario}</h3>
+                               <p>Tu registro ha sido exitoso. ¡Disfruta de toda nuestra carta!</p>
+                               <p>Lo mejor en sushi y al mejor precio</p>
+                               <p>Saludos cordiales,</p>
+                               <p>Equipo Fukusuke Sushi</p>`
+                }
+            ]
+        });
+        await request;
+        console.log("Correo de confirmación enviado a " + email);
+        return true; // Éxito en el envío del correo
+
+    } catch (error) {
+        console.error("Error al enviar el correo:", error);
+        return false; // Error en el envío, devuelve `false` para cancelar creación de usuario
+    }
+}
+ // Verifica si un correo es válido utilizando ZeroBounce
+async function verificarCorreoConServicioExterno(email) {
+    const apiKey = process.env.API_KEY_ZeroBounce;
+    const url = `https://api.zerobounce.net/v2/validate?api_key=${apiKey}&email=${email}`;
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data.status === "valid";
+
+    } catch (error) {
+        console.error("Error al verificar el correo:", error);
+        return false; // Maneja el error como un correo no válido
     }
 }
 

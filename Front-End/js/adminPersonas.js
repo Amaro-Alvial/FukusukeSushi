@@ -18,8 +18,7 @@ async function trtdPersona(item){
     `);
 }
 function optionPerfil(item) {
-    let idDueno = "672bf4baed29060af5294eb8";
-    if (item.id !== idDueno) {
+    if (item.tipo != "Dueño") {
         optionsPerfil.push('<option value="' + item.id + '">' + item.tipo + '</option>');
     }
 }
@@ -604,7 +603,7 @@ function DelPersona(idPersona){
             }
         }),
         success: function(response){
-            alert("Persona eliminada exitosamente");
+            console.log(response);
         }
     });
 
@@ -792,7 +791,13 @@ function AddUsuario(idPersona){
             }
         }),
         success: function(response){
-            AddUsuarioPerfil(response.data.addUsuario.id);
+            if (response.data.addUsuario == null){
+                alert("El correo electronico no es valido");
+                DelPersona(idPersona);
+            } else {
+                AddUsuarioPerfil(response.data.addUsuario.id);
+            }
+
         }
     })
 }
