@@ -77,7 +77,8 @@ async function editProducto() {
 }
 async function modalBorrarProducto(idProducto) {
     let producto = await GetProductoById(idProducto);
-    document.getElementById('delConfirmacion').textContent = `¿Está seguro que desea eliminar el producto: ${producto.nombre}?`;
+    document.getElementById('delConfirmacion').textContent = `¿Está seguro que desea eliminar el producto: ${producto.nombre} con ID:?`;
+    document.getElementById('delConfirmacion').value = producto.id;
     var delModal = new bootstrap.Modal(document.getElementById('delModal'));
     delModal.show();
 }
@@ -93,3 +94,9 @@ function cerrarModalDel(){
 document.getElementById('delModal').addEventListener('hidden.bs.modal', function () {
     document.body.style.overflow = 'auto';
 });
+async function DelConexionesProducto() {
+    let idProducto = document.getElementById('delConfirmacion').value;
+    await DelHistoricosByIdProducto(idProducto);
+    DelProducto(idProducto);
+    cerrarModalDel();
+}

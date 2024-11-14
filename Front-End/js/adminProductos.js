@@ -34,6 +34,62 @@ async function cardProductos(item) {
 function optionCategoria(item) {
     optionsCategoria.push('<option value="' + item.id + '">' + item.nombre + '</option>');
 }
+function GetDisponiblesHistoricosByIdProducto(IdProducto){
+    let query = `
+    query miQuery($id: String){
+        getDisponibleHistoricosByIdProducto(id: $id){
+            id
+            disponibilidad
+            fecha
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: IdProducto
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getDisponibleHistoricosByIdProducto);
+            }
+        });
+    });
+}
+function GetPreciosHistoricosByIdProducto(IdProducto){
+    let query = `
+    query miQuery($id: String){
+        getPrecioHistoricosByIdProducto(id: $id){
+            id
+            precio
+            fecha
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: IdProducto
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getPrecioHistoricosByIdProducto);
+            }
+        });
+    });
+}
 function GetUltimoDisponibleHistoricoByIdProducto(idProducto){
     let query = `
     query miQuery($id: String){
@@ -126,7 +182,7 @@ async function GetProductosByIdCategoria(idCategoria) {
         }
     });
 }
-async function GetProductoById(idProducto){
+function GetProductoById(idProducto){
     let query = `
     query miQuery($id: ID!){
         getProductoById(id: $id){
@@ -243,7 +299,7 @@ async function GetProductos() {
         }
     });
 }
-async function UpdProducto(idProducto, nombre, descripcion, foto, categoria){
+function UpdProducto(idProducto, nombre, descripcion, foto, categoria){
     let query = `
     mutation miMutation($id: ID!, $input: ProductoInput!){
         updProducto(id: $id, input: $input){
@@ -276,7 +332,84 @@ async function UpdProducto(idProducto, nombre, descripcion, foto, categoria){
         }
     });
 }
-async function AddDisponibleHistorico(idProducto, disponibilidad){
+async function DelHistoricosByIdProducto(idProducto){
+    let disponibles = await GetDisponiblesHistoricosByIdProducto(idProducto);
+    let precios = await GetPreciosHistoricosByIdProducto(idProducto);
+    for (const item of disponibles) {
+        delDisponibleHistorico(item.id);
+    }
+    for (const item of precios) {
+        DelPrecioHistorico(item.id);
+    }
+}
+function delDisponibleHistorico(idDisponible){
+    let query = `
+    mutation miMutation($id: ID!){
+        delDisponibleHistorico(id: $id){
+            message
+        }
+    }`;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {
+                id: idDisponible
+            }
+        }),
+        success: function(response){
+        }
+    });
+}
+function DelPrecioHistorico(idPrecio){
+    let query = `
+    mutation miMutation($id: ID!){
+        delPrecioHistorico(id: $id){
+            message
+        }
+    }`;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {
+                id: idPrecio
+            }
+        }),
+        success: function(response){
+        }
+    });
+}
+function DelProducto(idProducto){
+    let query = `
+    mutation miMutation($id: ID!){
+        delProducto(id: $id){
+            message
+        }
+    }`;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {
+                id: idProducto
+            }
+        }),
+        success: function(response){
+            alert(response.data.delProducto.message);
+        }
+    });
+}
+function AddDisponibleHistorico(idProducto, disponibilidad){
     let bool = (disponibilidad === "true");
     let fecha = new Date().toISOString();
     let query = `
@@ -307,7 +440,7 @@ async function AddDisponibleHistorico(idProducto, disponibilidad){
         }
     });
 }
-async function AddPrecioHistorico(idProducto, precio){
+function AddPrecioHistorico(idProducto, precio){
     let fecha = new Date().toISOString();
     valor = parseFloat(precio);
     let query = `
@@ -338,7 +471,7 @@ async function AddPrecioHistorico(idProducto, precio){
         }
     });
 }
-async function AddProducto(){
+function AddProducto(){
     let nombre = document.getElementById('Nombre').value;
     let descripcion = document.getElementById('Descripcion').value;
     let foto = document.getElementById('Foto').value;
@@ -371,9 +504,9 @@ async function AddProducto(){
                 }
             }
         }),
-        success: async function(response){
-            await AddPrecioHistorico(response.data.addProducto.id, precio);
-            await AddDisponibleHistorico(response.data.addProducto.id, disponibilidad);
+        success: function(response){
+            AddPrecioHistorico(response.data.addProducto.id, precio);
+            AddDisponibleHistorico(response.data.addProducto.id, disponibilidad);
             alert("Producto agregado exitosamente");
         }
     });

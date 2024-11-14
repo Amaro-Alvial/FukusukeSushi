@@ -187,7 +187,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" onclick="cerrarModalDel()">Cancelar</button>
-                <button type="button" class="btn btn-danger" onclick="DelConexionProducto()">Eliminar</button>
+                <button type="button" class="btn btn-danger" onclick="DelConexionesProducto()">Eliminar</button>
             </div>
         </div>
     </div>
