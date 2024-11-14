@@ -13,6 +13,11 @@
     <!-- Todas las funciones -->
     <script src="carrito.js"></script>
     <script src="mostrarProductos.js"></script>
+    <script src="modalProducto.js"></script>
+    <script>
+        //TODO: aquí se ejecutaría el inicio de sesión o algo nose :P
+        let idCliente = "67317b739360287f7f13ec6b";
+    </script>
 </head>
 <body>
 <!--Headerrrr-->
@@ -20,7 +25,7 @@
     <nav class="navbar navbar-expand-lg navbar-light container">
         <div class="collapse navbar-collapse" id="navbarNav">            
             <!-- Carrito alineado a la derecha -->
-            <a class="nav-link position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" onclick="getProductosByIdCarrito();">
+            <a class="nav-link position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" onclick="actualizarCarrito();">
                 <!-- Ícono de carrito -->
                 <i class="fas fa-shopping-cart"></i>
                 <!-- Contador de artículos -->
@@ -42,7 +47,6 @@
 </div>
 <div class="container mt-5">
     <div class="row" id="cards-body">
-        
     </div>
 </div>
 
@@ -59,7 +63,7 @@
 </div>
 
 <!--Modallll-->
-<div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+<div class="modal fade" id="productModal" value="" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -95,7 +99,7 @@
             </div>
 
             <!-- Botón de agregar al carrito -->
-            <button type="button" class="btn btn-success" onclick="addToCart()">Agregar al Carrito</button>
+            <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="agregarDetalleCarrito();">Agregar al Carrito</button>
           </div>
         </div>
       </div>

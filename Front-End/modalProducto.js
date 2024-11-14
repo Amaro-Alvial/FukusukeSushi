@@ -1,5 +1,5 @@
+// Cositas para el contador en el modal
 let quantity = 1;
-
 function updateQuantity(change) {
     // Actualiza la cantidad, asegurándose de que no sea menor a 1
     quantity = Math.max(1, quantity + change);
@@ -13,7 +13,7 @@ function actualizarModal(value) {
             nombre
             descripcion
             foto
-            categoria
+            id
         }
     }
     `;
@@ -32,6 +32,7 @@ function actualizarModal(value) {
             document.getElementById('productModalLabel').textContent = response.data.getProductoById.nombre;
             document.getElementById('productModalImage').innerHTML = '<img src="' + response.data.getProductoById.foto + '" alt="Imagen del Producto" class="img-fluid rounded">';
             document.getElementById('productModalDesc').textContent = response.data.getProductoById.descripcion;
+            document.getElementById('productModal').setAttribute('value', response.data.getProductoById.id);
         }
     })
 }
