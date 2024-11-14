@@ -35,7 +35,7 @@ let cardProductos = [];
 
 function cardProducto(item) {
     cardProductos.push(`
-        <div class="col-xsm-12 col-sm-6 col-md-4 col-lg-4">
+        <div class="col-xsm-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 col-xxl-3 p-0">
             <button class="producto-button" value="${item.id}">
                 <div style="width: 40%; overflow: hidden">
                         <img src="${item.foto}" style="width: 100%">

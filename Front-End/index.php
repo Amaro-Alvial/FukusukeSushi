@@ -91,15 +91,15 @@
                 </div>
     
                 <div class="modal-body">
-                    <form action="/inicioSesion.php">
+                    <form id="login-form">
                         <div class="d-flex flex-column align-items-center">
                             <div class="mb-3">
                                 <label for="email" class="form-label">E-Mail</label>
-                                <input type="email" class="form-control" id="email" placeholder="ejemplo@email.com" name="email">
+                                <input type="email" class="form-control" id="email" placeholder="ejemplo@email.com" name="email" required>
                             </div>
                             <div class="mb-3">
                                 <label for="pwd" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" id="pwd" name="pswd">
+                                <input type="password" class="form-control" id="pwd" name="pswd" required>
                             </div>
                             <div class="mt-2 mb-3">
                                 <button type="submit" class="btn btn-primary" id="login-button-modal">Iniciar Sesión</button>
@@ -169,8 +169,9 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-10">
-                <div class="row" id="productos-container">
+            <div class="col-10 pe-0">
+                <div id="scroll-container">
+                    <div class="row" id="productos-container"></div>
                 </div>
             </div>
             <div class="col-2">

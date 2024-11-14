@@ -121,11 +121,13 @@ button {
     position: sticky;
     top: 50px;
 }
-.categoria-option{
-    font-weight: bold;
-}
 .categoria-option:active{
     background-color: #FFD1CA;
+}
+
+#scroll-container {
+    overflow-y: scroll;
+    height: 500px;
 }
 
 /* Botón carrito. */
@@ -158,7 +160,7 @@ button {
     background-color: white;
     box-shadow: 0 0 10px lightgrey;
     display: flex;
-    width: 325px;
+    width: 315px;
     height: 150px;
     margin: 10px 0;
     border-radius: 10px;
