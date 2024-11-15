@@ -46,11 +46,20 @@ async function UpdConexiones(){
     let item = await GetPersonaByRun(run);
     let item2 = await GetUsuarioByIdPersona(item.id); 
     let item3 = await GetUsuarioPerfilByIdUsuario(item2.id);
+    const validacion = await UpdUsuario(item2.id, email, pass, nombreUsuario, item2.persona);
+    if (!validacion){
+        alert("Error al actualizar usuario");
+        return;
+    }
     UpdUsuarioPerfil(item3.id, item3.usuario, item3.perfil, caducidad);
-    UpdUsuario(item2.id, email, pass, nombreUsuario, item2.persona);
     UpdPersona(item.id, run, nombreCompleto, direccion, fechaNacimiento, sexo, telefono, comuna);
     var editModal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
     editModal.hide();
+    alert("Usuario actualizado");
+    GetPersonas();
+    GetRegiones();
+    GetComunas();
+    GetProvincias();
 }
 
 async function openDeleteModal(idPersona, rutPersona) {
@@ -69,4 +78,5 @@ async function DelConexiones(){
     DelUsuario(usuario.id);
     DelPersona(idPersona);
     deleteModal.hide();
+    GetPersonas();
 }

@@ -644,7 +644,6 @@ function UpdPersona(idPersona, run, nombreCompleto, direccion, fechaNacimiento, 
             }
         }),
         success: function(response){
-            alert("Persona actualizada exitosamente");
         }
     });
 }
@@ -659,26 +658,33 @@ function UpdUsuario(idUsuario, email, pass, nombreUsuario, idPersona){
         }
     }
     `;
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8091/graphql",
-        contentType: "application/json",
-        timeout: 15000,
-        data: JSON.stringify({
-            query: mutation,
-            variables: {
-                id: idUsuario,
-                input: {
-                    email: email,
-                    pass: pass,
-                    nombreUsuario: nombreUsuario,
-                    persona: idPersona
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: mutation,
+                variables: {
+                    id: idUsuario,
+                    input: {
+                        email: email,
+                        pass: pass,
+                        nombreUsuario: nombreUsuario,
+                        persona: idPersona
+                    }
                 }
+            }),
+            success: function(response){
+                if (response.data.updUsuario == null){
+                    resolve(false);
+                } else {
+                    resolve(true);
+                }
+
             }
-        }),
-        success: function(response){
-            alert("Usuario actualizado exitosamente");
-        }
+        });
     });
 }
 function UpdUsuarioPerfil(idUsuarioPerfil, idUsuario, idPerfil, caducidad){
@@ -709,10 +715,8 @@ function UpdUsuarioPerfil(idUsuarioPerfil, idUsuario, idPerfil, caducidad){
             }
         }),
         success: function(response){
-            alert("Usuario perfil actualizado exitosamente");
         }
-    })
-
+    });
 }
 function addPersona(){
     let run = document.getElementById('run').value;
@@ -792,7 +796,6 @@ function AddUsuario(idPersona){
         }),
         success: function(response){
             if (response.data.addUsuario == null){
-                alert("El correo electronico no es valido");
                 DelPersona(idPersona);
             } else {
                 AddUsuarioPerfil(response.data.addUsuario.id);
@@ -834,6 +837,10 @@ function AddUsuarioPerfil(idUsuario){
         }),
         success: function(response){
             alert("Usuario creado exitosamente");
+            GetPersonas();
+            GetRegiones();
+            GetComunas();
+            GetProvincias();
         }
     })
 }

@@ -49,7 +49,7 @@
         </div>
         <div class="mb-3 mt-3 col-xxl-2">
             <label for="telefono">Teléfono:</label>
-            <input type="telefono" class="form-control" id="telefono" placeholder="Ingrese el teléfono" name="telefono">
+            <input type="tel" class="form-control" id="telefono" placeholder="Ejemplo: +56912345678" name="telefono" pattern="^\+569\d{8}$" title="Debe ingresar un número válido en formato +56912345678" required>
         </div>
     </div> <!-- Cierre de la Fila 2 -->
     <div class="row"> <!-- Se abre fila 3 -->
@@ -69,7 +69,7 @@
         </div>
         <div class="mb-3 mt-3 col-xxl-2">
             <label for="caducidad">Caducidad (opcional):</label> <br>
-            <input type="date" id="caducidad" name="caducidad">
+            <input type="date" class="form-control" id="caducidad" name="caducidad">
         </div>
         <div class="mb-3 mt-3 col-xxl-5">
             <label for="email">Email:</label>

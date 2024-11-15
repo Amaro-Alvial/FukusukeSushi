@@ -583,6 +583,7 @@ const resolvers = {
             console.log("Enviando correo a:", input.email);
             const correoEnviado = await enviarCorreoConfirmacion(input.email, input.nombreUsuario);
             if (!correoEnviado) {
+                console.log("No se puede crear el usuario, correo inválido.");
                 return null;
             }
             const usuario = new Usuario({email: input.email, pass: input.pass, nombreUsuario: input.nombreUsuario, persona: personaBus._id,});
@@ -590,6 +591,11 @@ const resolvers = {
             return usuario;
         },
         async updUsuario(obj, {id, input}){
+            const correoValido = await verificarCorreoConServicioExterno(input.email);
+            if (!correoValido) {
+                console.log("No se puede crear el usuario, correo inválido.");
+                return null;
+            }
             let personaBus = await Persona.findById(input.persona);
             let usuario = await Usuario.findByIdAndUpdate(id, {email: input.email, pass: input.pass, nombreUsuario: input.nombreUsuario, persona: personaBus._id}, { new: true });
             return usuario;
@@ -904,16 +910,19 @@ async function enviarCorreoConfirmacion(email, nombreUsuario) {
 }
  // Verifica si un correo es válido utilizando ZeroBounce
 async function verificarCorreoConServicioExterno(email) {
-    const apiKey = process.env.API_KEY_ZeroBounce;
-    const url = `https://api.zerobounce.net/v2/validate?api_key=${apiKey}&email=${email}`;
+    const apiKey = process.env.API_KEY_Hunter;  // Usa tu clave de API de Hunter.io
+    const url = `https://api.hunter.io/v2/email-verifier?email=${email}&api_key=${apiKey}`;
     try {
         const response = await fetch(url);
         const data = await response.json();
-        return data.status === "valid";
-
+        if (data && data.data && data.data.status) {
+            return data.data.status === "webmail" || data.data.status === "valid";
+        } else {
+            return false;
+        }
     } catch (error) {
-        console.error("Error al verificar el correo:", error);
-        return false; // Maneja el error como un correo no válido
+        console.error("Error al verificar el correo con Hunter.io:", error);
+        return false;  // Maneja el error como un correo no válido
     }
 }
 
