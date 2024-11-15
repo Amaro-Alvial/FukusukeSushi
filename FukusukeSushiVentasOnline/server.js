@@ -27,6 +27,7 @@ const Carrito = require('./models/carrito');
 const Region = require('./models/region');
 const Provincia = require('./models/provincia');
 const Comuna = require('./models/comuna');
+const DetalleCarrito = require('./models/detalleCarrito');
 
 const typeDefs = gql`
 type Persona{
@@ -271,6 +272,10 @@ type Query{
     getCarritosByIdCliente(id: String): [Carrito]
     getCarritosByIdHorarioCaja(id: String): [Carrito]
     getCarritosByIdDespacho(id: String): [Carrito]
+    getDetalleCarritos: [DetalleCarrito]
+    getDetalleCarritoById(id: ID!): DetalleCarrito
+    getDetalleCarritosByIdCarrito(id: String): [DetalleCarrito]
+    getDetalleCarritosByIdProducto(id: String): [DetalleCarrito]
     getRegions: [Region]
     getRegionById(id: ID!): Region
     getProvincias: [Provincia]
@@ -528,6 +533,22 @@ const resolvers = {
         async getCarritosByIdDespacho(obj, {id}){
             let carritos = await Carrito.find({despacho: id});
             return carritos;
+        },
+        async getDetalleCarritos(obj){
+            let detalleCarritos = await DetalleCarrito.find();
+            return detalleCarritos;
+        },
+        async getDetalleCarritoById(obj, {id}){
+            let detalleCarrito = await DetalleCarrito.findById(id);
+            return detalleCarrito;
+        },
+        async getDetalleCarritosByIdCarrito(obj, {id}){
+            let detalleCarritos = await DetalleCarrito.find({carrito: id});
+            return detalleCarritos;
+        },
+        async getDetalleCarritosByIdProducto(obj, {id}){
+            let detalleCarritos = await DetalleCarrito.find({producto: id});
+            return detalleCarritos;
         },
         async getRegions(obj){
             let regiones = await Region.find();
