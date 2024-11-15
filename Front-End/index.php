@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" href="./css/styles.css">
-    <script src="./js/pag_principal.js"></script>
+    <script src="./js/pagPrincipal.js"></script>
 </head>
 
 <body>
@@ -91,18 +91,18 @@
                 </div>
     
                 <div class="modal-body">
-                    <form action="/inicioSesion.php">
+                    <form id="login-form">
                         <div class="d-flex flex-column align-items-center">
                             <div class="mb-3">
                                 <label for="email" class="form-label">E-Mail</label>
-                                <input type="email" class="form-control" id="email" placeholder="ejemplo@email.com" name="email">
+                                <input type="email" class="form-control" id="email" placeholder="ejemplo@email.com" name="email" required>
                             </div>
                             <div class="mb-3">
                                 <label for="pwd" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" id="pwd" name="pswd">
+                                <input type="password" class="form-control" id="pwd" name="pswd" required>
                             </div>
                             <div class="mt-2 mb-3">
-                                <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                                <button type="submit" class="btn btn-primary" id="login-button-modal">Iniciar Sesión</button>
                             </div>
                             <div>
                                 Si no tienes una cuenta aún,
@@ -160,28 +160,39 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid d-flex justify-content-center mt-3" style="background-color: white">
+
+    <div class="container-fluid d-flex justify-content-center mt-2 mb-2" style="background-color: white">
         <button id="pideya-button">
-            Pide Yaa<br>
-            <img src="./img/flecha_abajo.png" style="width: 30px; margin-top: -30px">
+            ¡Pide Ya!<br>
         </button>
     </div>
 
-    <div class="col-12 mr-2">
-        <div class="row" style="background-color: grey; height: 200px">
-            <div class="col-3" style="height: 200px">
-                <label for="categoria" class="form-label">Selecciona</label> 
-                <select multiple class="form-select" id="categoria-select" name="categoria"></select>
-            </div>
-            <div class="col-9">
-                <div class="row" id="productos-container" style="background-color: lightblue">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-10 pe-0">
+                <div id="scroll-container">
+                    <div class="row" id="productos-container"></div>
                 </div>
+            </div>
+            <div class="col-2">
+                <select multiple id="categoria-select" name="categoria"></select>
             </div>
         </div>
     </div>
+    
+    <button id="carrito-button">
+        <img src="./img/carrito.png" style="width: 45px">
+        <span>1</span>
+    </button>
 
-    <!-- https://www.svgrepo.com/--, íconos con lisencia libre. -->
+    <footer>
+        <div class="container-fluid" id="footer-container">
+            <div
+        </div>
+    </footer>
+
+    <!--https://www.svgrepo.com/collection/dazzle-line-icons/, íconos con lisencia libre. -->
     
 </body>
 </html>
-<script src="./js/pag_principalPos.js"></script>
+<script src="./js/pagPrincipalPos.js"></script>

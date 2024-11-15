@@ -1,11 +1,12 @@
 /*https://paletton.com/#uid=3060u0kkeZ16E+CaE+esvVdvkSj*/
 
 #navbar-principal {
-    background-color: white;
+    background-color: #ffffff;
 }
 
 /* Se define el button de html sin ningún atributo para
     tener más control sobre él. */
+
 button {
     background: none;       
     border: none;             
@@ -17,6 +18,7 @@ button {
 }
 
 /* Botones de inicio de sesión y crear cuenta. */
+
 #login-button {
     background-color: #FF745E;
     color: white;
@@ -46,7 +48,9 @@ button {
     color: white;
     background-color: #E16653;
 }
+
 /* Botón de DropDown de Locales. (quizás se quite) */
+
 #button-dropdown-locales {
     background-color: white;
     font-weight: bold;
@@ -107,6 +111,65 @@ button {
     width: 285px; 
     height: 150px;
 }
-.categoria-option {
-    color: red;
+
+/* Select categorias. */
+
+#categoria-select {
+    border: none;
+    width: 100%;
+    height: 180px;
+    position: sticky;
+    top: 50px;
 }
+.categoria-option:active{
+    background-color: #FFD1CA;
+}
+
+#scroll-container {
+    overflow-y: scroll;
+    height: 500px;
+}
+
+/* Botón carrito. */
+
+#carrito-button {
+    background-color: #FF745E;
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+#carrito-button span {
+    position: absolute;
+    background-color: white;
+    color: #FF745E;
+    font-weight: bold;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-left: -10px;
+    margin-top: -10px;
+}
+
+/* Botones de poductos los productos. */
+
+.producto-button {
+    background-color: white;
+    box-shadow: 0 0 10px lightgrey;
+    display: flex;
+    width: 315px;
+    height: 150px;
+    margin: 10px 0;
+    border-radius: 10px;
+}
+
+/* Footer */
+
+#footer-container {
+    background-color: #FF745E;
+    color: white;
+}
+
