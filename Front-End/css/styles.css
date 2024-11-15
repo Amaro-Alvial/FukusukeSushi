@@ -154,16 +154,26 @@ button {
     margin-top: -10px;
 }
 
-/* Botones de poductos los productos. */
+/* Card de los productos. */
 
 .producto-button {
-    background-color: white;
-    box-shadow: 0 0 10px lightgrey;
-    display: flex;
-    width: 315px;
-    height: 150px;
-    margin: 10px 0;
-    border-radius: 10px;
+    text-decoration: none;
+    color: black;
+}
+
+.agregar-button-card {
+    background-color: #FF745E;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.agregar-button-card:hover {
+    background-color: #FF8B78;
+}
+
+.productos-container {
+    margin-right: 3rem;
 }
 
 /* Footer */

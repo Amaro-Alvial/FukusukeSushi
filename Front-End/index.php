@@ -233,9 +233,9 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-10 pe-0">
+            <div class="col-10">
                 <div id="scroll-container">
-                    <div class="row" id="productos-container"></div>
+                    
                 </div>
             </div>
             <div class="col-2">
