@@ -820,22 +820,38 @@ const resolvers = {
         },
         async addCarrito(obj, {input}){
             let clienteBus = await Usuario.findById(input.cliente);
-            let horarioCajaBus = await HorarioCaja.findById(input.horarioCaja);
-            let despachoBus = await Despacho.findById(input.despacho);
-            let carrito = new Carrito({fecha: input.fecha, cliente: clienteBus._id, horarioCaja: horarioCajaBus._id, despacho: despachoBus._id});
+            let carrito = new Carrito({fecha: input.fecha, cliente: clienteBus._id});
             await carrito.save();
             return carrito;
         },
         async updCarrito(obj, {id, input}){
-            let boletaBus = await Boleta.findById(input.boleta);
-            let productoBus = await Producto.findById(input.producto);
-            let carrito = await Carrito.findByIdAndUpdate(id, {fecha: input.fecha, cliente: clienteBus._id, horarioCaja: horarioCajaBus._id, despacho: despachoBus._id}, { new: true });
+            let clienteBus = await Usuario.findById(input.cliente);
+            let carrito = await Carrito.findByIdAndUpdate(id, {fecha: input.fecha, cliente: clienteBus._id}, { new: true });
             return carrito;
         },
         async delCarrito(obj, {id}){
             await Carrito.deleteOne({_id: id});
             return {
                 message: "Carrito eliminado"
+            };
+        },
+        async addDetalleCarrito(obj, {input}){
+            let productoBus = await Producto.findById(input.producto);
+            let carritoBus = await Carrito.findById(input.carrito);
+            let detalleCarrito = new DetalleCarrito({producto: productoBus._id, carrito: carritoBus._id, cantidad: input.cantidad});
+            await detalleCarrito.save();
+            return detalleCarrito;
+        },
+        async updDetalleCarrito(obj, {id, input}){
+            let productoBus = await Producto.findById(input.producto);
+            let carritoBus = await Carrito.findById(input.carrito);
+            let detalleCarrito = await DetalleCarrito.findByIdAndUpdate(id, {producto: productoBus._id, carrito: carritoBus._id, cantidad: input.cantidad}, { new: true });
+            return detalleCarrito;
+        },
+        async delDetalleCarrito(obj, {id}){
+            await DetalleCarrito.deleteOne({_id: id});
+            return {
+                message: "Detalle de carrito eliminado"
             };
         },
         async addRegion(obj, {input}){
