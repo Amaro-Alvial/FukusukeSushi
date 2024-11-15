@@ -328,6 +328,9 @@ type Mutation{
     addCarrito(input:CarritoInput): Carrito
     updCarrito(id: ID!, input:CarritoInput): Carrito
     delCarrito(id: ID!): Alert
+    addDetalleCarrito(input:DetalleCarritoInput): DetalleCarrito
+    updDetalleCarrito(id: ID!, input:DetalleCarritoInput): DetalleCarrito
+    delDetalleCarrito(id: ID!): Alert
     addRegion(input:RegionInput): Region
     updRegion(id: ID!, input:RegionInput): Region
     delRegion(id: ID!): Alert
