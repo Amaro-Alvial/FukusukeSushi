@@ -186,12 +186,12 @@ input CarritoInput{
 }
 type DetalleCarrito{
     id: ID!
-    boleta: String!
+    carrito: String!
     producto: String!
     cantidad: Float!
 }
 input DetalleCarritoInput{
-    boleta: String!
+    carrito: String!
     producto: String!
     cantidad: Float!
 }
