@@ -8,6 +8,10 @@ async function setCarrito(idCliente){
         idCarrito = idCarrito[0].id;
     }
     document.getElementById('carrito').setAttribute('value', idCarrito);
+    let prodsCarrito = await getProductosByIdCarrito(idCarrito);
+    for (prod of prodsCarrito){
+        cambiarCantidadCarrito(prod.cantidad);
+    }
 }
 // Chequea si el cliente tiene asignado algún carrito
 async function obtenerCarritos(idCliente) {
@@ -103,7 +107,7 @@ async function actualizarCarrito(){
             })
         });
         let precio = await GetUltimoPrecioHistoricoByIdProducto(prod.producto);
-        cardsCarrito.push(creaCardCarrito(response.data.getProductoById, prod.cantidad, prod.id, precio));
+        cardsCarrito.push(creaCardCarrito(response.data.getProductoById, prod.cantidad, prod.id, precio.precio));
     }
     if (cardsCarrito.length == 0){
         document.querySelector('#carrito .offcanvas-body').innerHTML = '<h3 class="text-center">Carrito Vacío 😢</h3><h5 class="text-center">Cuando agregues productos al carrito, aparecerán aquí.</h5>'
@@ -260,7 +264,7 @@ async function agregarDetalleCarrito(){
         }
         i++;
     }
-
+    cambiarCantidadCarrito(nuevaCantidad);
     if (esta){
         inputDetalle = {
             carrito: idCarrito,
@@ -273,6 +277,7 @@ async function agregarDetalleCarrito(){
     }
 }
 async function cambiarDetalleCarrito(detalleCarrito, idProducto, masmenos){
+    cambiarCantidadCarrito(masmenos);
     let idCarrito = document.getElementById('carrito').getAttribute('value');
     let cantidadElemento = document.getElementById('cantidad-' + detalleCarrito);
     let precioElemento = document.getElementById('precio-' + idProducto)
@@ -292,7 +297,15 @@ async function cambiarDetalleCarrito(detalleCarrito, idProducto, masmenos){
 }
 async function eliminaDetalleCarrito(detalleCarrito){
     //TODO: taría weno un "¿Estás seguro de querer eliminar este producto, guapo?"
+    let cantidad = parseInt(document.getElementById('cantidad-' + detalleCarrito).innerHTML);
+    cambiarCantidadCarrito(-cantidad);
     let cardCarrito = document.querySelector('#carrito .offcanvas-body').querySelector('div[data-id="' + detalleCarrito + '"]');
     cardCarrito.remove();
     delDetalleCarrito(detalleCarrito);
+}
+
+// Cambia el ícono junto al svg del carrito para que muestre la cantidad de productos en éste
+function cambiarCantidadCarrito(cantidad){
+    let cantidadActual = parseInt(document.getElementById('cantidadCarrito').innerHTML);
+    document.getElementById('cantidadCarrito').innerHTML = cantidadActual + cantidad;
 }

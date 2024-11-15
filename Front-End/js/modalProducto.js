@@ -9,6 +9,8 @@ function updateQuantity(change) {
     document.getElementById('productModalPrecio').textContent = '$' + quantity * precio;
 }
 async function actualizarModal(value) {
+    quantity = 1;
+    document.getElementById('quantity').innerHTML = 1;
     let query = `
     query GetProductoById($getProductoByIdId: ID!) {
         getProductoById(id: $getProductoByIdId) {

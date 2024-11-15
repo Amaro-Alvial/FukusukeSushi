@@ -246,12 +246,12 @@
     
     <button id="carrito-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" onclick="actualizarCarrito();">
         <img src="./img/carrito.png" style="width: 45px">
-        <span id="cantidadCarrito">99</span>
+        <span id="cantidadCarrito">0</span>
     </button>
 
     <footer>
         <div class="container-fluid" id="footer-container">
-            <div
+            
         </div>
     </footer>
 
