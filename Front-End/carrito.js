@@ -1,5 +1,5 @@
 // Deja listo el carrito
-async function setCarrito(){
+async function setCarrito(idCliente){
     const carritosResponse = await obtenerCarritos(idCliente);
     let idCarrito = carritosResponse.data.getCarritosByIdCliente;
     
@@ -87,7 +87,8 @@ async function actualizarCarrito(){
                 }
             })
         });
-        cardsCarrito.push(creaCardCarrito(response.data.getProductoById, prod.cantidad, prod.id));
+        let precio = await ultimoPrecio(prod.producto);
+        cardsCarrito.push(creaCardCarrito(response.data.getProductoById, prod.cantidad, prod.id, precio));
     }
     if (cardsCarrito.length == 0){
         document.querySelector('#carrito .offcanvas-body').innerHTML = '<h3 class="text-center">Carrito Vacío 😢</h3><h5 class="text-center">Cuando agregues productos al carrito, aparecerán aquí.</h5>'
@@ -123,7 +124,7 @@ async function getProductosByIdCarrito(idCarrito) {
         console.error("Error al obtener los productos del carrito:", error);
     }
 }
-function creaCardCarrito(producto, cantidad, detalleCarrito){
+function creaCardCarrito(producto, cantidad, detalleCarrito, precio){
     return `
     <div class="card mb-3" data-id="${detalleCarrito}">
         <div class="row g-0">
@@ -133,8 +134,8 @@ function creaCardCarrito(producto, cantidad, detalleCarrito){
             <div class="col-md-8">
                 <div class="card-body">
                     <h5 class="card-title">${producto.nombre}</h5>
-                    <p class="card-text"><small class="text-muted">$1.50</small></p>
-                    
+                    <p id="precio-${producto.id}" class="card-text text-muted" value="${precio}">$${precio*cantidad}</p>
+
                     <!-- Contador de cantidad de productos -->
                     <div class="d-flex align-items-center mt-2">
                         <button class="btn btn-outline-secondary btn-sm" onclick="cambiarDetalleCarrito('${detalleCarrito}', '${producto.id}', -1)">-</button>
@@ -259,10 +260,12 @@ async function agregarDetalleCarrito(){
 async function cambiarDetalleCarrito(detalleCarrito, idProducto, masmenos){
     let idCarrito = document.getElementById('carrito').getAttribute('value');
     let cantidadElemento = document.getElementById('cantidad-' + detalleCarrito);
+    let precioElemento = document.getElementById('precio-' + idProducto)
     let antiguaCantidad = parseInt(cantidadElemento.textContent);
     let nuevaCantidad = antiguaCantidad + masmenos
     if (nuevaCantidad > 0){
-        cantidadElemento.textContent = antiguaCantidad + masmenos;
+        cantidadElemento.textContent = nuevaCantidad;
+        precioElemento.textContent = '$' + nuevaCantidad * parseInt(precioElemento.getAttribute('value'));
         inputDetalle = {
             carrito: idCarrito,
             producto: idProducto,

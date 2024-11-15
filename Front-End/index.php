@@ -82,22 +82,23 @@
             <p id="productModalDesc">Descripción detallada del producto. Aquí puedes añadir más detalles relevantes.</p>
             
             <!-- Control de cantidad -->
-            <div class="quantity-container col-3 row">
-                <div class="buttonShadow textColor col-4" onclick="updateQuantity(-1)">
+            <div class="quantity-container row">
+                <button type="button" class="btn btn-primary col-2" onclick="updateQuantity(-1)">
                     <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
                         <path fill="none" d="M0 0h24v24H0z"></path>
                         <path d="M19 13H5v-2h14v2z"></path>
                     </svg>
-                </div>
-                <div class="quantity-display col-4" id="quantity">1</div>
-                <div class="buttonShadow textColor col-4" onclick="updateQuantity(1)">
+                </button>
+                <div class="quantity-display col-3" id="quantity" style="text-align: center; font-size: 22px;">1</div>
+                <button type="button" class="btn btn-primary col-2" onclick="updateQuantity(1)">
                     <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
                         <path fill="none" d="M0 0h24v24H0z"></path>
                         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                     </svg>
-                </div>
+                </button>
+                <div class="quantity-display col-5" id="productModalPrecio" value="" style="text-align: center; font-size: 22px;">222</div>
             </div>
-
+            <br>
             <!-- Botón de agregar al carrito -->
             <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="agregarDetalleCarrito();">Agregar al Carrito</button>
           </div>
@@ -110,5 +111,5 @@
 </html>
 <script>
     setCategorias();
-    setCarrito();
+    setCarrito(idCliente);
 </script>

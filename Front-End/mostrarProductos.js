@@ -26,7 +26,7 @@ function setCategorias(){
     });
 }
 //Actualiza los cards de productos según la categoría seleccionada
-function cambiarProductos(){
+async function cambiarProductos(){
     productos = []
     let comboCategoria = document.getElementById("categoria");
     let indice = comboCategoria.selectedIndex;
@@ -41,22 +41,24 @@ function cambiarProductos(){
         }
     }
     `;
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8091/graphql",
-        contentType: "application/json",
-        timeout: 15000,
-        data: JSON.stringify({
-            query: query,
-            variables: {
-                getProductosByIdCategoriaId: idCategoria
-            }
-        }),
-        success: function(response){
-            meterCards(response.data.getProductosByIdCategoria, productos);
-            document.getElementById("cards-body").innerHTML = productos.join("");
-        }
-    })
+    try {
+        let response = await $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    getProductosByIdCategoriaId: idCategoria
+                }
+            })
+        })
+        await meterCards(response.data.getProductosByIdCategoria, productos);
+        document.getElementById("cards-body").innerHTML = productos.join("");
+    } catch (error) {
+        console.error("Error al cambiar productos:", error);
+    }
 }
 //Mete los elementos de un response en un array que se puede
 //transformar a string con .join("") y meter en un innerHTML
@@ -67,8 +69,12 @@ function meterOption(respuesta, array) {
 }
 //Mete los elementos de un que devuelve el query getProductos
 //ByCategoria en la tabla
-function meterCards(respuesta, array) {
+async function meterCards(respuesta, array) {
+    let preciosPromises = respuesta.map(producto => ultimoPrecio(producto.id));
+    let precios = await Promise.all(preciosPromises);
+
     for (let i = 0; i < respuesta.length; i++) {
+        let precioActual = precios[i];
         array.push(`
             <div class="col-xl-4 col-lg-6 col-sm-12 mb-4" value="${respuesta[i].id}">
                 <div class="card h-100 overflow-hidden">
@@ -77,7 +83,7 @@ function meterCards(respuesta, array) {
                             <div class="col-8">
                                 <div class="card-body">
                                     <h5 class="card-title">${respuesta[i].nombre}</h5>
-                                    <p class="card-text font-weight-bold">$1.50</p>
+                                    <p class="card-text font-weight-bold">$${precioActual}</p>
                                 </div>
                             </div>
                             <div class="col-4 d-flex">
@@ -89,4 +95,36 @@ function meterCards(respuesta, array) {
             </div>
         `);
     }
+}
+//Obtiene el precio más reciente para el producto
+async function ultimoPrecio(idProducto) {
+    const query = `
+    query Query($getUltimoPrecioHistoricoByIdProductoId: ID!) {
+        getUltimoPrecioHistoricoByIdProducto(id: $getUltimoPrecioHistoricoByIdProductoId) {
+            precio
+        }
+    }
+    `;
+    try {
+        let response = await $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    getUltimoPrecioHistoricoByIdProductoId: idProducto
+                }
+            })
+        });
+        
+        return response.data.getUltimoPrecioHistoricoByIdProducto.precio;
+    } catch (error) {
+        console.error("Error al obtener el precio del producto:", error);
+    }
+}
+//Obtiene la disponibilidad más reciente para el producto
+function ultimaDisponibilidad(idProducto){
+
 }
