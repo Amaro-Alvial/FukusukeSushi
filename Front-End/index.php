@@ -24,14 +24,14 @@
         <div class="container-fluid" id="navbar-container">
             <div class="container-logo">
                 <a id="logotype" href="./index.php">
-                    <img src="./img/logo.jpg" class="img-fluid" alt="Logo de la empresa">
+                    <img src="./img/logo/Logo2.png" class="img-fluid" alt="Logo de la empresa">
                 </a>
             </div>
             <ul class="navbar-nav">
                 <div class="dropdown mr-4" >
                     <button type="button" id="button-dropdown-locales" data-bs-toggle="dropdown">
                         Locales
-                        <img src="./img/dropdown_icon.png" class="img_fluid" alt="Ícono de DropDown" style="width: 22px; padding-bottom: 3px">
+                        <img src="./img/dropdown_icon.png" class="img-fluid" alt="Ícono de DropDown" style="width: 22px; padding-bottom: 3px">
                     </button>
                     <ul class="dropdown-menu" id="menu-dropdown-locales">
                         <li><a class="dropdown-item" target="_blank" href="https://www.google.com/maps/place/Museo+Interactivo+Mirador+(MIM)/@-33.5194822,-70.611972,15z/data=!4m2!3m1!1s0x0:0x4e84cc2277ad807f?sa=X&ved=1t:2428&ictx=111">Local 1</a></li>
@@ -68,13 +68,13 @@
 
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="./img/imagen_sushis_bienvenida.png" class="img" id="img-sushi-bienvenida">
+                    <img src="./img/banner/Banner2.webp" class="img" id="img-sushi-bienvenida">
                 </div>
             <div class="carousel-item">
-                <img src="./img/imagen_sushis_bienvenida.png" class="img" id="img-sushi-bienvenida">
+                <img src="./img/banner/Banner3.webp" class="img" id="img-sushi-bienvenida">
             </div>
             <div class="carousel-item">
-                <img src="./img/imagen_sushis_bienvenida.png" class="img" id="img-sushi-bienvenida">
+                <img src="./img/banner/Banner1.webp" class="img" id="img-sushi-bienvenida">
             </div>
 
         </div>
@@ -160,11 +160,11 @@
                         <div class="d-flex flex-column align-items-center">
                             <div class="mb-3">
                                 <label for="nombreUsuario" class="form-label">Nombre de Usuario</label>
-                                <input type="text" class="form-control" id="loginNombreUsuario" placeholder="Ingrese nombre de usuario" name="nombreUsuario" required>
+                                <input type="text" class="form-control" id="loginNombreUsuario" placeholder="Ingrese nombre de usuario." name="nombreUsuario" required>
                             </div>
                             <div class="mb-3">
                                 <label for="loginPass" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" id="loginPass" name="loginPass" required>
+                                <input type="password" class="form-control" id="loginPass" placeholder="Ingrese su contraseña."name="loginPass" required>
                             </div>
                             <div class="mt-2 mb-3">
                                 <button type="Button" class="btn btn-primary" id="login-button-modal" onclick="IniciarSesion()">Iniciar Sesión</button>

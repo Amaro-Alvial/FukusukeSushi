@@ -90,7 +90,7 @@ async function RegUsuario() {
     });
 }
 
-function IniciarSesion() {
+async function IniciarSesion() {
     const nombreUsuario = $('#loginNombreUsuario').val();
     const pass = $('#loginPass').val();
 
@@ -118,19 +118,19 @@ function IniciarSesion() {
             query,
             variables: { nombreUsuario, pass },
         }),
-        success: function (response) {
+        success: async function (response) {
             if (response.errors) {
                 const error = response.errors[0];
                 alert(`Error: ${error.message}`);
             } else {
                 const sesion = response.data.iniciarSesion;
-                alert(`Bienvenido/a, ${sesion.nombreUsuario}.`);
-                tipo = GetPerfilById(sesion.perfil);
-                
+                tipo = await GetPerfilById(sesion.perfil);
                 // Redirigir según el perfil
-                if (tipo.tipo === 'Admin') {
+                if (tipo.tipo == "Admin") {
+                    alert(`Bienvenido/a, ${sesion.nombreUsuario}. Redirigiendo a la página de administración.`);
                     window.location.href = 'http://localhost/Front-End/adminPersonas.php';
                 } else {
+                    alert(`Bienvenido/a, ${sesion.nombreUsuario}.`);
                     window.location.href = 'http://localhost/Front-End/index.php';
                 }
             }

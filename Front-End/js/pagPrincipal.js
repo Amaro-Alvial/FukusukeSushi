@@ -43,7 +43,7 @@ async function cardProductos(item) {
     let stock = disponibilidad.disponibilidad ? "Disponible" : "No disponible";
 
     let cardProductos = `
-        <div class="card col-xs-12 col-xxs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 col-xxl-4 p-2" style="border: white" value="${item.id}">
+        <div class="card col-xs-12 col-xxs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 p-2" style="border: white" value="${item.id}">
             <a type="button" data-bs-toggle="modal" data-bs-target="#productModal" class="producto-button" onclick="actualizarModal(this.parentElement.getAttribute('value'));">
                 <div class="card-header p-0">
                     <img src="${item.foto}" alt="Foto de ${item.nombre}" style="width: 100%; border-radius: inherit">
