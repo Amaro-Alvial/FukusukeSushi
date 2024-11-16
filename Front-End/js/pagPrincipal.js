@@ -1,9 +1,16 @@
-/* Select de las categorías. */
-
 let optionCategorias = [];
 
 function optionCategoria(item){
     optionCategorias.push('<option class="categoria-option" value="' + item.id + '">' + item.nombre + '</option>');
+}
+function optionProvincia(item) {
+    optionsProvincia.push('<option value="' + item.id + '">' + item.nombre + '</option>');
+}
+function optionRegion(item) {
+    optionsRegion.push('<option value="' + item.id + '">' + item.nombre + '</option>');
+}
+function optionComuna(item) {
+    optionsComuna.push('<option value="' + item.id + '">' + item.nombre + '</option>');
 }
 
 function getCategorias(){
@@ -59,7 +66,6 @@ async function cardProductos(item) {
     `;
     document.getElementById('productos-container').insertAdjacentHTML('beforeend', cardProductos);
 }
-
 async function getProductosByIdCategoria(categoria) {
     const query = `
     query getProductosByIdCategoria($id: String){
@@ -92,7 +98,6 @@ async function getProductosByIdCategoria(categoria) {
         },
     });
 }
-
 function GetUltimoPrecioHistoricoByIdProducto(idProducto){
     let query = `
     query miQuery($id: String){
@@ -121,7 +126,6 @@ function GetUltimoPrecioHistoricoByIdProducto(idProducto){
         });
     });
 }
-
 function GetUltimoDisponibleHistoricoByIdProducto(idProducto){
     let query = `
     query miQuery($id: String){
@@ -146,6 +150,199 @@ function GetUltimoDisponibleHistoricoByIdProducto(idProducto){
             }),
             success: function(response){
                 resolve(response.data.getUltimoDisponibleHistoricoByIdProducto);
+            }
+        });
+    });
+}
+function GetComunasByIdProvincia(idProvincia){
+    let query = `
+    query miQuery($input: String){
+        getComunasByIdProvincia(id: $input){
+            id
+            nombre
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {
+                input: idProvincia
+            }
+        }),
+        success: function(response){
+            optionsComuna = [];
+            optionsComuna.push('<option value="defaultComuna">Seleccione la Comuna</option>');
+            response.data.getComunasByIdProvincia.forEach(optionComuna);
+            document.getElementById('regComuna').innerHTML = optionsComuna.join("");
+        }
+    });
+}
+function GetProvinciasByIdRegion(idRegion){
+    let query = `
+    query miQuery($input: String){
+        getProvinciasByIdRegion(id: $input){
+            id
+            nombre
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {
+                input: idRegion
+            }
+        }),
+        success: function(response){
+            optionsProvincia = [];
+            optionsProvincia.push('<option value="defaultProvincia">Seleccione la Provincia</option>');
+            response.data.getProvinciasByIdRegion.forEach(optionProvincia);
+            document.getElementById('regProvincia').innerHTML = optionsProvincia.join("");
+
+        }
+    });
+}
+function GetComunas(){
+    let query = `
+    query miQuery {
+        getComunas {
+            id
+            nombre
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {}
+        }),
+        success: function(response){
+            optionsComuna = [];
+            optionsComuna.push('<option value="defaultComuna">Seleccione la Comuna</option>');
+            response.data.getComunas.forEach(optionComuna);
+            document.getElementById('regComuna').innerHTML = optionsComuna.join("");
+        }
+    });
+}
+function GetProvincias(){
+    let query = `
+    query miQuery {
+        getProvincias {
+            id
+            nombre
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {}
+        }),
+        success: function(response){
+            optionsProvincia = [];
+            optionsProvincia.push('<option value="defaultProvincia">Seleccione la Provincia</option>');
+            response.data.getProvincias.forEach(optionProvincia);
+            document.getElementById('regProvincia').innerHTML = optionsProvincia.join("");
+
+        }
+    });
+}
+function GetRegiones(){
+    let query = `
+    query miQuery {
+        getRegions {
+            id
+            nombre
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {}
+        }),
+        success: function(response){
+            optionsRegion = [];
+            optionsRegion.push('<option value="defaultRegion">Seleccione la region</option>');
+            response.data.getRegions.forEach(optionRegion);
+            document.getElementById('regRegion').innerHTML = optionsRegion.join("");
+        }
+    });
+}
+function GetPerfilById(idPerfil){
+    let query = `
+    query miQuery($id: ID!){
+        getPerfilById(id: $id){
+            id
+            tipo
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: idPerfil
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getPerfilById);
+            }
+        });
+    });
+}
+function GetUsuarioById(idUsuario){
+    let query = `
+    query miQuery($id: ID!){
+        getUsuarioById(id: $id){
+            id
+            email
+            pass
+            nombreUsuario
+            persona
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: idUsuario
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getUsuarioById);
             }
         });
     });

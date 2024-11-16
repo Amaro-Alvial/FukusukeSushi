@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const {ApolloServer, gql} = require('apollo-server-express');
 const mailjet = require('node-mailjet').apiConnect(process.env.API_KEY, process.env.SECRET_KEY);
+const bcrypt = require('bcrypt');
 
 mongoose.connect(`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@${process.env.MONGODB_CLUSTER}/${process.env.MONGODB_DB}?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
@@ -223,6 +224,12 @@ input ComunaInput{
 type Alert{
     message: String!
 }
+type Sesion {
+    id: ID!
+    nombreUsuario: String!
+    email: String!
+    perfil: String!
+}
 type Query{
     getPersonas: [Persona]
     getPersonaById(id: ID!): Persona
@@ -230,6 +237,7 @@ type Query{
     getUsuarios: [Usuario]
     getUsuarioById(id: ID!): Usuario
     getUsuariosByIdPersona(id: String): [Usuario]
+    getUsuarioByNombreUsuario(nombreUsuario: String!): Usuario
     getProductos: [Producto]
     getProductoById(id: ID!): Producto
     getProductosByIdCategoria(id: String): [Producto]
@@ -263,6 +271,7 @@ type Query{
     getHorarioCajasByIdUsuario(id: String): [HorarioCaja]
     getPerfils: [Perfil]
     getPerfilById(id: ID!): Perfil
+    getPerfilByTipo(tipo: String!): Perfil
     getUsuarioPerfils: [UsuarioPerfil]
     getUsuarioPerfilById(id: ID!): UsuarioPerfil
     getUsuarioPerfilsByIdPerfil(id: String): [UsuarioPerfil]
@@ -284,6 +293,7 @@ type Query{
     getComunas: [Comuna]
     getComunaById(id: ID!): Comuna
     getComunasByIdProvincia(id: String): [Comuna]
+    iniciarSesion(nombreUsuario: String!, pass: String!): Sesion!
 }
 type Mutation{
     addPersona(input:PersonaInput): Persona
@@ -340,6 +350,7 @@ type Mutation{
     addComuna(input:ComunaInput): Comuna
     updComuna(id: ID!, input:ComunaInput): Comuna
     delComuna(id: ID!): Alert
+    registrarUsuario(personaInput: PersonaInput!, usuarioInput: UsuarioInput!, usuarioPerfilInput: UsuarioPerfilInput!): UsuarioPerfil!
 }
 `;
 
@@ -368,6 +379,10 @@ const resolvers = {
         async getUsuariosByIdPersona(obj, {id}){
             let usuarios = await Usuario.find({persona: id})
             return usuarios;
+        },
+        async getUsuarioByNombreUsuario(obj, {nombreUsuario}){
+            let usuario = await Usuario.findOne({nombreUsuario: nombreUsuario});
+            return usuario;
         },
         async getProductos(obj){
             let productos = await Producto.find();
@@ -501,6 +516,10 @@ const resolvers = {
             let perfil = await Perfil.findById(id);
             return perfil;
         },
+        async getPerfilByTipo(obj, {tipo}){
+            let perfil = await Perfil.findOne({tipo: tipo})
+            return perfil;
+        },
         async getUsuarioPerfils(obj){
             let usuarioPerfils = await UsuarioPerfil.find();
             return usuarioPerfils;
@@ -584,7 +603,29 @@ const resolvers = {
         async getComunasByIdProvincia(obj, {id}){
             let comuna = await Comuna.find({provincia: id});
             return comuna;
-        }
+        },
+        iniciarSesion: async (obj, { nombreUsuario, pass }, { models }) => {
+            const { Usuario, UsuarioPerfil } = models;
+
+            const usuario = await Usuario.findOne({ nombreUsuario });
+            if (!usuario) {
+                throw new Error("Usuario no encontrado.");
+            }
+            const esValida = await bcrypt.compare(pass, usuario.pass);
+            if (!esValida) {
+                throw new Error("Contraseña incorrecta.");
+            }
+            const usuarioPerfil = await UsuarioPerfil.findOne({ usuario: usuario.id });
+            if (!usuarioPerfil) {
+                throw new Error("Perfil del usuario no encontrado.");
+            }
+            return {
+                id: usuario.id,
+                nombreUsuario: usuario.nombreUsuario,
+                email: usuario.email,
+                perfil: usuarioPerfil.perfil,
+            };
+        },
     },
     Mutation:{
         async addPersona(obj, {input}){
@@ -605,12 +646,17 @@ const resolvers = {
         async addUsuario(obj, { input }) {
             const personaBus = await Persona.findById(input.persona);
             console.log("Enviando correo a:", input.email);
+            const correoValido = await verificarCorreoConServicioExterno(usuarioInput.email);
+            if (!correoValido) {
+                throw new Error("Correo inválido. No se puede registrar el usuario.");
+            }
             const correoEnviado = await enviarCorreoConfirmacion(input.email, input.nombreUsuario);
             if (!correoEnviado) {
                 console.log("No se puede crear el usuario, correo inválido.");
                 return null;
             }
-            const usuario = new Usuario({email: input.email, pass: input.pass, nombreUsuario: input.nombreUsuario, persona: personaBus._id,});
+            const hashedPassword = await bcrypt.hash(input.pass, 10);
+            const usuario = new Usuario({email: input.email, pass: hashedPassword, nombreUsuario: input.nombreUsuario, persona: personaBus._id,});
             await usuario.save();
             return usuario;
         },
@@ -620,8 +666,9 @@ const resolvers = {
                 console.log("No se puede crear el usuario, correo inválido.");
                 return null;
             }
+            const hashedPassword = await bcrypt.hash(input.pass, 10);
             let personaBus = await Persona.findById(input.persona);
-            let usuario = await Usuario.findByIdAndUpdate(id, {email: input.email, pass: input.pass, nombreUsuario: input.nombreUsuario, persona: personaBus._id}, { new: true });
+            let usuario = await Usuario.findByIdAndUpdate(id, {email: input.email, pass: hashedPassword, nombreUsuario: input.nombreUsuario, persona: personaBus._id}, { new: true });
             return usuario;
         },
         async delUsuario(obj, {id}){
@@ -905,16 +952,49 @@ const resolvers = {
             return {
                 message: "Comuna eliminada"
             };
-        }               
+        },
+        //MEGA función para registrar un usuario correctamente
+        registrarUsuario: async (_, { personaInput, usuarioInput, usuarioPerfilInput }, { models }) => {
+            const { Persona, Usuario, UsuarioPerfil } = models;
+            usuarioPerfilInput.perfil = "672bf4c5ed29060af5294ebc"; // Perfil de Cliente
+        
+            // // Verificar correo externo
+            const correoValido = await verificarCorreoConServicioExterno(usuarioInput.email);
+            if (!correoValido) {
+                throw new Error("Correo inválido. No se puede registrar el usuario.");
+            }
+            const nuevaPersona = new Persona(personaInput);
+            await nuevaPersona.save();
+            // Hashear la contraseña y crear Usuario
+            const hashedPassword = await bcrypt.hash(usuarioInput.pass, 10);
+            const nuevoUsuario = new Usuario({
+                ...usuarioInput,
+                pass: hashedPassword,
+                persona: nuevaPersona.id,
+            });
+            await nuevoUsuario.save();
+            const nuevoUsuarioPerfil = new UsuarioPerfil({
+                ...usuarioPerfilInput,
+                usuario: nuevoUsuario.id,
+            });
+            await nuevoUsuarioPerfil.save();
+            const correoEnviado = await enviarCorreoConfirmacion(
+                nuevoUsuario.email,
+                nuevoUsuario.nombreUsuario
+            );
+            if (!correoEnviado) {
+                throw new Error("No se pudo enviar el correo de confirmación.");
+            }
+            return {
+                id: nuevoUsuarioPerfil.id,
+                usuario: nuevoUsuario.id,
+                perfil: usuarioPerfilInput.perfil,
+            };
+        },
     }
 }
 
 async function enviarCorreoConfirmacion(email, nombreUsuario) {
-    const correoValido = await verificarCorreoConServicioExterno(email);
-    if (!correoValido) {
-        console.log("No se puede crear el usuario, correo inválido.");
-        return false;
-    }
     try {
         const request = mailjet.post("send", { 'version': 'v3.1' }).request({
             "Messages": [
@@ -974,8 +1054,34 @@ const corsOptions = {
     credentials: false
 }
 
-async function startServer(){
-    apolloServer = new ApolloServer({typeDefs, resolvers, corsOptions});
+async function startServer() {
+    apolloServer = new ApolloServer({
+        typeDefs,
+        resolvers,
+        context: () => ({
+            models: {
+                Persona,
+                Usuario,
+                UsuarioPerfil,
+                Producto,
+                Boleta,
+                DetalleCompra,
+                Categoria,
+                PrecioHistorico,
+                DisponibleHistorico,
+                Caja,
+                Despacho,
+                HorarioCaja,
+                Perfil,
+                Carrito,
+                Region,
+                Provincia,
+                Comuna,
+                DetalleCarrito,
+            },
+        }),
+        corsOptions,
+    });
     await apolloServer.start();
     apolloServer.applyMiddleware({ app, cors: false });
 }

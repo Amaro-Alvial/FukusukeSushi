@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="./css/styles.css">
     <script src="./js/pagPrincipal.js"></script>
     <script src="./js/carrito.js"></script>
@@ -44,7 +45,7 @@
                     </button>
                 </li>
                 <li class="nav-item">
-                    <button type="button" id="signup-button" data-bs-toggle="modal" data-bs-target="#signupModal">
+                    <button type="button" id="signup-button" data-bs-toggle="modal" data-bs-target="#regModal">
                         Crear Cuenta
                     </button>
                 </li>
@@ -158,19 +159,19 @@
                     <form id="login-form">
                         <div class="d-flex flex-column align-items-center">
                             <div class="mb-3">
-                                <label for="email" class="form-label">E-Mail</label>
-                                <input type="email" class="form-control" id="email" placeholder="ejemplo@email.com" name="email" required>
+                                <label for="nombreUsuario" class="form-label">Nombre de Usuario</label>
+                                <input type="text" class="form-control" id="loginNombreUsuario" placeholder="Ingrese nombre de usuario" name="nombreUsuario" required>
                             </div>
                             <div class="mb-3">
-                                <label for="pwd" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" id="pwd" name="pswd" required>
+                                <label for="loginPass" class="form-label">Contraseña</label>
+                                <input type="password" class="form-control" id="loginPass" name="loginPass" required>
                             </div>
                             <div class="mt-2 mb-3">
-                                <button type="submit" class="btn btn-primary" id="login-button-modal">Iniciar Sesión</button>
+                                <button type="Button" class="btn btn-primary" id="login-button-modal" onclick="IniciarSesion()">Iniciar Sesión</button>
                             </div>
                             <div>
                                 Si no tienes una cuenta aún,
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#signupModal">¡Regístrate!</a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#regModal">¡Regístrate!</a>
                                 .
                             </div>
                         </div>
@@ -183,43 +184,95 @@
         </div>
     </div>
 
-    <!-- Modal registro, llamar a addUsuario? -->
-    <div class="modal fade" id="signupModal" tabindex="-1">
+    <!-- Modal de registro -->
+    <div class="modal fade" id="regModal" tabindex="-1" aria-labelledby="regModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-
                 <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <h5 class="modal-title" id="regModalLabel">Registrar Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-    
-                <div class="modal-body">
-                    <form action="/inicioSesion.php">
-                        <div class="d-flex flex-column align-items-center">
+                <div class="modal-body"> <!-- Se abre el Modal Body -->
+                    <form id="regForm">
+                        <div class ="row"> <!-- Se abre fila 1 del modal -->
+                            <div class="mb-3 col-7">
+                                <label for="regRun" class="form-label">RUN</label>
+                                <input type="text" class="form-control" id="regRun">
+                            </div>
+                            <div class="mb-3 col-5">
+                                <label for="regFechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+                                <input type="date" class="form-control" id="regFechaNacimiento">
+                            </div>
+                        </div> <!-- Cierre de la Fila 1 del modal -->
+                        <div class = "row"> <!-- Se abre fila 2 del modal -->
+                            <div class="mb-3 col-xxl-9">
+                                <label for="regNombre" class="form-label">Nombre Completo</label>
+                                <input type="text" class="form-control" id="regNombre">
+                            </div>
+
+                            <div class="mb-3 col-xxl-3">
+                                <label for="regSexo" class="form-label">Sexo</label>
+                                <select class="form-select" id="regSexo">
+                                    <option value="M">M</option>
+                                    <option value="F">F</option>
+                                </select>
+                            </div> 
+                        </div> <!-- Cierre de la Fila 2 del modal -->
+                        <div class="row"> <!-- Se abre fila 3 del modal -->
+                            <div class="mb-3 col-xxl-6">
+                                <label for="regNombreUsuario" class="form-label">Nombre de Usuario</label>
+                                <input type="text" class="form-control" id="regNombreUsuario">
+                            </div>
+                            <div class="mb-3 col-xxl-6">
+                                <label for="regPass" class="form-label">Contraseña</label>
+                                <input type="password" class="form-control" id="regPass">
+                            </div>
+                        </div> <!-- Cierre de la Fila 3 del modal -->
+                        <div class= "row"> <!-- Se abre fila 4 del modal -->
+                            <div class="mb-3 col-xxl-5">
+                                <label for="regCaducidad" class="form-label">Caducidad</label>
+                                <input type="date" class="form-control" id="regCaducidad">
+                            </div>
+                            <div class="mb-3 col-xxl-7">
+                                <label for="regTelefono" class="form-label">Teléfono</label>
+                                <input type="text" class="form-control" id="regTelefono">
+                            </div>
+                        </div> <!-- Cierre de la Fila 4 del modal -->
+                        <div class = "row"> <!-- Se abre fila 5 del modal -->
+                            <div class="mb-3 col-xxl-8">
+                                <label for="regEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="regEmail">
+                            </div>
+                        </div> <!-- Cierre de la Fila 5 del modal -->
+                        <div class="row"> <!-- Se abre fila 6 del modal -->
+                            <div class="mb-3 col-12">
+                                <label for="regRegion" class="form-label">Región</label>
+                                <select class="form-select" name="region" id="regRegion"></select>
+                            </div>
+                        </div> <!-- Cierre de la Fila 6 del modal -->
+                        <div class="row">
+                            <div class="mb-3 col-12">
+                                <label for="regProvincia" class="form-label">Provincia</label>
+                                <select class="form-select" name="provincia" id="regProvincia"><option value="defaultProvincia">Seleccione la Provincia</option></select>
+                            </div>
+                        </div> <!-- Cierre de la Fila 6 del modal -->
+                        <div class="row"> <!-- Se abre fila 7 del modal -->
+                            <div class="mb-3 col-12">
+                                <label for="regComuna" class="form-label">Comuna</label>
+                                <select class="form-select" name="comuna" id="regComuna"><option value="defaultComuna">Seleccione la Comuna</option></select>
+                            </div>
+                        </div> <!-- Cierre de la Fila 7 del modal -->
+                        <div class="row"> <!-- Se abre fila 8 del modal -->
                             <div class="mb-3">
-                                <label for="nombre" class="form-label">Nombre</label>
-                                <input type="text" class="form-control" id="nombre" name="nombreUsuario">
+                                <label for="regDireccion" class="form-label">Dirección</label>
+                                <input type="text" class="form-control" id="regDireccion">
                             </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">E-Mail</label>
-                                <input type="email" class="form-control" id="mail" placeholder="ejemplo@email.com" name="email">
-                            </div>
-                            <div class="mb-3">
-                                <label for="pwd" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" id="pwd" name="pswd">
-                            </div>
-                            <div class="mt-2 mb-3">
-                                <button type="submit" class="btn btn-primary">Crear Cuenta</button>
-                            </div>
-                            <div>
-                                ¿Ya tienes una cuenta?,
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Inicia Sesión</a>
-                                .
-                            </div>
-                        </div>
+                        </div> <!-- Cierre de la Fila 8 del modal -->
                     </form>
-                </div>
-    
+                </div> <!-- Cierre del Modal Body -->
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button id="confirmarRegBtn"type="button" class="btn btn-primary" onclick="RegUsuario()">Confirmar</button>
                 </div>
             </div>
         </div>
