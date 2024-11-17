@@ -1,3 +1,11 @@
+<?php
+session_start(); 
+if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
+    header('Location: adminPersonas.php');
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,10 +20,11 @@
     <script src="./js/pagPrincipal.js"></script>
     <script src="./js/carrito.js"></script>
     <script src="./js/modalProducto.js"></script>
-    <script>
-        //TODO: Falta obtener la ID del Usuario mediante el inicio de sesión
-        let idCliente = "67368de06341f6be9dbe8df4";
-    </script>
+    <?php
+    if (isset($_SESSION['usuario_id'])) {
+        echo "<script>let idCliente = '" . $_SESSION['usuario_id'] . "';</script>";
+    }
+    ?>
 </head>
 
 <body>
@@ -28,7 +37,7 @@
                 </a>
             </div>
             <ul class="navbar-nav">
-                <div class="dropdown mr-4" >
+                <div class="dropdown mr-4">
                     <button type="button" id="button-dropdown-locales" data-bs-toggle="dropdown">
                         Locales
                         <img src="./img/dropdown_icon.png" class="img-fluid" alt="Ícono de DropDown" style="width: 22px; padding-bottom: 3px">
@@ -39,19 +48,34 @@
                         <li><a class="dropdown-item" href="#">Local 3</a></li>
                     </ul>
                 </div>
-                <li class="nav-item">
-                    <button type="button" id="login-button" data-bs-toggle="modal" data-bs-target="#loginModal">
-                        Iniciar Sesión
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button type="button" id="signup-button" data-bs-toggle="modal" data-bs-target="#regModal">
-                        Crear Cuenta
-                    </button>
-                </li>
+                <?php if (!isset($_SESSION['usuario_id'])): ?>
+                    <!-- Mostrar si no hay sesión activa -->
+                    <li class="nav-item">
+                        <button type="button" id="login-button" data-bs-toggle="modal" data-bs-target="#loginModal">
+                            Iniciar Sesión
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" id="signup-button" data-bs-toggle="modal" data-bs-target="#regModal">
+                            Crear Cuenta
+                        </button>
+                    </li>
+                <?php else: ?>
+                    <!-- Mostrar si hay sesión activa -->
+                    <li class="nav-item dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                            Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre_usuario']); ?>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="userMenu">
+                            <li><a class="dropdown-item" href="perfilUsuario.php">Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
+                        </ul>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
     </nav>
+
 
     <div class="container-fluid d-flex justify-content-center" id="aviso-iniciasesion">
         Te invitamos a iniciar sesión para disfrutar de nuestra carta.
@@ -138,7 +162,10 @@
                             </div>
                             <br>
                             <!-- Botón de agregar al carrito -->
-                            <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="agregarDetalleCarrito();">Agregar al Carrito</button>
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="
+                            <?php echo isset($_SESSION['usuario_id']) ? 'agregarDetalleCarrito();' : ''; ?>" 
+                            <?php echo !isset($_SESSION['usuario_id']) ? 'data-bs-toggle="modal" data-bs-target="#loginModal"' : ''; ?>>
+                            Agregar al Carrito</button>
                         </div>
                     </div>
                 </div>

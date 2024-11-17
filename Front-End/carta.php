@@ -1,3 +1,6 @@
+<?php
+require_once 'session.php'; // Verifica la sesión
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>

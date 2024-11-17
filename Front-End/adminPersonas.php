@@ -1,3 +1,10 @@
+<?php
+require_once 'session.php';
+    if ($_SESSION['perfil'] != 'Admin') {
+        header('Location: index.php');
+        exit();
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +17,13 @@
     <script src="./js/adminPersonas.js"></script>
 </head>
 <body>
+<button class="btn btn-secondary dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+    Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre_usuario']); ?>
+</button>
+<ul class="dropdown-menu" aria-labelledby="userMenu">
+    <li><a class="dropdown-item" href="perfilUsuario.php">Mi Perfil</a></li>
+    <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
+</ul>                      
 <div class="container mt-3"> <!-- Se abre el Container -->
   <h2>Administración de Personas</h2>
   <form>

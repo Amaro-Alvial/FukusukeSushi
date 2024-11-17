@@ -89,7 +89,6 @@ async function RegUsuario() {
         },
     });
 }
-
 async function IniciarSesion() {
     const nombreUsuario = $('#loginNombreUsuario').val();
     const pass = $('#loginPass').val();
@@ -109,37 +108,59 @@ async function IniciarSesion() {
             }
         }
     `;
+    try {
+        const response = await $.ajax({
+            url: 'http://localhost:8091/graphql',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                query,
+                variables: { nombreUsuario, pass },
+            }),
+        });
 
-    $.ajax({
-        url: 'http://localhost:8091/graphql',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({
-            query,
-            variables: { nombreUsuario, pass },
-        }),
-        success: async function (response) {
-            if (response.errors) {
-                const error = response.errors[0];
-                alert(`Error: ${error.message}`);
-            } else {
-                const sesion = response.data.iniciarSesion;
-                tipo = await GetPerfilById(sesion.perfil);
-                // Redirigir según el perfil
-                if (tipo.tipo == "Admin") {
-                    alert(`Bienvenido/a, ${sesion.nombreUsuario}. Redirigiendo a la página de administración.`);
-                    window.location.href = 'http://localhost/Front-End/adminPersonas.php';
+        if (response.errors) {
+            const error = response.errors[0];
+            alert(`Error: ${error.message}`);
+        } else {
+            const data = response.data.iniciarSesion;
+            const perfil = await GetPerfilById(data.perfil);
+            // Enviar datos a PHP para manejar la sesión
+            try {
+                const phpResponse = await $.ajax({
+                    url: 'http://localhost/Front-End/login_handler.php',
+                    type: 'POST',
+                    data: {
+                        usuario_id: data.id,
+                        nombre_usuario: data.nombreUsuario,
+                        perfil: perfil.tipo,
+                    },
+                });
+
+                const result = JSON.parse(phpResponse);
+                if (result.success) {
+                    alert(result.message);
+                    
+                    // Redirigir según el perfil
+                    if ( perfil.tipo == 'Admin') {
+                        alert(`Bienvenido/a, ${data.nombreUsuario}. Redirigiendo a la página de administración.`);
+                        window.location.href = 'http://localhost/Front-End/adminPersonas.php';
+                    } else {
+                        alert(`Bienvenido/a, ${data.nombreUsuario}.`);
+                        window.location.href = 'http://localhost/Front-End/index.php';
+                    }
                 } else {
-                    alert(`Bienvenido/a, ${sesion.nombreUsuario}.`);
-                    window.location.href = 'http://localhost/Front-End/index.php';
+                    alert(result.message);
                 }
+            } catch (phpError) {
+                console.error('Error en PHP:', phpError);
+                alert('Error al iniciar sesión en PHP.');
             }
-        },
-        error: function (xhr, status, error) {
-            console.error('Error AJAX:', error);
-            alert('Error al iniciar sesión. Inténtalo de nuevo.');
-        },
-    });
+        }
+    } catch (error) {
+        console.error('Error AJAX:', error);
+        alert('Error al iniciar sesión. Inténtalo de nuevo.');
+    }
 }
 
 function validarFormulario() {

@@ -8,7 +8,7 @@ async function abrirModalEditar(run) {
     let provincia = await GetProvinciaById(comuna.provincia);
     let region = await GetRegionById(provincia.region);
     let fecha = new Date(item.fechaNacimiento).toISOString().split('T')[0];
-    if (item3.caducidad != null) {
+    if (item3.caducidad != null && item3.caducidad != "") {
         let fecha2 = new Date(item3.caducidad).toISOString().split('T')[0];
         document.getElementById('editCaducidad').value = fecha2;
     }

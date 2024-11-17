@@ -1,3 +1,10 @@
+<?php
+require_once 'session.php';
+if ($_SESSION['perfil'] != 'Admin') {
+    header('Location: index.php');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
