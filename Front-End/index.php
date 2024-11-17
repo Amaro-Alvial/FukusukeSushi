@@ -120,8 +120,8 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
         </div>
         <div class="offcanvas-body">
-            <h3 class="text-center">Carrito Vacío 😢</h3>
-            <h5  class="text-center">Cuando agregues productos al carrito, aparecerán aquí.</h5>
+            <h3 class="text-center">Inicia sesión 👤</h3>
+            <h5 class="text-center text-muted">Para poder usar el carrito debes iniciar sesión.</h5>
         </div>
     </div>
 

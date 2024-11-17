@@ -110,9 +110,21 @@ async function actualizarCarrito(){
         cardsCarrito.push(creaCardCarrito(response.data.getProductoById, prod.cantidad, prod.id, precio.precio));
     }
     if (cardsCarrito.length == 0){
-        document.querySelector('#carrito .offcanvas-body').innerHTML = '<h3 class="text-center">Carrito Vacío 😢</h3><h5 class="text-center">Cuando agregues productos al carrito, aparecerán aquí.</h5>'
+        document.querySelector('#carrito .offcanvas-body').innerHTML = `
+        <h3 class="text-center">Carrito Vacío 😢</h3>
+        <h5 class="text-center">Cuando agregues productos al carrito, aparecerán aquí.</h5>`
     } else {
         document.querySelector('#carrito .offcanvas-body').innerHTML = cardsCarrito.join("");
+        let boton =`
+        <br>
+        <div class="text-center">
+            <button class="btn btn-success">
+                Comprar
+                <img src="./img/carrito.png" style="width: 20px">
+            </button>
+        </div>
+        `;
+        document.querySelector('#carrito .offcanvas-body').insertAdjacentHTML('beforeend', boton);
     }
 }
 async function getProductosByIdCarrito(idCarrito) {
