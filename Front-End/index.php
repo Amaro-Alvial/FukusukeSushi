@@ -76,11 +76,12 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
         </div>
     </nav>
 
-
+    <!-- Aviso de iniciar sesión (debería eliminarse/cambiar cuando se inicia sesión) -->
     <div class="container-fluid d-flex justify-content-center" id="aviso-iniciasesion">
         Te invitamos a iniciar sesión para disfrutar de nuestra carta.
     </div>
 
+    <!-- Carrusel -->
     <div>
         <div id="demo" class="carousel slide" data-bs-ride="carousel">
 
@@ -112,7 +113,7 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
         </div>
     </div>
     
-    <!--Offcanvassss (Carritoooo)-->
+    <!--Offcanvas (Carrito)-->
     <div class="offcanvas offcanvas-end" id="carrito" value="">
         <div class="offcanvas-header">
             <h1 class="offcanvas-title">Carrito</h1>
@@ -124,7 +125,7 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
         </div>
     </div>
 
-    <!--Modallll Producto Seleccionadoooo-->
+    <!-- Modal del producto seleccionado-->
     <div class="modal fade" id="productModal" value="" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -186,12 +187,12 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
                     <form id="login-form">
                         <div class="d-flex flex-column align-items-center">
                             <div class="mb-3">
-                                <label for="nombreUsuario" class="form-label">Nombre de Usuario</label>
+                                <label for="loginNombreUsuario" class="form-label">Nombre de Usuario</label>
                                 <input type="text" class="form-control" id="loginNombreUsuario" placeholder="Ingrese nombre de usuario." name="nombreUsuario" required>
                             </div>
                             <div class="mb-3">
                                 <label for="loginPass" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" id="loginPass" placeholder="Ingrese su contraseña."name="loginPass" required>
+                                <input type="password" class="form-control" id="loginPass" placeholder="Ingrese su contraseña."name="pass" required>
                             </div>
                             <div class="mt-2 mb-3">
                                 <button type="Button" class="btn btn-primary" id="login-button-modal" onclick="IniciarSesion()">Iniciar Sesión</button>
@@ -305,12 +306,14 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
         </div>
     </div>
 
+    <!-- Pide Ya -->
     <div class="container-fluid d-flex justify-content-center mt-2 mb-2" style="background-color: white">
         <button id="pideya-button">
             ¡Pide Ya!<br>
         </button>
     </div>
 
+    <!-- Container con productos y categorías -->
     <div class="container-fluid">
         <div class="row">
             <div class="col-10">
@@ -324,6 +327,7 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
         </div>
     </div>
     
+    <!-- Botón para mostrar el carrito -->
     <button id="carrito-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" onclick="actualizarCarrito();">
         <img src="./img/carrito.png" style="width: 45px">
         <span id="cantidadCarrito">0</span>
@@ -335,7 +339,7 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
         </div>
     </footer>
 
-    <!--https://www.svgrepo.com/collection/dazzle-line-icons/, íconos con lisencia libre. -->
+    <!--https://www.svgrepo.com/collection/dazzle-line-icons/, íconos con licencia libre. -->
     
 </body>
 </html>
