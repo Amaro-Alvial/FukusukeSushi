@@ -141,7 +141,7 @@ async function IniciarSesion() {
                     alert(result.message);
                     
                     // Redirigir según el perfil
-                    if ( perfil.tipo == 'Admin') {
+                    if ( perfil.tipo == 'Admin' || perfil.tipo == "Dueno") {
                         alert(`Bienvenido/a, ${data.nombreUsuario}. Redirigiendo a la página de administración.`);
                         window.location.href = 'http://localhost/Front-End/adminPersonas.php';
                     } else {

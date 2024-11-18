@@ -102,6 +102,37 @@ function GetBoletasByMes(mes) {
         }
     });
 }
+function GetBoletasByMes2(mes){
+    mes=parseInt(mes);
+    let query = `
+    query miQuery($mes: Int!){
+        getBoletasByMes(mes: $mes){
+            id
+            fecha
+            cliente
+            horarioCaja
+            despacho
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    mes: mes
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getBoletasByMes);
+            }
+        });
+    });
+}
 function GetBoletaById(idBoleta){
     let query = `
     query miQuery($id: ID!){

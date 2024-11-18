@@ -1,6 +1,6 @@
 <?php
 require_once 'session.php';
-    if ($_SESSION['perfil'] != 'Admin') {
+    if ($_SESSION['perfil'] != 'Admin' && $_SESSION['perfil'] != 'Dueno') {
         header('Location: index.php');
         exit();
     }
@@ -14,6 +14,7 @@ require_once 'session.php';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="./js/adminVentas.js"></script>
 </head>
 <body>
@@ -26,38 +27,48 @@ require_once 'session.php';
 </ul>                      
 <div class="container mt-3"> <!-- Se abre el Container -->
   <h2>Administración de Ventas</h2>
-  <div class="row"> <!-- Se abre fila 1 -->
-    <div class="mb-3 mt-3 col-xxl-3">
-        <label for="Fechas">Mes:</label> <br>
-        <select class="form-select" name="Fechas" id="cmbFecha">
-            <option value="DefaultFecha">Seleccione una Fecha</option>
-            <option value="0">Enero</option>
-            <option value="1">Febrero</option>
-            <option value="2">Marzo</option>
-            <option value="3">Abril</option>
-            <option value="4">Mayo</option>
-            <option value="5">Junio</option>
-            <option value="6">Julio</option>
-            <option value="7">Agosto</option>
-            <option value="8">Septiembre</option>
-            <option value="9">Octubre</option>
-            <option value="10">Noviembre</option>
-            <option value="11">Diciembre</option>
-        </select>
-    </div>
-    <div class="mb-3 mt-3 col-xxl-3">
-        <label for="FechaBusqueda">Fecha:</label> <br>
-        <input type="date" class="form-control" id="FechaBusqueda">
-    </div>
-    <div class="mb-3 mt-3 col-xxl-3">
-        <label for="IdBusqueda">ID:</label> <br>
-        <input type="text" class="form-control" id="IdBusqueda" placeholder="Busqueda por ID Boleta">
-    </div>
-    <div class="mb-3 mt-3 col-xxl-1">
+    <?php
+    $str= <<<EOF
         <br>
-        <button class="btn btn-primary" id="btnBuscar" onclick="BuscarBoletaPorId()">Buscar</button>
-    </div>
-
+        <div style="width 60%">
+        <canvas id="BoletasPorMes"></canvas>
+        </div>
+    EOF;
+    echo $str;
+    ?>
+    <hr>
+    <h2>Navegación de Boletas</h2>
+    <div class="row"> <!-- Se abre fila 1 -->
+        <div class="mb-3 mt-3 col-xxl-3">
+            <label for="Fechas">Mes:</label> <br>
+            <select class="form-select" name="Fechas" id="cmbFecha">
+                <option value="DefaultFecha">Seleccione una Fecha</option>
+                <option value="0">Enero</option>
+                <option value="1">Febrero</option>
+                <option value="2">Marzo</option>
+                <option value="3">Abril</option>
+                <option value="4">Mayo</option>
+                <option value="5">Junio</option>
+                <option value="6">Julio</option>
+                <option value="7">Agosto</option>
+                <option value="8">Septiembre</option>
+                <option value="9">Octubre</option>
+                <option value="10">Noviembre</option>
+                <option value="11">Diciembre</option>
+            </select>
+        </div>
+        <div class="mb-3 mt-3 col-xxl-3">
+            <label for="FechaBusqueda">Fecha:</label> <br>
+            <input type="date" class="form-control" id="FechaBusqueda">
+        </div>
+        <div class="mb-3 mt-3 col-xxl-3">
+            <label for="IdBusqueda">ID:</label> <br>
+            <input type="text" class="form-control" id="IdBusqueda" placeholder="Busqueda por ID Boleta">
+        </div>
+        <div class="mb-3 mt-3 col-xxl-1">
+            <br>
+            <button class="btn btn-primary" id="btnBuscar" onclick="BuscarBoletaPorId()">Buscar</button>
+        </div>
   </div> <!-- Cierre de la Fila 1 -->
   <div class="row"> <!-- Se abre fila 2 -->
       <table id="tblVenta"></table>

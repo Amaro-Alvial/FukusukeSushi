@@ -1,6 +1,6 @@
 <?php
 session_start(); 
-if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
+if (isset($_SESSION['usuario_id']) && ($_SESSION['perfil'] == 'Admin' or $_SESSION['perfil'] == 'Dueno')) {
     header('Location: adminPersonas.php');
     exit();
 }

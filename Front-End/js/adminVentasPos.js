@@ -92,3 +92,50 @@ async function AnularCompra(){
     }
     await DelBoleta(idBoleta);
 }
+
+async function ContarBoletasMes(mes){
+    let boletas = await GetBoletasByMes2(mes);
+    return boletas.length;
+}
+
+async function obtenerDatosBarChart() {
+    const dataPorMes = await Promise.all([
+        ContarBoletasMes("0"), ContarBoletasMes("1"), ContarBoletasMes("2"),
+        ContarBoletasMes("3"), ContarBoletasMes("4"), ContarBoletasMes("5"),
+        ContarBoletasMes("6"), ContarBoletasMes("7"), ContarBoletasMes("8"),
+        ContarBoletasMes("9"), ContarBoletasMes("10"), ContarBoletasMes("11")
+    ]);
+
+    return {
+        type: 'bar',
+        data: {
+            labels: [
+                'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+            ],
+            datasets: [{
+                label: 'Boletas Vendidas por mes',
+                data: dataPorMes, // Aquí están los valores resueltos
+                backgroundColor: 'rgba(99, 99, 255, 0.2)',
+                borderColor: 'rgba(99, 99, 255, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        }
+    };
+}
+async function inicializarGrafico() {
+    const ctx = document.getElementById('BoletasPorMes').getContext('2d');
+    const chartConfig = await obtenerDatosBarChart(); // Espera a que los datos estén listos
+    new Chart(ctx, chartConfig);
+}
+window.onload = inicializarGrafico;
