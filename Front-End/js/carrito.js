@@ -10,7 +10,7 @@ async function setCarrito(idCliente){
     document.getElementById('carrito').setAttribute('value', idCarrito);
     let prodsCarrito = await getProductosByIdCarrito(idCarrito);
     for (prod of prodsCarrito){
-        cambiarCantidadCarrito(prod.cantidad);
+        cambiarIconoCarrito(prod.cantidad);
     }
 }
 // Chequea si el cliente tiene asignado algún carrito
@@ -84,6 +84,7 @@ async function actualizarCarrito(){
     let idCarrito = document.getElementById('carrito').getAttribute('value');
     let prodsCarrito = await getProductosByIdCarrito(idCarrito);
     let cardsCarrito = [];
+    let total = 0;
     let query =`
     query QQuery($getProductoByIdId: ID!){
         getProductoById(id: $getProductoByIdId) {
@@ -107,6 +108,7 @@ async function actualizarCarrito(){
             })
         });
         let precio = await GetUltimoPrecioHistoricoByIdProducto(prod.producto);
+        total += precio.precio * prod.cantidad;
         cardsCarrito.push(creaCardCarrito(response.data.getProductoById, prod.cantidad, prod.id, precio.precio));
     }
     if (cardsCarrito.length == 0){
@@ -117,10 +119,12 @@ async function actualizarCarrito(){
         document.querySelector('#carrito .offcanvas-body').innerHTML = cardsCarrito.join("");
         let boton =`
         <br>
-        <div class="text-center">
-            <button class="btn btn-success">
-                Comprar
-                <img src="./img/carrito.png" style="width: 20px">
+        <div class="text-center" id="botonDentroCarrito">
+            <button class="btn btn-success" onclick="">
+                <div class="d-flex align-items-center justify-content-center">
+                    <h4 id="textoBotonCarrito" class="mb-0 me-2">$${total}</h4>
+                    <img src="./img/carrito.png" style="width: 25px; height: 25px;">
+                </div>
             </button>
         </div>
         `;
@@ -157,7 +161,7 @@ async function getProductosByIdCarrito(idCarrito) {
 }
 function creaCardCarrito(producto, cantidad, detalleCarrito, precio){
     return `
-    <div class="card mb-3" data-id="${detalleCarrito}">
+    <div class="card mb-3 cards-carrito" data-id="${detalleCarrito}">
         <div class="row g-0">
             <div class="col-md-4">
                 <img src="${producto.foto}" class="img-fluid rounded-start" alt="${producto.nombre}">
@@ -174,7 +178,7 @@ function creaCardCarrito(producto, cantidad, detalleCarrito, precio){
                         <button class="btn btn-outline-secondary btn-sm" onclick="cambiarDetalleCarrito('${detalleCarrito}', '${producto.id}',  1)">+</button>
                     </div>
 
-                    <button class="btn btn-danger btn-sm mt-3" onclick="eliminaDetalleCarrito('${detalleCarrito}')">Eliminar</button>
+                    <button class="btn btn-danger btn-sm mt-3" onclick="eliminaDetalleCarrito('${detalleCarrito}', '${producto.id}')">Eliminar</button>
                 </div>
             </div>
         </div>
@@ -276,7 +280,7 @@ async function agregarDetalleCarrito(){
         }
         i++;
     }
-    cambiarCantidadCarrito(nuevaCantidad);
+    cambiarIconoCarrito(nuevaCantidad);
     if (esta){
         inputDetalle = {
             carrito: idCarrito,
@@ -289,13 +293,14 @@ async function agregarDetalleCarrito(){
     }
 }
 async function cambiarDetalleCarrito(detalleCarrito, idProducto, masmenos){
-    cambiarCantidadCarrito(masmenos);
     let idCarrito = document.getElementById('carrito').getAttribute('value');
     let cantidadElemento = document.getElementById('cantidad-' + detalleCarrito);
     let precioElemento = document.getElementById('precio-' + idProducto)
     let antiguaCantidad = parseInt(cantidadElemento.textContent);
     let nuevaCantidad = antiguaCantidad + masmenos
     if (nuevaCantidad > 0){
+        cambiarIconoCarrito(masmenos);
+        cambiarCantidadCarrito(masmenos * parseInt(precioElemento.getAttribute('value')))
         cantidadElemento.textContent = nuevaCantidad;
         precioElemento.textContent = '$' + nuevaCantidad * parseInt(precioElemento.getAttribute('value'));
         inputDetalle = {
@@ -307,17 +312,31 @@ async function cambiarDetalleCarrito(detalleCarrito, idProducto, masmenos){
     }
     
 }
-async function eliminaDetalleCarrito(detalleCarrito){
+async function eliminaDetalleCarrito(detalleCarrito, producto){
     //TODO: taría weno un "¿Estás seguro de querer eliminar este producto, guapo?"
     let cantidad = parseInt(document.getElementById('cantidad-' + detalleCarrito).innerHTML);
-    cambiarCantidadCarrito(-cantidad);
+    let precioCantidad = parseInt(document.getElementById('precio-' + producto).innerHTML.replace('$', ''));
+    cambiarIconoCarrito(-cantidad);
+    cambiarCantidadCarrito(-precioCantidad);
     let cardCarrito = document.querySelector('#carrito .offcanvas-body').querySelector('div[data-id="' + detalleCarrito + '"]');
     cardCarrito.remove();
     delDetalleCarrito(detalleCarrito);
+    if (document.getElementsByClassName('cards-carrito').length == 0){
+        document.getElementById('botonDentroCarrito').remove();
+        document.querySelector('#carrito .offcanvas-body').innerHTML = `
+        <h3 class="text-center">Carrito Vacío 😢</h3>
+        <h5 class="text-center">Cuando agregues productos al carrito, aparecerán aquí.</h5>`
+    }
+}
+
+// Cambia el ícono junto al svg del carrito para que muestre la cantidad de productos en éste
+function cambiarIconoCarrito(cantidad){
+    let cantidadActual = parseInt(document.getElementById('cantidadCarrito').innerHTML);
+    document.getElementById('cantidadCarrito').innerHTML = cantidadActual + cantidad;
 }
 
 // Cambia el ícono junto al svg del carrito para que muestre la cantidad de productos en éste
 function cambiarCantidadCarrito(cantidad){
-    let cantidadActual = parseInt(document.getElementById('cantidadCarrito').innerHTML);
-    document.getElementById('cantidadCarrito').innerHTML = cantidadActual + cantidad;
+    let cantidadActual = parseInt(document.getElementById('textoBotonCarrito').innerHTML.replace('$', ''));
+    document.getElementById('textoBotonCarrito').innerHTML = "$" + parseInt(cantidadActual + cantidad);
 }
