@@ -42,7 +42,7 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
                         Locales
                         <img src="./img/dropdown_icon.png" class="img-fluid" alt="Ícono de DropDown" style="width: 22px; padding-bottom: 3px">
                     </button>
-                    <ul class="dropdown-menu" id="menu-dropdown-locales">
+                    <ul class="dropdown-menu">
                         <li><a class="dropdown-item" target="_blank" href="https://www.google.com/maps/place/Museo+Interactivo+Mirador+(MIM)/@-33.5194822,-70.611972,15z/data=!4m2!3m1!1s0x0:0x4e84cc2277ad807f?sa=X&ved=1t:2428&ictx=111">Local 1</a></li>
                         <li><a class="dropdown-item" href="#">Local 2</a></li>
                         <li><a class="dropdown-item" href="#">Local 3</a></li>
@@ -134,7 +134,7 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
+                    <div class="row" style="background-color: red;">
                         <!-- Imagen del producto (lado izquierdo) -->
                         <div id="productModalImage" class="col-md-6 d-flex align-items-center justify-content-center">
                             <img src="https://via.placeholder.com/300" alt="Imagen del Producto" class="img-fluid rounded">
@@ -142,31 +142,34 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
                         
                         <!-- Información del producto (lado derecho) -->
                         <div class="col-md-6">
-                            <p id="productModalDesc">Descripción detallada del producto. Aquí puedes añadir más detalles relevantes.</p>
+                            <p id="productModalDesc" style="height: 80%; margin: 0 0">Descripción detallada del producto. Aquí puedes añadir más detalles relevantes.</p>
                             
                             <!-- Control de cantidad -->
-                            <div class="quantity-container row">
-                                <button type="button" class="btn btn-primary col-2" onclick="updateQuantity(-1)">
-                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill="none" d="M0 0h24v24H0z"></path>
-                                        <path d="M19 13H5v-2h14v2z"></path>
-                                    </svg>
-                                </button>
-                                <div class="quantity-display col-3" id="quantity" style="text-align: center; font-size: 22px;">1</div>
-                                <button type="button" class="btn btn-primary col-2" onclick="updateQuantity(1)">
-                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill="none" d="M0 0h24v24H0z"></path>
-                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                    </svg>
-                                </button>
-                                <div class="quantity-display col-5" id="productModalPrecio" value="" style="text-align: center; font-size: 22px;">222</div>
+                            <div class="quantity-container d-flex justify-content-center align-items-end row" style="background-color: grey; height: 20%">
+                                <div class="quantity-display col-4" id="productModalPrecio" value="" style="text-align: center; font-size: 22px; font-weight: bold">222</div>
+                                <div class="col-1 d-flex justify-content-center align-items-end p-0">
+                                    <button type="button" class="quantity-button" onclick="updateQuantity(-1)">
+                                        <img src="./img/signo_resta.png" style="width: 24px">
+                                    </button>
+                                </div>
+                                <div class="col-1 quantity-display d-flex justify-content-center p-0" id="quantity" style="font-size: 1.2rem;">1</div>
+                                <div class="col-1 d-flex justify-content-center align-items-end p-0">
+                                    <button type="button" class="quantity-button" onclick="updateQuantity(1)">
+                                        <img src="./img/signo_mas.png" style="width: 24px;">
+                                    </button>
+                                </div>
+                                <div class="col-5 ps-1 pe-1">
+                                    <button type="button" id="agregar-button-modal" data-bs-dismiss="modal" onclick="
+                                    <?php echo isset($_SESSION['usuario_id']) ? 'agregarDetalleCarrito();' : ''; ?>" 
+                                    <?php echo !isset($_SESSION['usuario_id']) ? 'data-bs-toggle="modal" data-bs-target="#loginModal"' : ''; ?>>
+                                        Agregar
+                                    </button>
+                                </div>
                             </div>
                             <br>
                             <!-- Botón de agregar al carrito -->
-                            <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="
-                            <?php echo isset($_SESSION['usuario_id']) ? 'agregarDetalleCarrito();' : ''; ?>" 
-                            <?php echo !isset($_SESSION['usuario_id']) ? 'data-bs-toggle="modal" data-bs-target="#loginModal"' : ''; ?>>
-                            Agregar al Carrito</button>
+                            
+                            
                         </div>
                     </div>
                 </div>
@@ -307,34 +310,43 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
     </div>
 
     <!-- Pide Ya -->
-    <div class="container-fluid d-flex justify-content-center mt-2 mb-2" style="background-color: white">
+    <div class="container-fluid d-flex justify-content-center mt-0 mb-2">
         <button id="pideya-button">
             ¡Pide Ya!<br>
         </button>
+        <script>
+            document.getElementById("pideya-button").addEventListener("click", function() {
+            document.getElementById("productos-section").scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+                });
+            });
+            </script>
     </div>
 
     <!-- Container con productos y categorías -->
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-10">
-                <div id="scroll-container">
-                    
-                </div>
+    <div class="container-fluid" id="productos-section">
+        <div class="row d-flex"  style="height: 95vh;">
+            <div class="col-10" style="height: 100%">
+                <div class="ps-2 pe-3" id="scroll-container"></div>
             </div>
-            <div class="col-2">
+            <div class="col-2 d-flex flex-column p-0 pe-2">
+                <h5 class="d-flex justify-content-center">Categorías</h5>
                 <select multiple id="categoria-select" name="categoria"></select>
+                <div class="d-flex justify-content-center align-items-end" style="height: 50%">
+                    <button id="carrito-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" onclick="actualizarCarrito();">
+                        <img src="./img/carrito.png" style="width: 45px">
+                        <span id="cantidadCarrito">0</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
     
     <!-- Botón para mostrar el carrito -->
-    <button id="carrito-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" onclick="actualizarCarrito();">
-        <img src="./img/carrito.png" style="width: 45px">
-        <span id="cantidadCarrito">0</span>
-    </button>
 
     <footer>
-        <div class="container-fluid" id="footer-container">
+        <div class="container-fluid mt-5" id="footer-container" style="background-color: lightgrey; height: 250px">
             
         </div>
     </footer>

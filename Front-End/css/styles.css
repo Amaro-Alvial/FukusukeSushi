@@ -1,7 +1,7 @@
 /*https://paletton.com/#uid=3060u0kkeZ16E+CaE+esvVdvkSj*/
 
 #navbar-principal {
-    background-color: #ffffff;
+    background-color: white;
 }
 
 /* Se define el button de html sin ningún atributo para
@@ -30,9 +30,11 @@ button {
     position: relative;
     z-index: 2;
 }
+
 #login-button:hover {
     background-color: #E16653;
 }
+
 #signup-button {
     background-color: #FFD1CA;
     color: black;
@@ -44,9 +46,21 @@ button {
     position: relative;
     z-index: 1;
 }
+
 #signup-button:hover {
     color: white;
     background-color: #E16653;
+}
+
+#userMenu {
+    font-weight: bold;
+    background-color: #FF745E;
+    border: none;
+}
+
+.form-control {
+    width: 400px;
+    height: 30px;
 }
 
 /* Botón de DropDown de Locales. (quizás se quite) */
@@ -61,33 +75,28 @@ button {
     margin: 0 20px;
     padding-top: 3px;
 }
+
 #button-dropdown-locales:hover {
-    background-color: #FFD1CA;
+    text-decoration: underline;
 }
-#button-dropdown-locales:focus {
-    border-color: #FFD1CA;
-    background-color: #FFD1CA;
-}
-#menu-dropdown-locales {
+
+.dropdown-menu {
     border-color: white;
     background-color: white;
 }
+
 .dropdown-item:hover {
-    background-color: #FFD1CA;
-    width: 200px;
-    height: 50px;
-    margin: 50px 0px;
-    box-shadow: none;
+    background-color: #FFF9F8;
+    width: 100%;
 }
+
+/*--------------------------*/
+
 #aviso-iniciasesion {
     background-color: #FF745E;
     color: white;
     font-weight: bold;
     padding: 5px 0px;
-}
-.form-control {
-    width: 400px;
-    height: 30px;
 }
 #img-sushi-bienvenida {
     width: 100%;
@@ -101,12 +110,17 @@ button {
     font-weight: 900;
     border-radius: 20px;
 }
+
 #pideya-button:hover {
     font-size: 32px;
 }
+
 #pideya-button:active {
-    background-color: white;
+    font-size: 30px;
 }
+
+/* Cards de producto. */
+
 #producto-card {
     width: 285px; 
     height: 150px;
@@ -117,41 +131,54 @@ button {
 #categoria-select {
     border: none;
     width: 100%;
-    height: 180px;
-    position: sticky;
-    top: 50px;
+    height: 50%;
 }
-.categoria-option:active{
+
+.categoria-option {
+    background-color: white;
+    height: 35px
+}
+
+.categoria-option:focus{
     background-color: #FFD1CA;
 }
 
 #scroll-container {
-    overflow-y: scroll;
-    height: 500px;
+    height: 100%; 
+    overflow-y: auto; 
+    background-color: white;
 }
 
 /* Botón carrito. */
 
-#carrito-button {
-    background-color: #FF745E;
-    position: fixed;
-    bottom: 1rem;
-    right: 1rem;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
+@media (max-width: 480px) {
+    #carrito-button {
+        background-color: #FF745E;
+        position: sticky;
+        bottom: 1rem;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+    }
+}
+
+@media (min-width: 480px) {
+    #carrito-button {
+        background-color: #FF745E;
+        width: 100%;
+        height: 60px;
+        border-radius: 10px;
+    }
 }
 
 #carrito-button span {
     position: absolute;
-    background-color: white;
-    color: #FF745E;
+    color: white;
     font-weight: bold;
     width: 24px;
     height: 24px;
-    border-radius: 50%;
     margin-left: -10px;
-    margin-top: -10px;
+    margin-top: 23px;
 }
 
 /* Card de los productos. */
@@ -174,6 +201,37 @@ button {
 
 .productos-container {
     margin-right: 3rem;
+}
+
+/* Modal productos */
+
+.quantity-button {
+    background-color: #FF745E;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.quantity-button:hover {
+    background-color: #FF8B78;
+    width: 100%;
+    height: 100%;
+}
+
+.quantity-button:active {
+    background-color: #FF8B78;
+    width: 95%;
+    height: 95%;
+}
+
+#agregar-button-modal {
+    font-weight: bold;
+    font-size: 18px;
+    color: white;
+    background-color: #FF745E;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
 }
 
 /* Footer */

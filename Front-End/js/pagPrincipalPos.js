@@ -201,3 +201,10 @@ document.getElementById('regProvincia').addEventListener('change', function() {
         GetComunasByIdProvincia(provinciaId);
     }
 });
+
+document.getElementById("pideya-button").addEventListener("click", function() {
+    document.getElementById("productos-section").scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    });
+});
