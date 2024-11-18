@@ -22,7 +22,10 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
     <script src="./js/modalProducto.js"></script>
     <?php
     if (isset($_SESSION['usuario_id'])) {
-        echo "<script>let idCliente = '" . $_SESSION['usuario_id'] . "';</script>";
+        echo "<script>
+            let idCliente = '" . $_SESSION['usuario_id'] . "';
+            setCarrito(idCliente);
+        </script>";
     }
     ?>
 </head>
@@ -67,7 +70,7 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
                             Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre_usuario']); ?>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="userMenu">
-                            <li><a class="dropdown-item" href="perfilUsuario.php">Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="MiPerfil(idCliente)">Mi Perfil</a></li>
                             <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
                         </ul>
                     </li>
@@ -301,6 +304,94 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button id="confirmarRegBtn"type="button" class="btn btn-primary" onclick="RegUsuario()">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de Editar Perfil -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Perfil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body"> <!-- Se abre el Modal Body -->
+                    <form id="editForm">
+                        <div class ="row"> <!-- Se abre fila 1 del modal -->
+                            <div class="mb-3 col-xxl-7">
+                                <label for="editRun" class="form-label">RUN</label>
+                                <input type="text" class="form-control" id="editRun" disabled>
+                            </div>
+                            <div class="mb-3 col-xxl-5">
+                                <label for="editFechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+                                <input type="date" class="form-control" id="editFechaNacimiento" disabled>
+                            </div>
+                        </div> <!-- Cierre de la Fila 1 del modal -->
+                        <div class = "row"> <!-- Se abre fila 2 del modal -->
+                            <div class="mb-3 col-xxl-9">
+                                <label for="editNombre" class="form-label">Nombre Completo</label>
+                                <input type="text" class="form-control" id="editNombre">
+                            </div>
+                            <div class="mb-3 col-xxl-3">
+                                <label for="editSexo" class="form-label">Sexo</label>
+                                <select class="form-select" id="editSexo">
+                                    <option value="M">M</option>
+                                    <option value="F">F</option>
+                                </select>
+                            </div> 
+                        </div> <!-- Cierre de la Fila 2 del modal -->
+                        <div class="row"> <!-- Se abre fila 3 del modal -->
+                            <div class="mb-3 col-xxl-6">
+                                <label for="editNombreUsuario" class="form-label">Nombre de Usuario</label>
+                                <input type="text" class="form-control" id="editNombreUsuario" disabled>
+                            </div>
+                            <div class="mb-3 col-xxl-6">
+                                <label for="editPass" class="form-label">Contraseña</label>
+                                <input type="password" class="form-control" id="editPass">
+                            </div>
+                        </div> <!-- Cierre de la Fila 3 del modal -->
+                        <div class= "row"> <!-- Se abre fila 4 del modal -->
+                            <div class="mb-3 col-xxl-7">
+                                <label for="editTelefono" class="form-label">Teléfono</label>
+                                <input type="text" class="form-control" id="editTelefono">
+                            </div>
+                        </div> <!-- Cierre de la Fila 4 del modal -->
+                        <div class = "row"> <!-- Se abre fila 5 del modal -->
+                            <div class="mb-3 col-xxl-8">
+                                <label for="editEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="editEmail">
+                            </div>
+                        </div> <!-- Cierre de la Fila 5 del modal -->
+                        <div class="row"> <!-- Se abre fila 6 del modal -->
+                            <div class="mb-3 col-12">
+                                <label for="editRegion" class="form-label">Región</label>
+                                <select class="form-select" name="region" id="editRegion"></select>
+                            </div>
+                        </div> <!-- Cierre de la Fila 6 del modal -->
+                        <div class="row">
+                            <div class="mb-3 col-12">
+                                <label for="editProvincia" class="form-label">Provincia</label>
+                                <select class="form-select" name="provincia" id="editProvincia"><option value="defaultProvincia">Seleccione la Provincia</option></select>
+                            </div>
+                        </div> <!-- Cierre de la Fila 6 del modal -->
+                        <div class="row"> <!-- Se abre fila 7 del modal -->
+                            <div class="mb-3 col-12">
+                                <label for="editComuna" class="form-label">Comuna</label>
+                                <select class="form-select" name="comuna" id="editComuna"><option value="defaultComuna">Seleccione la Comuna</option></select>
+                            </div>
+                        </div> <!-- Cierre de la Fila 7 del modal -->
+                        <div class="row"> <!-- Se abre fila 8 del modal -->
+                            <div class="mb-3">
+                                <label for="editDireccion" class="form-label">Dirección</label>
+                                <input type="text" class="form-control" id="editDireccion">
+                            </div>
+                        </div> <!-- Cierre de la Fila 8 del modal -->
+                    </form>
+                </div> <!-- Cierre del Modal Body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="UpdMiPerfil()">Confirmar</button>
                 </div>
             </div>
         </div>
