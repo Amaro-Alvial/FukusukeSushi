@@ -19,7 +19,6 @@ document.getElementById('login-form').addEventListener('submit', function(){
 });
 //Dejar listo el carrito del usuario
 //console.log(idCliente);
-setCarrito(idCliente);
 
 async function RegUsuario() {
     if (!validarFormulario()) return;
@@ -142,7 +141,7 @@ async function IniciarSesion() {
                     alert(result.message);
                     
                     // Redirigir según el perfil
-                    if ( perfil.tipo == 'Admin') {
+                    if ( perfil.tipo == 'Admin' || perfil.tipo == "Dueno") {
                         alert(`Bienvenido/a, ${data.nombreUsuario}. Redirigiendo a la página de administración.`);
                         window.location.href = 'http://localhost/Front-End/adminPersonas.php';
                     } else {
@@ -188,6 +187,53 @@ function validarFormulario() {
     }
     return true;
 }
+async function MiPerfil(idCliente) {
+    let usuario = await GetUsuarioById(idCliente);
+    let persona = await GetPersonaById(usuario.persona);
+    let comuna = await GetComunaById(persona.comuna);
+    let provincia = await GetProvinciaById(comuna.provincia);
+    let region = await GetRegionById(provincia.region);
+    let fechaNacimiento = new Date(persona.fechaNacimiento).toISOString().split('T')[0];
+
+    document.getElementById('editRun').value = persona.run;
+    document.getElementById('editNombre').value = persona.nombreCompleto;
+    document.getElementById('editDireccion').value = persona.direccion;
+    document.getElementById('editFechaNacimiento').value = fechaNacimiento;
+    document.getElementById('editSexo').value = persona.sexo;
+    document.getElementById('editTelefono').value = persona.telefono;
+    document.getElementById('editEmail').value = usuario.email;
+    //document.getElementById('editPass').value = usuario.pass;
+    document.getElementById('editNombreUsuario').value = usuario.nombreUsuario;
+    document.getElementById('editRegion').value = region.id;
+    document.getElementById('editProvincia').value = provincia.id;
+    document.getElementById('editComuna').value = comuna.id;
+    var editModal = new bootstrap.Modal(document.getElementById('editModal'));
+    editModal.show();
+}
+
+async function UpdMiPerfil(){
+    let usuario = await GetUsuarioById(idCliente);
+    
+    let run = document.getElementById('editRun').value;
+    let nombre = document.getElementById('editNombre').value;
+    let direccion = document.getElementById('editDireccion').value;
+    let fechaNacimiento = document.getElementById('editFechaNacimiento').value;
+    let sexo = document.getElementById('editSexo').value;
+    let telefono = document.getElementById('editTelefono').value;
+    let email = document.getElementById('editEmail').value;
+    let pass = document.getElementById('editPass').value;
+    let nombreUsuario = document.getElementById('editNombreUsuario').value;
+    let comuna = document.getElementById('editComuna').value;
+
+    UpdPersona(usuario.persona, run, nombre, direccion, fechaNacimiento, sexo, telefono, comuna);
+    UpdUsuario(idCliente, email, pass, nombreUsuario, usuario.persona);
+    alert('Perfil actualizado');
+    var editModal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
+    editModal.hide();
+    GetRegiones();
+    GetComunas();
+    GetProvincias();
+}
 
 document.getElementById('regRegion').addEventListener('change', function() {
     const regionId = document.getElementById('regRegion').value;
@@ -201,10 +247,15 @@ document.getElementById('regProvincia').addEventListener('change', function() {
         GetComunasByIdProvincia(provinciaId);
     }
 });
-
-document.getElementById("pideya-button").addEventListener("click", function() {
-    document.getElementById("productos-section").scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-    });
+document.getElementById('editRegion').addEventListener('change', function() {
+    const regionId = document.getElementById('editRegion').value;
+    if (regionId) {
+        GetProvinciasByIdRegion(regionId);
+    }
+});
+document.getElementById('editProvincia').addEventListener('change', function() {
+    const provinciaId = document.getElementById('editProvincia').value;
+    if (provinciaId) {
+        GetComunasByIdProvincia(provinciaId);
+    }
 });

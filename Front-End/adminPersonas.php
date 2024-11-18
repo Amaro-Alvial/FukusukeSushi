@@ -1,6 +1,6 @@
 <?php
 require_once 'session.php';
-    if ($_SESSION['perfil'] != 'Admin') {
+    if ($_SESSION['perfil'] != 'Admin' && $_SESSION['perfil'] != 'Dueno') {
         header('Location: index.php');
         exit();
     }

@@ -36,7 +36,6 @@ function getCategorias(){
         }
     })
 }
-
 async function cardProductos(item) {
     let precio = await GetUltimoPrecioHistoricoByIdProducto(item.id);
     let disponibilidad = await GetUltimoDisponibleHistoricoByIdProducto(item.id);
@@ -179,6 +178,7 @@ function GetComunasByIdProvincia(idProvincia){
             optionsComuna.push('<option value="defaultComuna">Seleccione la Comuna</option>');
             response.data.getComunasByIdProvincia.forEach(optionComuna);
             document.getElementById('regComuna').innerHTML = optionsComuna.join("");
+            document.getElementById('editComuna').innerHTML = optionsComuna.join("");
         }
     });
 }
@@ -207,8 +207,92 @@ function GetProvinciasByIdRegion(idRegion){
             optionsProvincia.push('<option value="defaultProvincia">Seleccione la Provincia</option>');
             response.data.getProvinciasByIdRegion.forEach(optionProvincia);
             document.getElementById('regProvincia').innerHTML = optionsProvincia.join("");
+            document.getElementById('editProvincia').innerHTML = optionsProvincia.join("");
 
         }
+    });
+}
+function GetRegionById(idRegion){
+    let query = `
+    query miQuery($id: ID!){
+        getRegionById(id: $id){
+            id
+            nombre
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: idRegion
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getRegionById);
+            }
+        });
+    });
+}
+function GetProvinciaById(idProvincia){
+    let query = `
+    query miQuery($id: ID!){
+        getProvinciaById(id: $id){
+            id
+            nombre
+            region
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: idProvincia
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getProvinciaById);
+            }
+        });
+    });
+}
+function GetComunaById(idComuna){
+    let query = `
+    query miQuery($id: ID!){
+        getComunaById(id: $id){
+            id
+            nombre
+            provincia
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: idComuna
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getComunaById);
+            }
+        });
     });
 }
 function GetComunas(){
@@ -234,6 +318,7 @@ function GetComunas(){
             optionsComuna.push('<option value="defaultComuna">Seleccione la Comuna</option>');
             response.data.getComunas.forEach(optionComuna);
             document.getElementById('regComuna').innerHTML = optionsComuna.join("");
+            document.getElementById('editComuna').innerHTML = optionsComuna.join("");
         }
     });
 }
@@ -260,6 +345,7 @@ function GetProvincias(){
             optionsProvincia.push('<option value="defaultProvincia">Seleccione la Provincia</option>');
             response.data.getProvincias.forEach(optionProvincia);
             document.getElementById('regProvincia').innerHTML = optionsProvincia.join("");
+            document.getElementById('editProvincia').innerHTML = optionsProvincia.join("");
 
         }
     });
@@ -287,6 +373,7 @@ function GetRegiones(){
             optionsRegion.push('<option value="defaultRegion">Seleccione la region</option>');
             response.data.getRegions.forEach(optionRegion);
             document.getElementById('regRegion').innerHTML = optionsRegion.join("");
+            document.getElementById('editRegion').innerHTML = optionsRegion.join("");
         }
     });
 }
@@ -343,6 +430,118 @@ function GetUsuarioById(idUsuario){
             }),
             success: function(response){
                 resolve(response.data.getUsuarioById);
+            }
+        });
+    });
+}
+function GetPersonaById(idPersona){
+    let query = `
+    query miQuery($id: ID!){
+        getPersonaById(id: $id){
+            id
+            run
+            nombreCompleto
+            direccion
+            fechaNacimiento
+            sexo
+            telefono
+            comuna
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: idPersona
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getPersonaById);
+            }
+        });
+    });
+}
+function UpdPersona(idPersona, run, nombreCompleto, direccion, fechaNacimiento, sexo, telefono, comuna){
+    let mutation = `
+    mutation miMutation($id: ID!, $input: PersonaInput){
+        updPersona(id: $id ,input: $input){
+            id
+            run
+            nombreCompleto
+            direccion
+            comuna
+            fechaNacimiento
+            sexo
+            telefono
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: mutation,
+            variables: {
+                id: idPersona,
+                input: {
+                    run: run,
+                    nombreCompleto: nombreCompleto,
+                    direccion: direccion,
+                    comuna: comuna,
+                    fechaNacimiento: fechaNacimiento,
+                    sexo: sexo,
+                    telefono: telefono
+                }
+            }
+        }),
+        success: function(response){
+        }
+    });
+}
+function UpdUsuario(idUsuario, email, pass, nombreUsuario, idPersona){
+    let mutation = `
+    mutation miMutation($id: ID! ,$input: UsuarioInput){
+        updUsuario(id: $id, input: $input){
+            id
+            email
+            pass
+            nombreUsuario
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: mutation,
+                variables: {
+                    id: idUsuario,
+                    input: {
+                        email: email,
+                        pass: pass,
+                        nombreUsuario: nombreUsuario,
+                        persona: idPersona
+                    }
+                }
+            }),
+            success: function(response){
+                if (response.data.updUsuario == null){
+                    resolve(false);
+                } else {
+                    resolve(true);
+                }
+
             }
         });
     });
