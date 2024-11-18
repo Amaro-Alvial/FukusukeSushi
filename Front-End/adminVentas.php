@@ -31,18 +31,18 @@ require_once 'session.php';
         <label for="Fechas">Mes:</label> <br>
         <select class="form-select" name="Fechas" id="cmbFecha">
             <option value="DefaultFecha">Seleccione una Fecha</option>
-            <option value="1">Enero</option>
-            <option value="2">Febrero</option>
-            <option value="3">Marzo</option>
-            <option value="4">Abril</option>
-            <option value="5">Mayo</option>
-            <option value="6">Junio</option>
-            <option value="7">Julio</option>
-            <option value="8">Agosto</option>
-            <option value="9">Septiembre</option>
-            <option value="10">Octubre</option>
-            <option value="11">Noviembre</option>
-            <option value="12">Diciembre</option>
+            <option value="0">Enero</option>
+            <option value="1">Febrero</option>
+            <option value="2">Marzo</option>
+            <option value="3">Abril</option>
+            <option value="4">Mayo</option>
+            <option value="5">Junio</option>
+            <option value="6">Julio</option>
+            <option value="7">Agosto</option>
+            <option value="8">Septiembre</option>
+            <option value="9">Octubre</option>
+            <option value="10">Noviembre</option>
+            <option value="11">Diciembre</option>
         </select>
     </div>
     <div class="mb-3 mt-3 col-xxl-3">
@@ -50,9 +50,14 @@ require_once 'session.php';
         <input type="date" class="form-control" id="FechaBusqueda">
     </div>
     <div class="mb-3 mt-3 col-xxl-3">
-        <label for="IdBusqueda">Id:</label> <br>
-        <input type="text" class="form-control" id="IdBusqueda">
+        <label for="IdBusqueda">ID:</label> <br>
+        <input type="text" class="form-control" id="IdBusqueda" placeholder="Busqueda por ID Boleta">
     </div>
+    <div class="mb-3 mt-3 col-xxl-1">
+        <br>
+        <button class="btn btn-primary" id="btnBuscar" onclick="BuscarBoletaPorId()">Buscar</button>
+    </div>
+
   </div> <!-- Cierre de la Fila 1 -->
   <div class="row"> <!-- Se abre fila 2 -->
       <table id="tblVenta"></table>
@@ -69,39 +74,36 @@ require_once 'session.php';
             <div class="modal-body"> <!-- Se abre el Modal Body -->
                 <form id="DetalleForm">
                     <div class="mb-3">
-                        <label for="IdBoleta" class="form-label">Id Boleta:</label>
-                        <input type="text" class="form-control" id="IdBoleta" readonly>
+                        <p id="IdBoleta" readonly></p>
                     </div>
                     <div class="mb-3">
-                        <label for="FechaBoleta" class="form-label">Fecha:</label>
-                        <input type="text" class="form-control" id="FechaBoleta" readonly>
+                        <p id="FechaBoleta" readonly></p>
                     </div>
                     <div class="mb-3">
-                        <label for="Cliente" class="form-label">Cliente:</label>
-                        <input type="text" class="form-control" id="Cliente" readonly>
+                        <p id="HoraBoleta" readonly></p>
                     </div>
                     <div class="mb-3">
-                        <label for="Cajero" class="form-label">Cajero:</label>
-                        <input type="text" class="form-control" id="Cajero" readonly>
+                        <p id="Cliente" readonly></p>
                     </div>
                     <div class="mb-3">
-                        <label for="Caja" class="form-label">Caja:</label>
-                        <input type="text" class="form-control" id="Caja" readonly>
+                        <p id="Cajero" readonly></p>
                     </div>
-                    <div>
+                    <div class="mb-3">
+                        <p id="Caja" readonly></p>
+                    </div>
+                    <div class="mb-3">
                         <table id="tblProductos">
                         </table>
                     </div>
-                    <div>
-                        <label for="Total" class="form-label">Total:</label>
-                        <input type="text" class="form-control" id="Total" readonly>
+                    <div class="d-flex justify-content-end">
+                        <p id="Total" readonly></p>
                     </div>
 
                 </form>
                     
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cerrar</button>
-                <button type="button" class="btn btn-success" onclick="AnularCompra()">Anular Compra</button>
+                <button type="button" class="btn btn-danger" onclick="AnularCompra()">Anular Compra</button>
             </div>
         </div>
     </div>

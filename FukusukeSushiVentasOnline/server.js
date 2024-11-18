@@ -246,6 +246,8 @@ type Query{
     getBoletasByIdCliente(id: String): [Boleta]
     getBoletasByIdHorarioCaja(id: String): [Boleta]
     getBoletasByIdDespacho(id: String): [Boleta]
+    getBoletasByMes(mes: Int!): [Boleta]
+    getBoletasByFecha(fecha: String!): [Boleta]
     getDetalleCompras: [DetalleCompra]
     getDetalleCompraById(id: ID!): DetalleCompra
     getDetalleComprasByIdBoleta(id: String): [DetalleCompra]
@@ -417,6 +419,28 @@ const resolvers = {
             let boletas = await Boleta.find({despacho: id});
             return boletas;
         },
+        async getBoletasByMes(obj, {mes}){
+            let boletas = await Boleta.find();
+            let boletasMes = [];
+            for (let i = 0; i < boletas.length; i++) {
+                let fecha = new Date(boletas[i].fecha);
+                if (fecha.getMonth() == mes) {
+                    boletasMes.push(boletas[i]);
+                }
+            }
+            return boletasMes;
+        },
+        async getBoletasByFecha(obj, {fecha}){
+            let boletas = await Boleta.find();
+            let boletasFecha = [];
+            for (let i = 0; i < boletas.length; i++) {
+                let Fecha = new Date(boletas[i].fecha).toISOString().split('T')[0];
+                if (Fecha == fecha) {
+                    boletasFecha.push(boletas[i]);
+                }
+            }
+            return boletasFecha;
+        },
         async getDetalleCompras(obj){
             let detalleCompras = await DetalleCompra.find();
             return detalleCompras;
@@ -460,16 +484,13 @@ const resolvers = {
         async getUltimoPrecioHistoricoByIdProductoByFecha(obj, {id, fecha}){
             let precioHistoricos = await PrecioHistorico.find({producto: id}).sort({fecha: -1});
             const fechaLimite = new Date(fecha);
-            let fechaIndice;
-            let aux = false;
-            for (let i = 0; !aux ; i++){
-                fechaIndice = new Date(precioHistoricos[i].fecha);
-                aux = (fechaLimite>fechaIndice);
-                if (aux){
-                    return precioHistoricos[i];
+            for (let i = 0; i < precioHistoricos.length; i++) {
+                const fechaIndice = new Date(precioHistoricos[i].fecha);
+                if (fechaLimite > fechaIndice) {
+                    return precioHistoricos[i]; 
                 }
             }
-            // return precioHistoricos[0];
+            return precioHistoricos[0];
         },
         async getDisponibleHistoricos(obj){
             let disponibleHistoricos = await DisponibleHistorico.find();

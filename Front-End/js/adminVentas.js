@@ -1,27 +1,136 @@
 contentTableVentas=[];
-async function trtdBoleta(boleta){
-    let detalleCompras = await GetDetalleComprasByidBoleta(boleta.id);
-    let cliente = await GetUsuarioById(boleta.cliente);
-    let horarioCaja = await GetHorarioCajaById(boleta.horarioCaja);
-    let cajeroVirtual = await GetUsuarioById(horarioCaja.encargado);
-    let total = 0;
-    for (const item of detalleCompras) {
-        let precio = await GetUltimoPrecioHistoricoByIdProductoByFecha(item.producto, boleta.fecha);
-        total += precio.precio * item.cantidad;
+async function trtdBoleta(boleta) {
+    try {
+        const [detalleCompras, cliente, horarioCaja] = await Promise.all([
+            GetDetalleComprasByIdBoleta(boleta.id),
+            GetUsuarioById(boleta.cliente),
+            GetHorarioCajaById(boleta.horarioCaja),
+        ]);
+        const cajeroVirtual = await GetUsuarioById(horarioCaja.encargado);
+        const precios = await Promise.all(
+            detalleCompras.map(async (item) => {
+                const precio = await GetUltimoPrecioHistoricoByIdProductoByFecha(item.producto, boleta.fecha);
+                return precio.precio * item.cantidad;
+            })
+        );
+        const total = precios.reduce((acc, curr) => acc + curr, 0);
+        const newRow = `
+            <tr>
+                <td>${boleta.id}</td>
+                <td>${boleta.fecha}</td>
+                <td>${cliente.nombreUsuario}</td>
+                <td>${cajeroVirtual.nombreUsuario}</td>
+                <td>${total.toFixed(2)}</td>
+                <td>
+                    <button 
+                        class="btn btn-success btn-sm" 
+                        onclick="AbrirModalBoleta('${boleta.id}')">
+                        DETALLES
+                    </button>
+                </td>
+            </tr>
+        `;
+        document.getElementById('tblVenta').insertAdjacentHTML('beforeend', newRow);
+    } catch (error) {
+        console.error("Error en trtdBoleta:", error);
     }
-    contentTablePersona.push(`
-        <tr>
-            <td>${boleta.id}</td>
-            <td>${boleta.fecha}</td>
-            <td>${cliente.nombreUsuario}</td>
-            <td>${cajeroVirtual.nombreUsuario}</td>
-            <td>${total}</td>
-            <td>
-                <button class="btn btn-success btn-sm" onclick="AbrirModalBoleta(${boleta}, ${detalleCompras}, ${cliente}, ${horarioCaja}, ${cajeroVirtual})">DETALLES</button>
-            </td>
-            </td>
-        </tr>
-    `);
+}
+function GetBoletasByFecha(fecha) {
+    let query = `
+    query miQuery($fecha: String!){
+        getBoletasByFecha(fecha: $fecha){
+            id
+            fecha
+            cliente
+            horarioCaja
+            despacho
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {
+                fecha: fecha
+            }
+        }),
+        success: async function(response) {
+            contentTableVentas = [];
+            const encabezados = '<tr><td>ID</td><td>FECHA</td><td>CLIENTE</td><td>CAJERO</td><td>TOTAL</td><td>Detalles</td></tr>';
+            document.getElementById('tblVenta').innerHTML = encabezados;
+            for (const item of response.data.getBoletasByFecha) {
+                trtdBoleta(item);
+            }
+        }
+    });
+}
+function GetBoletasByMes(mes) {
+    mes = parseInt(mes);
+    let query = `
+    query miQuery($mes: Int!){
+        getBoletasByMes(mes: $mes){
+            id
+            fecha
+            cliente
+            horarioCaja
+            despacho
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {
+                mes: mes
+            }
+        }),
+        success: async function(response) {
+            contentTableVentas = [];
+            const encabezados = '<tr><td>ID</td><td>FECHA</td><td>CLIENTE</td><td>CAJERO</td><td>TOTAL</td><td>Detalles</td></tr>';
+            document.getElementById('tblVenta').innerHTML = encabezados;
+            for (const item of response.data.getBoletasByMes) {
+                trtdBoleta(item);
+            }
+        }
+    });
+}
+function GetBoletaById(idBoleta){
+    let query = `
+    query miQuery($id: ID!){
+        getBoletaById(id: $id){
+            id
+            fecha
+            cliente
+            horarioCaja
+            despacho
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: idBoleta
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getBoletaById);
+            }
+        });
+    });
 }
 function GetCajaById(idCaja){
     let query = `
@@ -138,9 +247,9 @@ function GetUltimoPrecioHistoricoByIdProductoByFecha(idProducto, fecha){
         });
     });
 }
-function GetDetalleComprasByidBoleta(idBoleta){
+function GetDetalleComprasByIdBoleta(idBoleta){
     let query = `
-    query miQuery (id: String){
+    query miQuery ($id: String){
         getDetalleComprasByIdBoleta(id: $id){
             id
             boleta
@@ -149,20 +258,22 @@ function GetDetalleComprasByidBoleta(idBoleta){
         }
     }
     `;
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8091/graphql",
-        contentType: "application/json",
-        timeout: 15000,
-        data: JSON.stringify({
-            query: query,
-            variables: {
-                id: idBoleta
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: idBoleta
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getDetalleComprasByIdBoleta);
             }
-        }),
-        success: function(response){
-            return response.data.getDetalleComprasByIdBoleta;
-        }
+        });
     });
 }
 function GetProductoById(idProducto){
@@ -195,7 +306,7 @@ function GetProductoById(idProducto){
         });
     });
 }
-async function GetBoletas(){
+async function GetBoletas() {
     let query = `
     query miQuery {
         getBoletas {
@@ -216,13 +327,60 @@ async function GetBoletas(){
             query: query,
             variables: {}
         }),
-        success: async function(response){
+        success: async function(response) {
             contentTableVentas = [];
-            contentTableVentas.push('<tr><td>ID</td><td>FECHA</td><td>CLIENTE</td><td>CAJERO</td><td>TOTAL</td><td>Detalles</td></tr>');
+            const encabezados = '<tr><td>ID</td><td>FECHA</td><td>CLIENTE</td><td>CAJERO</td><td>TOTAL</td><td>Detalles</td></tr>';
+            document.getElementById('tblVenta').innerHTML = encabezados;
             for (const item of response.data.getBoletas) {
-                await trtdBoleta(item);
+                trtdBoleta(item);
             }
-            document.getElementById('tblVenta').innerHTML = contentTableVentas.join("");
+        }
+    });
+}
+function DelBoleta(idBoleta){
+    let query = `
+    mutation miMutation($id: ID!){
+        delBoleta(id: $id){
+            message
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {
+                id: idBoleta
+            }
+        }),
+        success: function(response){
+            alert(`${response.data.delBoleta.message}`);
+        }
+    });
+}
+function DelDetalleCompra(idDetalleCompra){
+    let query = `
+    mutation miMutation($id: ID!){
+        delDetalleCompra(id: $id){
+            message
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {
+                id: idDetalleCompra
+            }
+        }),
+        success: function(response){
         }
     });
 }
