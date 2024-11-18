@@ -97,7 +97,53 @@ async function ContarBoletasMes(mes){
     let boletas = await GetBoletasByMes2(mes);
     return boletas.length;
 }
+async function GananciasPorMes(mes){
+    let boletas = await GetBoletasByMes2(mes);
+    let total = 0;
+    for (const item of boletas) {
+        let detalleCompras = await GetDetalleComprasByIdBoleta(item.id);
+        for (const item2 of detalleCompras) {
+            let precio = await GetUltimoPrecioHistoricoByIdProductoByFecha(item2.producto, item.fecha);
+            total += precio.precio * item2.cantidad;
+        }
+    }
+    return total;
+}
+async function obtenerDatosLineChart() {
+    const dataPorMes = await Promise.all([
+        GananciasPorMes("0"), GananciasPorMes("1"), GananciasPorMes("2"),
+        GananciasPorMes("3"), GananciasPorMes("4"), GananciasPorMes("5"),
+        GananciasPorMes("6"), GananciasPorMes("7"), GananciasPorMes("8"),
+        GananciasPorMes("9"), GananciasPorMes("10"), GananciasPorMes("11")
+    ]);
 
+    return {
+        type: 'line',
+        data: {
+            labels: [
+                'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+            ],
+            datasets: [{
+                label: 'Ganancias por mes',
+                data: dataPorMes,
+                backgroundColor: 'rgba(99, 99, 255, 0.2)',
+                borderColor: 'rgba(99, 99, 255, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        }
+    };
+}
 async function obtenerDatosBarChart() {
     const dataPorMes = await Promise.all([
         ContarBoletasMes("0"), ContarBoletasMes("1"), ContarBoletasMes("2"),
@@ -133,9 +179,15 @@ async function obtenerDatosBarChart() {
         }
     };
 }
+async function GraficoGanancias() {
+    const ctx = document.getElementById('GananciasPorMes').getContext('2d');
+    const chartConfig = await obtenerDatosLineChart();
+    new Chart(ctx, chartConfig);
+
+}
 async function inicializarGrafico() {
     const ctx = document.getElementById('BoletasPorMes').getContext('2d');
-    const chartConfig = await obtenerDatosBarChart(); // Espera a que los datos estén listos
+    const chartConfig = await obtenerDatosBarChart();
     new Chart(ctx, chartConfig);
 }
-window.onload = inicializarGrafico;
+window.onload = inicializarGrafico();

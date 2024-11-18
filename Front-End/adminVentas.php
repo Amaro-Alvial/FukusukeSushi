@@ -27,9 +27,13 @@ require_once 'session.php';
 </ul>                      
 <div class="container mt-3"> <!-- Se abre el Container -->
   <h2>Administración de Ventas</h2>
+    <hr>
+    <button class="btn btn-primary" id="GananciasMes" onclick="GraficoGanancias()">Ganancias por mes</button>
     <?php
     $str= <<<EOF
-        <br>
+        <div style="width 60%">
+        <canvas id="GananciasPorMes"></canvas>
+        </div>
         <div style="width 60%">
         <canvas id="BoletasPorMes"></canvas>
         </div>
