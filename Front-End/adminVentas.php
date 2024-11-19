@@ -29,7 +29,7 @@ require_once 'session.php';
 <div class="container mt-3"> <!-- Se abre el Container -->
     <h2>Administración de Ventas</h2>
     <hr>
-    <button class="btn btn-primary" id="GananciasMes" onclick="offCanvasReclamos()">Ganancias por mes</button>
+    <button class="btn btn-primary" id="GananciasMes" onclick="GraficoGanancias()">Ganancias por mes</button>
     <?php
     $str= <<<EOF
         <div style="width 60%">
