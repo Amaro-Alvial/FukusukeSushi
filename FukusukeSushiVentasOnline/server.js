@@ -29,6 +29,7 @@ const Region = require('./models/region');
 const Provincia = require('./models/provincia');
 const Comuna = require('./models/comuna');
 const DetalleCarrito = require('./models/detalleCarrito');
+const Reclamo = require('./models/reclamo');
 
 const typeDefs = gql`
 type Persona{
@@ -221,6 +222,17 @@ input ComunaInput{
     nombre: String!
     provincia: String!
 }
+type Reclamo{
+    id: ID!
+    titulo: String!
+    descripcion: String!
+    cliente: String!
+}
+input ReclamoInput{
+    titulo: String!
+    descripcion: String!
+    cliente: String!
+}
 type Alert{
     message: String!
 }
@@ -296,6 +308,9 @@ type Query{
     getComunas: [Comuna]
     getComunaById(id: ID!): Comuna
     getComunasByIdProvincia(id: String): [Comuna]
+    getReclamos: [Reclamo]
+    getReclamoById(id: ID!): Reclamo
+    getReclamosByIdCliente(id: String): [Reclamo]
     iniciarSesion(nombreUsuario: String!, pass: String!): Sesion!
 }
 type Mutation{
@@ -353,6 +368,9 @@ type Mutation{
     addComuna(input:ComunaInput): Comuna
     updComuna(id: ID!, input:ComunaInput): Comuna
     delComuna(id: ID!): Alert
+    addReclamo(input:ReclamoInput): Reclamo
+    updReclamo(id: ID!, input:ReclamoInput): Reclamo
+    delReclamo(id: ID!): Alert
     registrarUsuario(personaInput: PersonaInput!, usuarioInput: UsuarioInput!, usuarioPerfilInput: UsuarioPerfilInput!): UsuarioPerfil!
 }
 `;
@@ -639,6 +657,18 @@ const resolvers = {
         async getComunasByIdProvincia(obj, {id}){
             let comuna = await Comuna.find({provincia: id});
             return comuna;
+        },
+        async getReclamos(obj){
+            let reclamos = await Reclamo.find();
+            return reclamos;
+        },
+        async getReclamoById(obj, {id}){
+            let reclamo = await Reclamo.findById(id);
+            return reclamo;
+        },
+        async getReclamosByIdCliente(obj, {id}){
+            let reclamos = await Reclamo.find({cliente: id});
+            return reclamos;
         },
         iniciarSesion: async (obj, { nombreUsuario, pass }, { models }) => {
             const { Usuario, UsuarioPerfil } = models;
@@ -989,6 +1019,23 @@ const resolvers = {
                 message: "Comuna eliminada"
             };
         },
+        async addReclamo(obj, {input}){
+            let clienteBus = await Usuario.findById(input.cliente);
+            let reclamo = new Reclamo({titulo: input.titulo, cliente: clienteBus._id, descripcion: input.descripcion});
+            await reclamo.save();
+            return reclamo;
+        },
+        async updReclamo(obj, {id, input}){
+            let clienteBus = await Usuario.findById(input.cliente);
+            let reclamo = await Reclamo.findByIdAndUpdate(id, {fecha: input.fecha, cliente: clienteBus._id, descripcion: input.descripcion}, { new: true });
+            return reclamo;
+        },
+        async delReclamo(obj, {id}){
+            await Reclamo.deleteOne({_id: id});
+            return {
+                message: "Reclamo eliminado"
+            };
+        },
         //MEGA función para registrar un usuario correctamente
         registrarUsuario: async (_, { personaInput, usuarioInput, usuarioPerfilInput }, { models }) => {
             const { Persona, Usuario, UsuarioPerfil } = models;
@@ -1114,6 +1161,7 @@ async function startServer() {
                 Provincia,
                 Comuna,
                 DetalleCarrito,
+                Reclamo,
             },
         }),
         corsOptions,

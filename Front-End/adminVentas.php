@@ -24,11 +24,12 @@ require_once 'session.php';
 <ul class="dropdown-menu" aria-labelledby="userMenu">
     <li><a class="dropdown-item" href="perfilUsuario.php">Mi Perfil</a></li>
     <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
+    <li><a class="dropdown-item" href="#" onclick="offCanvasReclamos()">Revisar Reclamos</a></li>
 </ul>                      
 <div class="container mt-3"> <!-- Se abre el Container -->
-  <h2>Administración de Ventas</h2>
+    <h2>Administración de Ventas</h2>
     <hr>
-    <button class="btn btn-primary" id="GananciasMes" onclick="GraficoGanancias()">Ganancias por mes</button>
+    <button class="btn btn-primary" id="GananciasMes" onclick="offCanvasReclamos()">Ganancias por mes</button>
     <?php
     $str= <<<EOF
         <div style="width 60%">
@@ -78,6 +79,45 @@ require_once 'session.php';
       <table id="tblVenta"></table>
   </div> <!-- Cierre de la Fila 2 -->
 </div> <!-- Cierre del Container -->
+<!-- offcanvas de Reclamos -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="reclamoOffCanvas" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasRightLabel">Reclamos</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+    </div>
+    <div class="offcanvas-body">
+        <table id="tblReclamos"></table>
+    </div>
+</div> <!-- Cierre del offcanvas de Reclamos -->
+<!-- Modal de Reclamo -->
+<div class="modal fade" id="ReclamoModal" tabindex="-1" aria-labelledby="ReclamoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ReclamoModalLabel">Reclamo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <p id="IdReclamo"> </p>
+                </div>
+                <div class="mb-3">
+                    <p id="ClienteReclamo"></p>
+                </div>
+                <div class="mb-3">
+                    <p id="TituloReclamo"></p>
+                </div>
+                <div class="mb-3">
+                    <textarea class="form-control" id="DescripcionReclamo" readonly></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="EliminarReclamo()">Resuelto</button>
+            </div>
+        </div>
+    </div>
+</div> <!-- Cierre del Modal de Reclamo -->
 <!-- Modal de Detallear Producto -->
 <div class="modal fade" id="DetalleModal" tabindex="-1" aria-labelledby="DetalleModalLabel" aria-hidden="true">
     <div class="modal-dialog">

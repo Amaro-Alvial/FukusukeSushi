@@ -337,6 +337,62 @@ function GetProductoById(idProducto){
         });
     });
 }
+function GetReclamoById(idReclamo){
+    let query = `
+    query miQuery($id: ID!){
+        getReclamoById(id: $id){
+            id
+            titulo
+            descripcion
+            cliente
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {
+                    id: idReclamo
+                }
+            }),
+            success: function(response){
+                resolve(response.data.getReclamoById);
+            }
+        });
+    });
+}
+function GetReclamos(){
+    let query = `
+    query miQuery{
+        getReclamos{
+            id
+            titulo
+            descripcion
+            cliente
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {}
+            }),
+            success: function(response){
+                resolve(response.data.getReclamos);
+            }
+        });
+    });
+}
 async function GetBoletas() {
     let query = `
     query miQuery {
@@ -365,6 +421,30 @@ async function GetBoletas() {
             for (const item of response.data.getBoletas) {
                 trtdBoleta(item);
             }
+        }
+    });
+}
+function DelReclamo(idReclamo){
+    let query = `
+    mutation miMutation($id: ID!){
+        delReclamo(id: $id){
+            message
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {
+                id: idReclamo
+            }
+        }),
+        success: function(response){
+            alert(`${response.data.delReclamo.message}`);
         }
     });
 }

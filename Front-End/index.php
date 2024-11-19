@@ -72,6 +72,7 @@ if (isset($_SESSION['usuario_id']) && ($_SESSION['perfil'] == 'Admin' or $_SESSI
                         <ul class="dropdown-menu" aria-labelledby="userMenu">
                             <li><a class="dropdown-item" href="#" onclick="MiPerfil(idCliente)">Mi Perfil</a></li>
                             <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="ModalReclamo()">Reclamo</a></li>
                         </ul>
                     </li>
                 <?php endif; ?>
@@ -396,7 +397,33 @@ if (isset($_SESSION['usuario_id']) && ($_SESSION['perfil'] == 'Admin' or $_SESSI
             </div>
         </div>
     </div>
-
+    <!-- Modal de Reclamo -->
+    <div class="modal fade" id="reclamoModal" tabindex="-1" aria-labelledby="reclamoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reclamoModalLabel">Reclamo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body"> <!-- Se abre el Modal Body -->
+                    <form id="reclamoForm">
+                        <div class="mb-3">
+                            <label for="reclamoTitulo" class="form-label">Titulo:</label>
+                            <input type="text" class="form-control" id="reclamoTitulo"></label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reclamoDescripcion" class="form-label">Descripción:</label>
+                            <textarea class="form-control" id="reclamoDescripcion" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div> <!-- Cierre del Modal Body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="Reclamo(idCliente)">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Pide Ya -->
     <div class="container-fluid d-flex justify-content-center mt-2 mb-2" style="background-color: white">
         <button id="pideya-button">

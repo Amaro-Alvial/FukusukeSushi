@@ -546,3 +546,34 @@ function UpdUsuario(idUsuario, email, pass, nombreUsuario, idPersona){
         });
     });
 }
+function AddReclamo(titulo, descripcion, cliente){
+    let mutation = `
+    mutation miMutation($input: ReclamoInput){
+        addReclamo(input: $input){
+            id
+            titulo
+            descripcion
+            cliente
+        }
+    }
+    `;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: mutation,
+            variables: {
+                input: {
+                    titulo: titulo,
+                    descripcion: descripcion,
+                    cliente: cliente
+                }
+            }
+        }),
+        success: function(response){
+            alert("Reclamo enviado con exito");
+        }
+    });
+}

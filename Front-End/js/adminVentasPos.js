@@ -179,6 +179,43 @@ async function obtenerDatosBarChart() {
         }
     };
 }
+contentTableReclamos = [];
+async function offCanvasReclamos(){
+    let reclamos = await GetReclamos();
+    if (reclamos.length == 0) {
+        alert("No hay reclamos pendientes");
+        return;
+    }
+    contentTableReclamos = [];
+    for (const item of reclamos) {
+        let cliente = await GetUsuarioById(item.cliente);
+        contentTableReclamos.push(`
+            <tr>
+                <td>${cliente.nombreUsuario}</td>
+                <td><button class="btn btn-warning" onclick="Revisar( '${item.id}' )">Revisar</button></td>
+            </tr>
+        `);
+    }
+    document.getElementById('tblReclamos').innerHTML = contentTableReclamos.join('');
+    var offcanvas = new bootstrap.Offcanvas(document.getElementById('reclamoOffCanvas'));
+    offcanvas.show();
+}
+async function Revisar(idReclamo){
+    const reclamo = await GetReclamoById(idReclamo);
+    const cliente = await GetUsuarioById(reclamo.cliente);
+    document.getElementById('IdReclamo').textContent = `ID: ${reclamo.id}`;
+    document.getElementById('ClienteReclamo').textContent = `Cliente: ${cliente.nombreUsuario}`;
+    document.getElementById('TituloReclamo').textContent = `Titulo: ${reclamo.titulo}`;
+    document.getElementById('DescripcionReclamo').textContent = `Descripcion: ${reclamo.descripcion}`;
+    var ReclamoModal = new bootstrap.Modal(document.getElementById('ReclamoModal'));
+    ReclamoModal.show();
+}
+function EliminarReclamo(){
+    idReclamo = document.getElementById('IdReclamo').textContent.split(' ')[1];
+    DelReclamo(idReclamo);
+    var ReclamoModal = bootstrap.Modal.getInstance(document.getElementById('ReclamoModal'));
+    ReclamoModal.hide();
+}
 async function GraficoGanancias() {
     const ctx = document.getElementById('GananciasPorMes').getContext('2d');
     const chartConfig = await obtenerDatosLineChart();

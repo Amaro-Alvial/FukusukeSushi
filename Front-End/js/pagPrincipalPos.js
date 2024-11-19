@@ -235,6 +235,19 @@ async function UpdMiPerfil(){
     GetProvincias();
 }
 
+function ModalReclamo(){
+    var reclamoModal = new bootstrap.Modal(document.getElementById('reclamoModal'));
+    reclamoModal.show();
+}
+function Reclamo(idCliente){
+    let titulo = document.getElementById('reclamoTitulo').value;
+    let descripcion = document.getElementById('reclamoDescripcion').value;
+    if (!titulo || !descripcion) {
+        alert('Por favor, completa todos los campos.');
+        return;
+    }
+    AddReclamo(titulo, descripcion, idCliente);
+}
 document.getElementById('regRegion').addEventListener('change', function() {
     const regionId = document.getElementById('regRegion').value;
     if (regionId) {
