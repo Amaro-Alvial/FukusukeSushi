@@ -53,7 +53,7 @@ async function cardProductos(item) {
                             <h5 class="card-title">${item.nombre}</h5>
                             <p class="card-text" style="font-weight: bold; font-size: 1.2rem">$${precio.precio}</p>
                         </div>
-                        <div class="d-flex justify-content-end align-items-center col-4">
+                        <div class="col-4 d-flex justify-content-center align-items-center">
                             <button class="agregar-button-card">
                                 <img src="./img/signo_mas.png" style="height: 45px">
                             </button>

@@ -32,15 +32,20 @@ if (isset($_SESSION['usuario_id']) && ($_SESSION['perfil'] == 'Admin' or $_SESSI
 
 <body>
     <!-- Navbar pricipal, inicio de sesión y más opciones (hay que confirmar cuáles se necesitan). -->
-    <nav class="navbar navbar-expand-sm" id="navbar-principal">
-        <div class="container-fluid" id="navbar-container">
+    <nav class="navbar navbar-expand-sm pt-0 pb-0" id="navbar-principal">
+        <div class="container-fluid p-2" id="navbar-container">
             <div class="container-logo">
                 <a id="logotype" href="./index.php">
-                    <img src="./img/logo/Logo2.png" class="img-fluid" alt="Logo de la empresa">
+                    <img src="./img/logo/FUKUSUKE_LOGO.png" class="img-fluid" alt="Logo de la empresa" style="height: 60px">
                 </a>
             </div>
-            <ul class="navbar-nav">
-                <div class="dropdown mr-4">
+            <ul class="navbar-nav d-flex align-items-center">
+                <li class="nav-item">
+                    <button class="pb-1" type="button" id="horarios-button" data-bs-toggle="modal" data-bs-target="#horariosModal">
+                        Horarios
+                    <button>
+                </li>
+                <div class="dropdown">
                     <button type="button" id="button-dropdown-locales" data-bs-toggle="dropdown">
                         Locales
                         <img src="./img/dropdown_icon.png" class="img-fluid" alt="Ícono de DropDown" style="width: 22px; padding-bottom: 3px">
@@ -60,7 +65,7 @@ if (isset($_SESSION['usuario_id']) && ($_SESSION['perfil'] == 'Admin' or $_SESSI
                     </li>
                     <li class="nav-item">
                         <button type="button" id="signup-button" data-bs-toggle="modal" data-bs-target="#regModal">
-                            Crear Cuenta
+                            Crear Cuenta 
                         </button>
                     </li>
                 <?php else: ?>
@@ -137,7 +142,7 @@ if (isset($_SESSION['usuario_id']) && ($_SESSION['perfil'] == 'Admin' or $_SESSI
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row" style="background-color: red;">
+                    <div class="row">
                         <!-- Imagen del producto (lado izquierdo) -->
                         <div id="productModalImage" class="col-md-6 d-flex align-items-center justify-content-center">
                             <img src="https://via.placeholder.com/300" alt="Imagen del Producto" class="img-fluid rounded">
@@ -148,25 +153,27 @@ if (isset($_SESSION['usuario_id']) && ($_SESSION['perfil'] == 'Admin' or $_SESSI
                             <p id="productModalDesc" style="height: 80%; margin: 0 0">Descripción detallada del producto. Aquí puedes añadir más detalles relevantes.</p>
                             
                             <!-- Control de cantidad -->
-                            <div class="quantity-container d-flex justify-content-center align-items-end row" style="background-color: grey; height: 20%">
-                                <div class="quantity-display col-4" id="productModalPrecio" value="" style="text-align: center; font-size: 22px; font-weight: bold">222</div>
-                                <div class="col-1 d-flex justify-content-center align-items-end p-0">
-                                    <button type="button" class="quantity-button" onclick="updateQuantity(-1)">
-                                        <img src="./img/signo_resta.png" style="width: 24px">
-                                    </button>
-                                </div>
-                                <div class="col-1 quantity-display d-flex justify-content-center p-0" id="quantity" style="font-size: 1.2rem;">1</div>
-                                <div class="col-1 d-flex justify-content-center align-items-end p-0">
-                                    <button type="button" class="quantity-button" onclick="updateQuantity(1)">
-                                        <img src="./img/signo_mas.png" style="width: 24px;">
-                                    </button>
-                                </div>
-                                <div class="col-5 ps-1 pe-1">
-                                    <button type="button" id="agregar-button-modal" data-bs-dismiss="modal" onclick="
-                                    <?php echo isset($_SESSION['usuario_id']) ? 'agregarDetalleCarrito();' : ''; ?>" 
-                                    <?php echo !isset($_SESSION['usuario_id']) ? 'data-bs-toggle="modal" data-bs-target="#loginModal"' : ''; ?>>
-                                        Agregar
-                                    </button>
+                            <div class="quantity-container d-flex justify-content-center align-items-end row" style="height: 20%">
+                                <div class="row">
+                                    <div class="quantity-display col-sm-12 col-md-12 col-lg-4" id="productModalPrecio" value="" style="text-align: center; font-size: 22px; font-weight: bold">222</div>
+                                    <div class="col-md-2 col-lg-1 d-flex justify-content-center align-items-center p-0">
+                                        <button type="button" class="quantity-button" onclick="updateQuantity(-1)">
+                                            <img src="./img/signo_resta.png" style="width: 24px">
+                                        </button>
+                                    </div>
+                                    <div class="col-1 quantity-display d-flex justify-content-center p-0" id="quantity" style="font-size: 1.2rem;">1</div>
+                                    <div class="col-md-2 col-lg-1 d-flex justify-content-center align-items-center p-0">
+                                        <button type="button" class="quantity-button" onclick="updateQuantity(1)">
+                                            <img src="./img/signo_mas.png" style="width: 24px;">
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6 col-lg-5 d-flex justify-content-center align-items-center ps-1 pe-1">
+                                        <button type="button" id="agregar-button-modal" data-bs-dismiss="modal" onclick="
+                                        <?php echo isset($_SESSION['usuario_id']) ? 'agregarDetalleCarrito();' : ''; ?>" 
+                                        <?php echo !isset($_SESSION['usuario_id']) ? 'data-bs-toggle="modal" data-bs-target="#loginModal"' : ''; ?>>
+                                            Agregar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <br>
@@ -311,6 +318,7 @@ if (isset($_SESSION['usuario_id']) && ($_SESSION['perfil'] == 'Admin' or $_SESSI
             </div>
         </div>
     </div>
+
     <!-- Modal de Editar Perfil -->
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -400,6 +408,31 @@ if (isset($_SESSION['usuario_id']) && ($_SESSION['perfil'] == 'Admin' or $_SESSI
         </div>
     </div>
 
+    <!-- Modal Horarios -->
+    <div class="modal fade" id="horariosModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body d-flex flex-column align-items-center">
+                    <div class="row">
+                        <p>
+                            LU, MA, MI ,JU
+                        </p>
+                    </div>
+                    <div class="row">
+                        <p>
+                            11:00 - 20:00
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Pide Ya -->
     <div class="container-fluid d-flex justify-content-center mt-0 mb-2">
         <button id="pideya-button">
@@ -422,7 +455,7 @@ if (isset($_SESSION['usuario_id']) && ($_SESSION['perfil'] == 'Admin' or $_SESSI
                 <div class="ps-2 pe-3" id="scroll-container"></div>
             </div>
             <div class="col-2 d-flex flex-column p-0 pe-2">
-                <h5 class="d-flex justify-content-center">Categorías</h5>
+                <h5 class="d-flex">Categorías</h5>
                 <select multiple id="categoria-select" name="categoria"></select>
                 <div class="d-flex justify-content-center align-items-end" style="height: 50%">
                     <button id="carrito-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" onclick="actualizarCarrito();">
@@ -437,7 +470,7 @@ if (isset($_SESSION['usuario_id']) && ($_SESSION['perfil'] == 'Admin' or $_SESSI
     <!-- Botón para mostrar el carrito -->
 
     <footer>
-        <div class="container-fluid mt-5" id="footer-container" style="background-color: lightgrey; height: 250px">
+        <div class="container-fluid mt-5" id="footer-container" style="background-color: lightgrey; height: 250px;">
             
         </div>
     </footer>
