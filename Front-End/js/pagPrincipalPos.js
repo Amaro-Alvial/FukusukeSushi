@@ -144,6 +144,9 @@ async function IniciarSesion() {
                     if ( perfil.tipo == 'Admin' || perfil.tipo == "Dueno") {
                         alert(`Bienvenido/a, ${data.nombreUsuario}. Redirigiendo a la página de administración.`);
                         window.location.href = 'http://localhost/Front-End/adminPersonas.php';
+                    } else if(perfil.tipo == 'Despachador'){
+                        alert(`Bienvenido/a, ${data.nombreUsuario}. Redirigiendo a la página de despachos.`);
+                        window.location.href = 'http://localhost/Front-End/ordenesDespacho.php';
                     } else {
                         alert(`Bienvenido/a, ${data.nombreUsuario}.`);
                         window.location.href = 'http://localhost/Front-End/index.php';

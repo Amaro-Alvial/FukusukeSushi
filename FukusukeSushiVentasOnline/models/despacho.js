@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const despachoSchema = new mongoose.Schema({
     fecha: String,
+    estado: Boolean,
     despachador: {type: mongoose.Schema.Types.ObjectId, ref: 'Usuario'}
 });
 

@@ -4,6 +4,10 @@ if (isset($_SESSION['usuario_id']) && ($_SESSION['perfil'] == 'Admin' or $_SESSI
     header('Location: adminPersonas.php');
     exit();
 }
+if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
+    header('Location: ordenesDespacho.php');
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
