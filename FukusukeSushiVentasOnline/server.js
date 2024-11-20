@@ -142,10 +142,12 @@ input CajaInput{
 type Despacho{
     id: ID!
     despachador: String!
+    estado: Boolean!
     fecha: String!
 }
 input DespachoInput{
     despachador: String!
+    estado: Boolean!
     fecha: String!
 }
 type HorarioCaja{
@@ -866,13 +868,13 @@ const resolvers = {
         },
         async addDespacho(obj, {input}){
             let despachadorBus = await Usuario.findById(input.despachador);
-            let despacho = new Despacho({despachador: despachadorBus._id, fecha: input.fecha});
+            let despacho = new Despacho({despachador: despachadorBus._id, estado: input.estado, fecha: input.fecha});
             await despacho.save();
             return despacho;
         },
         async updDespacho(obj, {id, input}){
             let despachadorBus = await Usuario.findById(input.despachador);
-            let despacho = await Despacho.findByIdAndUpdate(id, {despachador: despachadorBus._id, fecha: input.fecha}, { new: true });
+            let despacho = await Despacho.findByIdAndUpdate(id, {despachador: despachadorBus._id, estado: input.estado, fecha: input.fecha}, { new: true });
             return despacho;
         },
         async delDespacho(obj, {id}){

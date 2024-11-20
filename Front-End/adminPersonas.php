@@ -21,7 +21,6 @@ require_once 'session.php';
     Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre_usuario']); ?>
 </button>
 <ul class="dropdown-menu" aria-labelledby="userMenu">
-    <li><a class="dropdown-item" href="perfilUsuario.php">Mi Perfil</a></li>
     <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
 </ul>                      
 <div class="container mt-3"> <!-- Se abre el Container -->

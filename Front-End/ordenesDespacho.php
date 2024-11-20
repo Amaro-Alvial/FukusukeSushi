@@ -1,6 +1,6 @@
 <?php
 require_once 'session.php';
-    if ($_SESSION['perfil'] != 'Admin' && $_SESSION['perfil'] != 'Dueno') {
+    if ($_SESSION['perfil'] != 'Despachador'){
         header('Location: index.php');
         exit();
     }
@@ -15,7 +15,7 @@ require_once 'session.php';
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="./js/adminVentas.js"></script>
+    <script src="./js/ordenesDespacho.js"></script>
 </head>
 <body>
 <button class="btn btn-secondary dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
@@ -23,47 +23,18 @@ require_once 'session.php';
 </button>
 <ul class="dropdown-menu" aria-labelledby="userMenu">
     <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
-    <li><a class="dropdown-item" href="#" onclick="offCanvasReclamos()">Revisar Reclamos</a></li>
 </ul>                      
 <div class="container mt-3"> <!-- Se abre el Container -->
-    <h2>Administración de Ventas</h2>
+    <h2>Ordenes de despacho</h2>
     <hr>
-    <button class="btn btn-primary" id="GananciasMes" onclick="GraficoGanancias()">Ganancias por mes</button>
-    <?php
-    $str= <<<EOF
-        <div style="width 60%">
-        <canvas id="GananciasPorMes"></canvas>
-        </div>
-        <div style="width 60%">
-        <canvas id="BoletasPorMes"></canvas>
-        </div>
-    EOF;
-    echo $str;
-    ?>
-    <hr>
-    <h2>Navegación de Boletas</h2>
     <div class="row"> <!-- Se abre fila 1 -->
         <div class="mb-3 mt-3 col-xxl-3">
-            <label for="Fechas">Mes:</label> <br>
-            <select class="form-select" name="Fechas" id="cmbFecha">
-                <option value="DefaultFecha">Seleccione una Fecha</option>
-                <option value="0">Enero</option>
-                <option value="1">Febrero</option>
-                <option value="2">Marzo</option>
-                <option value="3">Abril</option>
-                <option value="4">Mayo</option>
-                <option value="5">Junio</option>
-                <option value="6">Julio</option>
-                <option value="7">Agosto</option>
-                <option value="8">Septiembre</option>
-                <option value="9">Octubre</option>
-                <option value="10">Noviembre</option>
-                <option value="11">Diciembre</option>
+            <label for="Estado">Estado:</label> <br>
+            <select class="form-select" name="Estado" id="cmbEstado">
+                <option value="DefaultEstado">Seleccione un estado</option>
+                <option value=1>Completado</option>
+                <option value=0>Pendiente</option>
             </select>
-        </div>
-        <div class="mb-3 mt-3 col-xxl-3">
-            <label for="FechaBusqueda">Fecha:</label> <br>
-            <input type="date" class="form-control" id="FechaBusqueda">
         </div>
         <div class="mb-3 mt-3 col-xxl-3">
             <label for="IdBusqueda">ID:</label> <br>
@@ -75,49 +46,46 @@ require_once 'session.php';
         </div>
   </div> <!-- Cierre de la Fila 1 -->
   <div class="row"> <!-- Se abre fila 2 -->
-      <table id="tblVenta"></table>
+      <table id="tblDespachos"></table>
   </div> <!-- Cierre de la Fila 2 -->
 </div> <!-- Cierre del Container -->
-<!-- offcanvas de Reclamos -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="reclamoOffCanvas" aria-labelledby="offcanvasRightLabel">
-    <div class="offcanvas-header">
-        <h5 id="offcanvasRightLabel">Reclamos</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
-    </div>
-    <div class="offcanvas-body">
-        <table id="tblReclamos"></table>
-    </div>
-</div> <!-- Cierre del offcanvas de Reclamos -->
-<!-- Modal de Reclamo -->
-<div class="modal fade" id="ReclamoModal" tabindex="-1" aria-labelledby="ReclamoModalLabel" aria-hidden="true">
+<!-- Modal de Despacho -->
+<div class="modal fade" id="DespachoModal" tabindex="-1" aria-labelledby="DespachoModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="ReclamoModalLabel">Reclamo</h5>
+                <h5 class="modal-title" id="DespachoModalLabel">Orden de Despacho</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body"> <!-- Se abre el Modal Body -->
                 <div class="mb-3">
-                    <p id="IdReclamo"> </p>
+                    <p id="FechaDespacho" readonly></p>
                 </div>
                 <div class="mb-3">
-                    <p id="ClienteReclamo"></p>
+                    <p id="Despachador" readonly></p>
                 </div>
                 <div class="mb-3">
-                    <p id="TituloReclamo"></p>
+                    <label for="EstadoDespacho">Estado:</label> <br>
+                    <select class="form-select" name="EstadoDespacho" id="cmbEstadoDespacho">
+                        <option value="DefaultEstado">Seleccione un estado</option>
+                        <option value='1'>Despachado</option>
+                        <option value='0'>Pendiente</option>
+                    </select>
                 </div>
-                <div class="mb-3">
-                    <textarea class="form-control" id="DescripcionReclamo" readonly></textarea>
+                <div>
+                    <h4>Boletas</h4>
+                    <hr>
+                    <table id="tblBoleta"></table>
                 </div>
-            </div>
+            </div> <!-- Cierre del Modal Body -->
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cerrar</button>
-                <button type="button" class="btn btn-primary" onclick="EliminarReclamo()">Resuelto</button>
+                <button type="button" class="btn btn-primary" onclick="ActualizarEstadoDespacho()">Actualizar</button>
             </div>
         </div>
     </div>
-</div> <!-- Cierre del Modal de Reclamo -->
-<!-- Modal de Detallear Producto -->
+</div> <!-- Cierre del Modal de Despacho -->
+<!-- Modal de Detalle Boleta -->
 <div class="modal fade" id="DetalleModal" tabindex="-1" aria-labelledby="DetalleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -152,16 +120,17 @@ require_once 'session.php';
                     <div class="d-flex justify-content-end">
                         <p id="Total" readonly></p>
                     </div>
-
                 </form>
-                    
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cerrar</button>
-                <button type="button" class="btn btn-danger" onclick="AnularCompra()">Anular Compra</button>
             </div>
         </div>
     </div>
-</div>
+</div> <!-- Cierre del Modal de Detalle Boleta -->
 </body>
 </html>
-<script src="./js/adminVentasPos.js"></script>
+<script src="./js/ordenesDespachoPos.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+
+
