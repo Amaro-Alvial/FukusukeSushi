@@ -145,24 +145,29 @@ async function getProductosByIdCarrito(idCarrito) {
 }
 function creaCardCarrito(producto, cantidad, detalleCarrito, precio){
     return `
-    <div class="card mb-3" data-id="${detalleCarrito}">
-        <div class="row g-0">
-            <div class="col-md-4">
-                <img src="${producto.foto}" class="img-fluid rounded-start" alt="${producto.nombre}">
+    <div class="card mb-3" data-id="${detalleCarrito}" style="height: ">
+        <div class="row g-0" style="height: 100%">
+            <div class="col-4">
+                <img src="${producto.foto}" class="img-fluid rounded-start" alt="${producto.nombre}" style="height: 100%; width: auto">
             </div>
-            <div class="col-md-8">
+            <div class="col-8">
                 <div class="card-body">
+        
                     <h5 class="card-title">${producto.nombre}</h5>
                     <p id="precio-${producto.id}" class="card-text text-muted" value="${precio}">$${precio*cantidad}</p>
 
                     <!-- Contador de cantidad de productos -->
-                    <div class="d-flex align-items-center mt-2">
-                        <button class="btn btn-outline-secondary btn-sm" onclick="cambiarDetalleCarrito('${detalleCarrito}', '${producto.id}', -1)">-</button>
-                        <span id="cantidad-${detalleCarrito}" class="mx-2">${cantidad}</span>
-                        <button class="btn btn-outline-secondary btn-sm" onclick="cambiarDetalleCarrito('${detalleCarrito}', '${producto.id}',  1)">+</button>
-                    </div>
+                    <div class="row">
+                        <div class="col-6 d-flex align-items-center">
+                            <button class="btn btn-outline-secondary btn-sm" onclick="cambiarDetalleCarrito('${detalleCarrito}', '${producto.id}', -1)">-</button>
+                            <span id="cantidad-${detalleCarrito}" class="mx-2">${cantidad}</span>
+                            <button class="btn btn-outline-secondary btn-sm" onclick="cambiarDetalleCarrito('${detalleCarrito}', '${producto.id}',  1)">+</button>
+                        </div>
 
-                    <button class="btn btn-danger btn-sm mt-3" onclick="eliminaDetalleCarrito('${detalleCarrito}')">Eliminar</button>
+                        <div class="col-6">
+                            <button class="btn btn-danger btn-sm" onclick="eliminaDetalleCarrito('${detalleCarrito}')">Eliminar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
