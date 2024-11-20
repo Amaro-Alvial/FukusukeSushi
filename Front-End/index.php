@@ -86,9 +86,16 @@ if (isset($_SESSION['usuario_id']) && ($_SESSION['perfil'] == 'Admin' or $_SESSI
     </nav>
 
     <!-- Aviso de iniciar sesión (debería eliminarse/cambiar cuando se inicia sesión) -->
-    <div class="container-fluid d-flex justify-content-center" id="aviso-iniciasesion">
-        Te invitamos a iniciar sesión para disfrutar de nuestra carta.
-    </div>
+    <?php if (!isset($_SESSION['usuario_id'])): ?>
+        <div class="container-fluid d-flex justify-content-center" id="aviso-iniciasesion">
+            Te invitamos a iniciar sesión para disfrutar de nuestra carta.
+        </div>
+    <?php else: ?>
+        <!-- Mostrar si hay sesión activa -->
+        <div class="container-fluid d-flex justify-content-center" id="aviso-iniciasesion">
+            ¡¡Aprovecha nuestras promociones!!
+        </div>
+    <?php endif; ?>
 
     <!-- Carrusel -->
     <div>
