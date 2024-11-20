@@ -69,7 +69,15 @@ async function AbrirModalBoleta(idBoleta){
     var DetalleModal = new bootstrap.Modal(document.getElementById('DetalleModal'));
     DetalleModal.show();
 }
-
+async function BuscarBoletaPorId(){
+    let id = document.getElementById('IdBusqueda').value;
+    if (id) {
+        AbrirModalBoleta(id);
+    }
+    else{
+        alert('Ingrese un ID de boleta');
+    }
+}
 async function DescargarBoletaPDF(idBoleta) {
     const boleta = await GetBoletaById(idBoleta);
     const [detalleCompras, cliente, horarioCaja] = await Promise.all([
@@ -162,3 +170,13 @@ async function DescargarBoletaPDF(idBoleta) {
 
     doc.save(`Boleta_${boleta.id}.pdf`);
 }
+
+document.getElementById('cmbEstado').addEventListener('change', async function() {
+    let estado = document.getElementById('cmbEstado').value;
+    if (estado == "DefaultEstado") {
+        await GetDespachos();
+    } else {
+        estado = estado == '1' ? true : false;
+        await GetDespachosByEstado(estado);
+    }
+});

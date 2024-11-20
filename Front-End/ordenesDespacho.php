@@ -22,7 +22,6 @@ require_once 'session.php';
     Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre_usuario']); ?>
 </button>
 <ul class="dropdown-menu" aria-labelledby="userMenu">
-    <li><a class="dropdown-item" href="perfilUsuario.php">Mi Perfil</a></li>
     <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
 </ul>                      
 <div class="container mt-3"> <!-- Se abre el Container -->
@@ -32,7 +31,7 @@ require_once 'session.php';
         <div class="mb-3 mt-3 col-xxl-3">
             <label for="Estado">Estado:</label> <br>
             <select class="form-select" name="Estado" id="cmbEstado">
-                <option value="DefaultFecha">Seleccione un estado</option>
+                <option value="DefaultEstado">Seleccione un estado</option>
                 <option value=1>Completado</option>
                 <option value=0>Pendiente</option>
             </select>
@@ -40,6 +39,10 @@ require_once 'session.php';
         <div class="mb-3 mt-3 col-xxl-3">
             <label for="IdBusqueda">ID:</label> <br>
             <input type="text" class="form-control" id="IdBusqueda" placeholder="Busqueda por ID Boleta">
+        </div>
+        <div class="mb-3 mt-3 col-xxl-1">
+            <br>
+            <button class="btn btn-primary" id="btnBuscar" onclick="BuscarBoletaPorId()">Buscar</button>
         </div>
   </div> <!-- Cierre de la Fila 1 -->
   <div class="row"> <!-- Se abre fila 2 -->
@@ -117,9 +120,7 @@ require_once 'session.php';
                     <div class="d-flex justify-content-end">
                         <p id="Total" readonly></p>
                     </div>
-
                 </form>
-                    
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cerrar</button>
             </div>

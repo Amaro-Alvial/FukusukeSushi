@@ -392,6 +392,46 @@ function GetBoletaById(idBoleta){
         });
     });
 }
+async function GetDespachosByEstado(estado){
+    let query = `
+    query miQuery{
+        getDespachos{
+            id
+            fecha
+            estado
+            despachador
+        }
+    }
+    `;
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: query,
+                variables: {}
+            }),
+            success: function(response){
+                let nuevosDespachos = [];
+                for (const item of response.data.getDespachos) {
+                    if (item.estado == estado) {
+                        nuevosDespachos.push(item);
+                    }
+                }
+                contentTableDespachos = [];
+                const encabezados = '<tr><td>FECHA</td><td>ESTADO</td><td>DESPACHADOR</td><td>Detalles</td></tr>';
+                document.getElementById('tblDespachos').innerHTML = encabezados;
+                for (const item of nuevosDespachos) {
+                    trtdDespacho(item);
+                }
+            }
+        });
+    });
+
+
+}
 function GetDespachoById(idDespacho){
     let query = `
     query miQuery($id: ID!){
