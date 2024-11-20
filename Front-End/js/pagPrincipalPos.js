@@ -6,9 +6,11 @@ GetProvincias();
 let categoriaId = "67229547c178eb95c1c36163";
 getProductosByIdCategoria(categoriaId);
 
-document.getElementById('categoria-select').addEventListener('change', function(){
-    let categoriaId = document.getElementById('categoria-select').value;
-    getProductosByIdCategoria(categoriaId);
+document.getElementById('categoria-scroll').addEventListener('click', function(event) {
+    if (event.target.classList.contains('categoria-button')) {
+        const categoriaId = event.target.value;
+        getProductosByIdCategoria(categoriaId);
+    }
 });
 
 document.getElementById('login-form').addEventListener('submit', function(){

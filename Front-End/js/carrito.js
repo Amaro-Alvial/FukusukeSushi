@@ -157,13 +157,17 @@ function creaCardCarrito(producto, cantidad, detalleCarrito, precio){
                     <p id="precio-${producto.id}" class="card-text text-muted" value="${precio}">$${precio*cantidad}</p>
 
                     <!-- Contador de cantidad de productos -->
-                    <div class="d-flex align-items-center mt-2">
-                        <button class="btn btn-outline-secondary btn-sm" onclick="cambiarDetalleCarrito('${detalleCarrito}', '${producto.id}', -1)">-</button>
-                        <span id="cantidad-${detalleCarrito}" class="mx-2">${cantidad}</span>
-                        <button class="btn btn-outline-secondary btn-sm" onclick="cambiarDetalleCarrito('${detalleCarrito}', '${producto.id}',  1)">+</button>
-                    </div>
+                    <div class="row">
+                        <div class="col-6 d-flex align-items-center">
+                            <button class="btn btn-outline-secondary btn-sm" onclick="cambiarDetalleCarrito('${detalleCarrito}', '${producto.id}', -1)">-</button>
+                            <span id="cantidad-${detalleCarrito}" class="mx-2">${cantidad}</span>
+                            <button class="btn btn-outline-secondary btn-sm" onclick="cambiarDetalleCarrito('${detalleCarrito}', '${producto.id}',  1)">+</button>
+                        </div>
 
-                    <button class="btn btn-danger btn-sm mt-3" onclick="eliminaDetalleCarrito('${detalleCarrito}')">Eliminar</button>
+                        <div class="col-6">
+                            <button class="btn btn-danger btn-sm" onclick="eliminaDetalleCarrito('${detalleCarrito}')">Eliminar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

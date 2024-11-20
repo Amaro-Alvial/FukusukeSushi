@@ -456,7 +456,7 @@ if (isset($_SESSION['usuario_id']) && ($_SESSION['perfil'] == 'Admin' or $_SESSI
             </div>
             <div class="col-2 d-flex flex-column p-0 pe-2">
                 <h5 class="d-flex">Categorías</h5>
-                <select multiple id="categoria-select" name="categoria"></select>
+                <div class="mt-2"id="categoria-scroll" name="categoria"></div>
                 <div class="d-flex justify-content-center align-items-end" style="height: 50%">
                     <button id="carrito-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" onclick="actualizarCarrito();">
                         <img src="./img/carrito.png" style="width: 45px">
@@ -466,17 +466,20 @@ if (isset($_SESSION['usuario_id']) && ($_SESSION['perfil'] == 'Admin' or $_SESSI
             </div>
         </div>
     </div>
-    
+
     <!-- Botón para mostrar el carrito -->
 
     <footer>
-        <div class="container-fluid mt-5" id="footer-container" style="background-color: lightgrey; height: 250px;">
-            
+        <div class="container-fluid mt-5" id="footer-container" style="background-color: #F2F1F1; height: 150px;">
+            <div class="row" style="height: 100%">
+                <div class="col-3 pt-4 pb-4 h-100">
+                    <img src="./img/logo/FUKUSUKE_LOGO.png" height="100%">
+                </div>  
         </div>
     </footer>
 
     <!--https://www.svgrepo.com/collection/dazzle-line-icons/, íconos con licencia libre. -->
-    
+
 </body>
 </html>
 <script src="./js/pagPrincipalPos.js"></script>
