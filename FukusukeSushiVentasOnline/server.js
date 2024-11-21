@@ -702,7 +702,7 @@ const resolvers = {
             return persona;
         },
         async updPersona(obj, {id, input}){
-            let persona = await Persona.findByIdAndUpdate(id, input, { new: true });
+            let persona = await Persona.findByIdAndUpdate(id, input, { new: true, runValidators: true });
             return persona;
         },
         async delPersona(obj, {id}){
@@ -736,7 +736,7 @@ const resolvers = {
             }
             const hashedPassword = await bcrypt.hash(input.pass, 10);
             let personaBus = await Persona.findById(input.persona);
-            let usuario = await Usuario.findByIdAndUpdate(id, {email: input.email, pass: hashedPassword, nombreUsuario: input.nombreUsuario, persona: personaBus._id}, { new: true });
+            let usuario = await Usuario.findByIdAndUpdate(id, {email: input.email, pass: hashedPassword, nombreUsuario: input.nombreUsuario, persona: personaBus._id}, { new: true, runValidators: true });
             return usuario;
         },
         async delUsuario(obj, {id}){
@@ -753,7 +753,7 @@ const resolvers = {
         },
         async updProducto(obj, {id, input}){
             let categoriaBus = await Categoria.findById(input.categoria);
-            let producto = await Producto.findByIdAndUpdate(id, {nombre: input.nombre, descripcion: input.descripcion, foto: input.foto, categoria: categoriaBus._id}, { new: true });
+            let producto = await Producto.findByIdAndUpdate(id, {nombre: input.nombre, descripcion: input.descripcion, foto: input.foto, categoria: categoriaBus._id}, { new: true, runValidators: true });
             return producto;
         },
         async delProducto(obj, {id}){
@@ -774,7 +774,7 @@ const resolvers = {
             let clienteBus = await Usuario.findById(input.cliente);
             let horarioCajaBus = await HorarioCaja.findById(input.horarioCaja);
             let despachoBus = await Despacho.findById(input.despacho);
-            let boleta = await Boleta.findByIdAndUpdate(id, {fecha: input.fecha, cliente: clienteBus._id, horarioCaja: horarioCajaBus._id, despacho: despachoBus._id}, { new: true });
+            let boleta = await Boleta.findByIdAndUpdate(id, {fecha: input.fecha, cliente: clienteBus._id, horarioCaja: horarioCajaBus._id, despacho: despachoBus._id}, { new: true, runValidators: true });
             return boleta;
         },
         async delBoleta(obj, {id}){
@@ -793,7 +793,7 @@ const resolvers = {
         async updDetalleCompra(obj, {id, input}){
             let productoBus = await Producto.findById(input.producto);
             let boletaBus = await Boleta.findById(input.boleta);
-            let detalleCompra = await DetalleCompra.findByIdAndUpdate(id, {producto: productoBus._id, boleta: boletaBus._id, cantidad: input.cantidad, total: input.total}, { new: true });
+            let detalleCompra = await DetalleCompra.findByIdAndUpdate(id, {producto: productoBus._id, boleta: boletaBus._id, cantidad: input.cantidad, total: input.total}, { new: true, runValidators: true });
             return detalleCompra;
         },
         async delDetalleCompra(obj, {id}){
@@ -808,7 +808,7 @@ const resolvers = {
             return categoria;
         },
         async updCategoria(obj, {id, input}){
-            let categoria = await Categoria.findByIdAndUpdate(id, input, { new: true });
+            let categoria = await Categoria.findByIdAndUpdate(id, input, { new: true, runValidators: true });
             return categoria;
         },
         async delCategoria(obj, {id}){
@@ -825,7 +825,7 @@ const resolvers = {
         },
         async updPrecioHistorico(obj, {id, input}){
             let productobus = await Producto.findById(input.producto);
-            let precioHistorico = await PrecioHistorico.findByIdAndUpdate(id, {fecha: input.fecha, producto: productobus._id, precio: input.precio}, { new: true });
+            let precioHistorico = await PrecioHistorico.findByIdAndUpdate(id, {fecha: input.fecha, producto: productobus._id, precio: input.precio}, { new: true, runValidators: true });
             return precioHistorico;
         },
         async delPrecioHistorico(obj, {id}){
@@ -842,7 +842,7 @@ const resolvers = {
         },
         async updDisponibleHistorico(obj, {id, input}){
             let productobus = await Producto.findById(input.producto);
-            let disponibleHistorico = await DisponibleHistorico.findByIdAndUpdate(id, {fecha: input.fecha, producto: productobus._id, disponibilidad: input.disponibilidad}, { new: true });
+            let disponibleHistorico = await DisponibleHistorico.findByIdAndUpdate(id, {fecha: input.fecha, producto: productobus._id, disponibilidad: input.disponibilidad}, { new: true, runValidators: true });
             return disponibleHistorico;
         },
         async delDisponibleHistorico(obj, {id}){
@@ -857,7 +857,7 @@ const resolvers = {
             return caja;
         },
         async updCaja(obj, {id, input}){
-            let caja = await Caja.findByIdAndUpdate(id, input, { new: true });
+            let caja = await Caja.findByIdAndUpdate(id, input, { new: true, runValidators: true });
             return caja;
         },
         async delCaja(obj, {id}){
@@ -874,7 +874,7 @@ const resolvers = {
         },
         async updDespacho(obj, {id, input}){
             let despachadorBus = await Usuario.findById(input.despachador);
-            let despacho = await Despacho.findByIdAndUpdate(id, {despachador: despachadorBus._id, estado: input.estado, fecha: input.fecha}, { new: true });
+            let despacho = await Despacho.findByIdAndUpdate(id, {despachador: despachadorBus._id, estado: input.estado, fecha: input.fecha}, { new: true, runValidators: true });
             return despacho;
         },
         async delDespacho(obj, {id}){
@@ -893,7 +893,7 @@ const resolvers = {
         async updHorarioCaja(obj, {id, input}){
             let cajaBus = await Caja.findById(input.caja);
             let encargadoBus = await Usuario.findById(input.encargado);
-            let horarioCaja = await HorarioCaja.findByIdAndUpdate(id, {horario: input.horario, encargado: encargadoBus._id, caja: cajaBus._id}, { new: true });
+            let horarioCaja = await HorarioCaja.findByIdAndUpdate(id, {horario: input.horario, encargado: encargadoBus._id, caja: cajaBus._id}, { new: true, runValidators: true });
             return horarioCaja;
         },
         async delHorarioCaja(obj, {id}){
@@ -908,7 +908,7 @@ const resolvers = {
             return perfil;
         },
         async updPerfil(obj, {id, input}){
-            let perfil = await Perfil.findByIdAndUpdate(id, input, { new: true });
+            let perfil = await Perfil.findByIdAndUpdate(id, input, { new: true, runValidators: true });
             return perfil;
         },
         async delPerfil(obj, {id}){
@@ -927,7 +927,7 @@ const resolvers = {
         async updUsuarioPerfil(obj, {id, input}){
             let usuarioBus = await Usuario.findById(input.usuario);
             let perfilBus = await Perfil.findById(input.perfil);
-            let usuarioPerfil = await UsuarioPerfil.findByIdAndUpdate(id, {caducidad: input.caducidad, usuario: usuarioBus._id, perfil: perfilBus._id}, { new: true });
+            let usuarioPerfil = await UsuarioPerfil.findByIdAndUpdate(id, {caducidad: input.caducidad, usuario: usuarioBus._id, perfil: perfilBus._id}, { new: true, runValidators: true });
             return usuarioPerfil;
         },
         async delUsuarioPerfil(obj, {id}){
@@ -944,7 +944,7 @@ const resolvers = {
         },
         async updCarrito(obj, {id, input}){
             let clienteBus = await Usuario.findById(input.cliente);
-            let carrito = await Carrito.findByIdAndUpdate(id, {fecha: input.fecha, cliente: clienteBus._id}, { new: true });
+            let carrito = await Carrito.findByIdAndUpdate(id, {fecha: input.fecha, cliente: clienteBus._id}, { new: true, runValidators: true });
             return carrito;
         },
         async delCarrito(obj, {id}){
@@ -963,7 +963,7 @@ const resolvers = {
         async updDetalleCarrito(obj, {id, input}){
             let productoBus = await Producto.findById(input.producto);
             let carritoBus = await Carrito.findById(input.carrito);
-            let detalleCarrito = await DetalleCarrito.findByIdAndUpdate(id, {producto: productoBus._id, carrito: carritoBus._id, cantidad: input.cantidad}, { new: true });
+            let detalleCarrito = await DetalleCarrito.findByIdAndUpdate(id, {producto: productoBus._id, carrito: carritoBus._id, cantidad: input.cantidad}, { new: true, runValidators: true });
             return detalleCarrito;
         },
         async delDetalleCarrito(obj, {id}){
@@ -978,7 +978,7 @@ const resolvers = {
             return region;
         },
         async updRegion(obj, {id, input}){
-            let region = await Region.findByIdAndUpdate(id, input, { new: true });
+            let region = await Region.findByIdAndUpdate(id, input, { new: true, runValidators: true });
             return region;
         },
         async delRegion(obj, {id}){
@@ -995,7 +995,7 @@ const resolvers = {
         },
         async updProvincia(obj, {id, input}){
             let regionBus = await Region.findById(input.region);
-            let provincia = await Provincia.findByIdAndUpdate(id, {nombre: input.nombre, region: regionBus._id}, { new: true });
+            let provincia = await Provincia.findByIdAndUpdate(id, {nombre: input.nombre, region: regionBus._id}, { new: true, runValidators: true });
             return provincia;
         },
         async delProvincia(obj, {id}){
@@ -1012,7 +1012,7 @@ const resolvers = {
         },
         async updComuna(obj, {id, input}){
             let provinciaBus = await Provincia.findById(input.provincia);
-            let comuna = await Comuna.findByIdAndUpdate(id, {nombre: input.nombre, provincia: provinciaBus._id}, { new: true });
+            let comuna = await Comuna.findByIdAndUpdate(id, {nombre: input.nombre, provincia: provinciaBus._id}, { new: true, runValidators: true });
             return comuna;
         },
         async delComuna(obj, {id}){
@@ -1029,7 +1029,7 @@ const resolvers = {
         },
         async updReclamo(obj, {id, input}){
             let clienteBus = await Usuario.findById(input.cliente);
-            let reclamo = await Reclamo.findByIdAndUpdate(id, {fecha: input.fecha, cliente: clienteBus._id, descripcion: input.descripcion}, { new: true });
+            let reclamo = await Reclamo.findByIdAndUpdate(id, {fecha: input.fecha, cliente: clienteBus._id, descripcion: input.descripcion}, { new: true, runValidators: true });
             return reclamo;
         },
         async delReclamo(obj, {id}){
