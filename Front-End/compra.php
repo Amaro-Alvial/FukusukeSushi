@@ -7,7 +7,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Pago - Webpay Simulado</title>
+    <title>Página de Pago</title>
     <!-- Incluye Bootstrap para estilos -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -26,6 +26,11 @@ session_start();
     <script src="./js/pagPrincipal.js"></script>
 </head>
 <body>
+    <header class="container-fluid row" style="height: 20px;">
+    <div class="col-9" style="background-color: #6C196B"></div>
+    <div class="col-1" style="background-color: #D3016C"></div>
+    <div class="col-2" style="background-color: #00C3B2"></div>
+    </header>
     <div class="container-pago">
         <div class="header-pago d-flex justify-content-between">
             <div>
@@ -73,7 +78,7 @@ session_start();
                         <input type="text" class="form-control" id="cvv" name="cvv" maxlength="3" required>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-pago btn-block">Continuar</button>
+                <button type="submit" class="btn btn-pago btn-block" onclick="cambiazo();">Continuar</button>
                 <button type="button" class="btn btn-volver btn-block" onclick="window.location.href='index.php'">Volver</button>
             </form>
         </div>
@@ -90,7 +95,7 @@ session_start();
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div style="max-height: 300px; overflow-y: auto;"></div>
+                    <div id="productosDetalleCompra" style="max-height: 300px; overflow-y: auto;"></div>
                 </div>
 
                 <div class="modal-footer">

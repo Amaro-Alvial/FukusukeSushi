@@ -17,8 +17,7 @@ document.getElementById('login-form').addEventListener('submit', function(){
 
     getUsuarioByIdPerfil
 });
-//Dejar listo el carrito del usuario
-//console.log(idCliente);
+//Dejar listo el carrito del 
 setCarrito(idCliente);
 
 async function RegUsuario() {

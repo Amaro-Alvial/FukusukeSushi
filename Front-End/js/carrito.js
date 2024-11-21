@@ -120,7 +120,7 @@ async function actualizarCarrito(){
         let boton =`
         <br>
         <div class="text-center" id="botonDentroCarrito">
-            <button class="btn btn-success" onclick="">
+            <button class="btn btn-success" onclick="window.location.href='compra.php'">
                 <div class="d-flex align-items-center justify-content-center">
                     <h4 id="textoBotonCarrito" class="mb-0 me-2">$${total}</h4>
                     <img src="./img/carrito.png" style="width: 25px; height: 25px;">
@@ -313,7 +313,6 @@ async function cambiarDetalleCarrito(detalleCarrito, idProducto, masmenos){
     
 }
 async function eliminaDetalleCarrito(detalleCarrito, producto){
-    //TODO: taría weno un "¿Estás seguro de querer eliminar este producto, guapo?"
     let cantidad = parseInt(document.getElementById('cantidad-' + detalleCarrito).innerHTML);
     let precioCantidad = parseInt(document.getElementById('precio-' + producto).innerHTML.replace('$', ''));
     cambiarIconoCarrito(-cantidad);
@@ -335,7 +334,7 @@ function cambiarIconoCarrito(cantidad){
     document.getElementById('cantidadCarrito').innerHTML = cantidadActual + cantidad;
 }
 
-// Cambia el ícono junto al svg del carrito para que muestre la cantidad de productos en éste
+// Cambia el botón dentro del carrito para que muestre el total a pagar por la compra
 function cambiarCantidadCarrito(cantidad){
     let cantidadActual = parseInt(document.getElementById('textoBotonCarrito').innerHTML.replace('$', ''));
     document.getElementById('textoBotonCarrito').innerHTML = "$" + parseInt(cantidadActual + cantidad);
