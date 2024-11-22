@@ -1,0 +1,82 @@
+body {
+    background-color: #fefefe;
+}
+.container-pago {
+    max-width: 800px;
+    background-color: white;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+}
+.header-pago {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+.header-pago h1 {
+    font-size: 24px;
+    color: #5c2e91;
+}
+.monto-pagar {
+    font-size: 28px;
+    color: #333;
+    font-weight: bold;
+}
+.opciones-pago {
+    margin-top: 20px;
+}
+.opciones-pago h5 {
+    font-size: 18px;
+    color: #5c2e91;
+}
+.form-pago {
+    padding: 20px 0;
+}
+.btn-pago {
+    background-color: #5c2e91;
+    color: white;
+    font-size: 18px;
+}
+.btn-pago:hover {
+    background-color: #4a2274;
+}
+.btn-volver {
+    background-color: #949494;
+    color: rgb(0, 0, 0);
+    font-size: 18px;
+}
+.btn-volver:hover {
+    background-color: #000000;
+    color: rgb(255, 255, 255);
+}
+.tarjetas-iconos {
+    margin-top: 10px;
+}
+.tarjetas-iconos img {
+    width: 40px;
+    margin-right: 10px;
+}
+.cancelar-compra {
+    text-align: center;
+    margin-top: 20px;
+}
+.cancelar-compra a {
+    color: #5c2e91;
+    text-decoration: none;
+}
+.cancelar-compra a:hover {
+    text-decoration: underline;
+}
+.btn-ver-detalle {
+    color: #5c2e91;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+.detalle-compra-modal .modal-body {
+    max-height: 400px;
+    overflow-y: auto;
+}

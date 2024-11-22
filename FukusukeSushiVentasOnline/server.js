@@ -282,10 +282,12 @@ type Query{
     getDespachos: [Despacho]
     getDespachoById(id: ID!): Despacho
     getDespachosByIdDespachador(id: String): [Despacho]
+    getUltimoDespacho: Despacho
     getHorarioCajas: [HorarioCaja]
     getHorarioCajaById(id: ID!): HorarioCaja
     getHorarioCajasByIdCaja(id: String): [HorarioCaja]
     getHorarioCajasByIdUsuario(id: String): [HorarioCaja]
+    getUltimoHorarioCaja: HorarioCaja
     getPerfils: [Perfil]
     getPerfilById(id: ID!): Perfil
     getPerfilByTipo(tipo: String!): Perfil
@@ -548,6 +550,10 @@ const resolvers = {
             let despachos = await Despacho.find({despachador: id});
             return despachos;
         },
+        async getUltimoDespacho(obj){
+            let despachos = await Despacho.find().sort({fecha: -1}).limit(1);
+            return despachos[0];
+        },
         async getHorarioCajas(obj){
             let horarioCajas = await HorarioCaja.find();
             return horarioCajas;
@@ -563,6 +569,10 @@ const resolvers = {
         async getHorarioCajasByIdUsuario(obj, {id}){
             let horarioCajas = await HorarioCaja.find({usuario: id});
             return horarioCajas;
+        },
+        async getUltimoHorarioCaja(obj){
+            let horarioCajas = await HorarioCaja.find().sort({horario: -1}).limit(1);
+            return horarioCajas[0];
         },
         async getPerfils(obj){
             let perfiles = await Perfil.find();

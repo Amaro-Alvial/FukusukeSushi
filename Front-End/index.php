@@ -15,7 +15,7 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FukusukeSushi</title>
+    <title>Fukusuke Sushi</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -140,8 +140,8 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
         </div>
         <div class="offcanvas-body">
-            <h3 class="text-center">Carrito Vacío 😢</h3>
-            <h5  class="text-center">Cuando agregues productos al carrito, aparecerán aquí.</h5>
+            <h3 class="text-center">Inicia sesión 👤</h3>
+            <h5 class="text-center text-muted">Para poder usar el carrito debes iniciar sesión.</h5>
         </div>
     </div>
 
@@ -418,6 +418,64 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Modal Horarios -->
+    <div class="modal fade" id="horariosModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body d-flex flex-column align-items-center">
+                    <div class="row">
+                        <p>
+                            LU, MA, MI ,JU
+                        </p>
+                    </div>
+                    <div class="row">
+                        <p>
+                            11:00 - 20:00
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de Reclamo -->
+    <div class="modal fade" id="reclamoModal" tabindex="-1" aria-labelledby="reclamoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reclamoModalLabel">Reclamo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body"> <!-- Se abre el Modal Body -->
+                    <form id="reclamoForm">
+                        <div class="mb-3">
+                            <label for="reclamoTitulo" class="form-label">Titulo:</label>
+                            <input type="text" class="form-control" id="reclamoTitulo"></label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reclamoDescripcion" class="form-label">Descripción:</label>
+                            <textarea class="form-control" id="reclamoDescripcion" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div> <!-- Cierre del Modal Body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="Reclamo(idCliente)">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Pide Ya -->
+    <div class="container-fluid d-flex justify-content-center mt-2 mb-2" style="background-color: white">
+        <button id="pideya-button">
+            ¡Pide Ya!<br>
+        </button>
     </div>
 
     <!-- Modal Horarios -->
