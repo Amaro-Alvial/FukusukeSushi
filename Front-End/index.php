@@ -1,7 +1,11 @@
 <?php
 session_start(); 
-if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
+if (isset($_SESSION['usuario_id']) && ($_SESSION['perfil'] == 'Admin' or $_SESSION['perfil'] == 'Dueno')) {
     header('Location: adminPersonas.php');
+    exit();
+}
+if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
+    header('Location: ordenesDespacho.php');
     exit();
 }
 ?>
@@ -22,27 +26,35 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
     <script src="./js/modalProducto.js"></script>
     <?php
     if (isset($_SESSION['usuario_id'])) {
-        echo "<script>let idCliente = '" . $_SESSION['usuario_id'] . "';</script>";
+        echo "<script>
+            let idCliente = '" . $_SESSION['usuario_id'] . "';
+            setCarrito(idCliente);
+        </script>";
     }
     ?>
 </head>
 
 <body>
     <!-- Navbar pricipal, inicio de sesión y más opciones (hay que confirmar cuáles se necesitan). -->
-    <nav class="navbar navbar-expand-sm" id="navbar-principal">
-        <div class="container-fluid" id="navbar-container">
+    <nav class="navbar navbar-expand-sm pt-0 pb-0" id="navbar-principal">
+        <div class="container-fluid p-2" id="navbar-container">
             <div class="container-logo">
                 <a id="logotype" href="./index.php">
-                    <img src="./img/logo/Logo2.png" class="img-fluid" alt="Logo de la empresa">
+                    <img src="./img/logo/FUKUSUKE_LOGO.png" class="img-fluid" alt="Logo de la empresa" style="height: 60px">
                 </a>
             </div>
-            <ul class="navbar-nav">
-                <div class="dropdown mr-4">
+            <ul class="navbar-nav d-flex align-items-center">
+                <li class="nav-item">
+                    <button class="pb-1" type="button" id="horarios-button" data-bs-toggle="modal" data-bs-target="#horariosModal">
+                        Horarios
+                    <button>
+                </li>
+                <div class="dropdown">
                     <button type="button" id="button-dropdown-locales" data-bs-toggle="dropdown">
                         Locales
                         <img src="./img/dropdown_icon.png" class="img-fluid" alt="Ícono de DropDown" style="width: 22px; padding-bottom: 3px">
                     </button>
-                    <ul class="dropdown-menu" id="menu-dropdown-locales">
+                    <ul class="dropdown-menu">
                         <li><a class="dropdown-item" target="_blank" href="https://www.google.com/maps/place/Museo+Interactivo+Mirador+(MIM)/@-33.5194822,-70.611972,15z/data=!4m2!3m1!1s0x0:0x4e84cc2277ad807f?sa=X&ved=1t:2428&ictx=111">Local 1</a></li>
                         <li><a class="dropdown-item" href="#">Local 2</a></li>
                         <li><a class="dropdown-item" href="#">Local 3</a></li>
@@ -57,7 +69,7 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
                     </li>
                     <li class="nav-item">
                         <button type="button" id="signup-button" data-bs-toggle="modal" data-bs-target="#regModal">
-                            Crear Cuenta
+                            Crear Cuenta 
                         </button>
                     </li>
                 <?php else: ?>
@@ -67,8 +79,9 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
                             Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre_usuario']); ?>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="userMenu">
-                            <li><a class="dropdown-item" href="perfilUsuario.php">Mi Perfil</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="MiPerfil(idCliente)">Mi Perfil</a></li>
                             <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="ModalReclamo()">Reclamo</a></li>
                         </ul>
                     </li>
                 <?php endif; ?>
@@ -77,9 +90,16 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
     </nav>
 
     <!-- Aviso de iniciar sesión (debería eliminarse/cambiar cuando se inicia sesión) -->
-    <div class="container-fluid d-flex justify-content-center" id="aviso-iniciasesion">
-        Te invitamos a iniciar sesión para disfrutar de nuestra carta.
-    </div>
+    <?php if (!isset($_SESSION['usuario_id'])): ?>
+        <div class="container-fluid d-flex justify-content-center" id="aviso-iniciasesion">
+            Te invitamos a iniciar sesión para disfrutar de nuestra carta.
+        </div>
+    <?php else: ?>
+        <!-- Mostrar si hay sesión activa -->
+        <div class="container-fluid d-flex justify-content-center" id="aviso-iniciasesion">
+            ¡¡Aprovecha nuestras promociones!!
+        </div>
+    <?php endif; ?>
 
     <!-- Carrusel -->
     <div>
@@ -142,31 +162,36 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
                         
                         <!-- Información del producto (lado derecho) -->
                         <div class="col-md-6">
-                            <p id="productModalDesc">Descripción detallada del producto. Aquí puedes añadir más detalles relevantes.</p>
+                            <p id="productModalDesc" style="height: 80%; margin: 0 0">Descripción detallada del producto. Aquí puedes añadir más detalles relevantes.</p>
                             
                             <!-- Control de cantidad -->
-                            <div class="quantity-container row">
-                                <button type="button" class="btn btn-primary col-2" onclick="updateQuantity(-1)">
-                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill="none" d="M0 0h24v24H0z"></path>
-                                        <path d="M19 13H5v-2h14v2z"></path>
-                                    </svg>
-                                </button>
-                                <div class="quantity-display col-3" id="quantity" style="text-align: center; font-size: 22px;">1</div>
-                                <button type="button" class="btn btn-primary col-2" onclick="updateQuantity(1)">
-                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill="none" d="M0 0h24v24H0z"></path>
-                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
-                                    </svg>
-                                </button>
-                                <div class="quantity-display col-5" id="productModalPrecio" value="" style="text-align: center; font-size: 22px;">222</div>
+                            <div class="quantity-container d-flex justify-content-center align-items-end row" style="height: 20%">
+                                <div class="row">
+                                    <div class="quantity-display col-sm-12 col-md-12 col-lg-4" id="productModalPrecio" value="" style="text-align: center; font-size: 22px; font-weight: bold">222</div>
+                                    <div class="col-md-2 col-lg-1 d-flex justify-content-center align-items-center p-0">
+                                        <button type="button" class="quantity-button" onclick="updateQuantity(-1)">
+                                            <img src="./img/signo_resta.png" style="width: 24px">
+                                        </button>
+                                    </div>
+                                    <div class="col-1 quantity-display d-flex justify-content-center p-0" id="quantity" style="font-size: 1.2rem;">1</div>
+                                    <div class="col-md-2 col-lg-1 d-flex justify-content-center align-items-center p-0">
+                                        <button type="button" class="quantity-button" onclick="updateQuantity(1)">
+                                            <img src="./img/signo_mas.png" style="width: 24px;">
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6 col-lg-5 d-flex justify-content-center align-items-center ps-1 pe-1">
+                                        <button type="button" id="agregar-button-modal" data-bs-dismiss="modal" onclick="
+                                        <?php echo isset($_SESSION['usuario_id']) ? 'agregarDetalleCarrito();' : ''; ?>" 
+                                        <?php echo !isset($_SESSION['usuario_id']) ? 'data-bs-toggle="modal" data-bs-target="#loginModal"' : ''; ?>>
+                                            Agregar
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                             <br>
                             <!-- Botón de agregar al carrito -->
-                            <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="
-                            <?php echo isset($_SESSION['usuario_id']) ? 'agregarDetalleCarrito();' : ''; ?>" 
-                            <?php echo !isset($_SESSION['usuario_id']) ? 'data-bs-toggle="modal" data-bs-target="#loginModal"' : ''; ?>>
-                            Agregar al Carrito</button>
+                            
+                            
                         </div>
                     </div>
                 </div>
@@ -313,41 +338,193 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Admin') {
     
 
 
-    <!-- Pide Ya -->
-    <div class="container-fluid d-flex justify-content-center mt-2 mb-2" style="background-color: white">
-        <button id="pideya-button">
-            ¡Pide Ya!<br>
-        </button>
-    </div>
-
-    <!-- Container con productos y categorías -->
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-10">
-                <div id="scroll-container">
-                    
+    <!-- Modal de Editar Perfil -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Perfil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </div>
-            <div class="col-2">
-                <select multiple id="categoria-select" name="categoria"></select>
+                <div class="modal-body"> <!-- Se abre el Modal Body -->
+                    <form id="editForm">
+                        <div class ="row"> <!-- Se abre fila 1 del modal -->
+                            <div class="mb-3 col-xxl-7">
+                                <label for="editRun" class="form-label">RUN</label>
+                                <input type="text" class="form-control" id="editRun" disabled>
+                            </div>
+                            <div class="mb-3 col-xxl-5">
+                                <label for="editFechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+                                <input type="date" class="form-control" id="editFechaNacimiento" disabled>
+                            </div>
+                        </div> <!-- Cierre de la Fila 1 del modal -->
+                        <div class = "row"> <!-- Se abre fila 2 del modal -->
+                            <div class="mb-3 col-xxl-9">
+                                <label for="editNombre" class="form-label">Nombre Completo</label>
+                                <input type="text" class="form-control" id="editNombre">
+                            </div>
+                            <div class="mb-3 col-xxl-3">
+                                <label for="editSexo" class="form-label">Sexo</label>
+                                <select class="form-select" id="editSexo">
+                                    <option value="M">M</option>
+                                    <option value="F">F</option>
+                                </select>
+                            </div> 
+                        </div> <!-- Cierre de la Fila 2 del modal -->
+                        <div class="row"> <!-- Se abre fila 3 del modal -->
+                            <div class="mb-3 col-xxl-6">
+                                <label for="editNombreUsuario" class="form-label">Nombre de Usuario</label>
+                                <input type="text" class="form-control" id="editNombreUsuario" disabled>
+                            </div>
+                            <div class="mb-3 col-xxl-6">
+                                <label for="editPass" class="form-label">Contraseña</label>
+                                <input type="password" class="form-control" id="editPass">
+                            </div>
+                        </div> <!-- Cierre de la Fila 3 del modal -->
+                        <div class= "row"> <!-- Se abre fila 4 del modal -->
+                            <div class="mb-3 col-xxl-7">
+                                <label for="editTelefono" class="form-label">Teléfono</label>
+                                <input type="text" class="form-control" id="editTelefono">
+                            </div>
+                        </div> <!-- Cierre de la Fila 4 del modal -->
+                        <div class = "row"> <!-- Se abre fila 5 del modal -->
+                            <div class="mb-3 col-xxl-8">
+                                <label for="editEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="editEmail">
+                            </div>
+                        </div> <!-- Cierre de la Fila 5 del modal -->
+                        <div class="row"> <!-- Se abre fila 6 del modal -->
+                            <div class="mb-3 col-12">
+                                <label for="editRegion" class="form-label">Región</label>
+                                <select class="form-select" name="region" id="editRegion"></select>
+                            </div>
+                        </div> <!-- Cierre de la Fila 6 del modal -->
+                        <div class="row">
+                            <div class="mb-3 col-12">
+                                <label for="editProvincia" class="form-label">Provincia</label>
+                                <select class="form-select" name="provincia" id="editProvincia"><option value="defaultProvincia">Seleccione la Provincia</option></select>
+                            </div>
+                        </div> <!-- Cierre de la Fila 6 del modal -->
+                        <div class="row"> <!-- Se abre fila 7 del modal -->
+                            <div class="mb-3 col-12">
+                                <label for="editComuna" class="form-label">Comuna</label>
+                                <select class="form-select" name="comuna" id="editComuna"><option value="defaultComuna">Seleccione la Comuna</option></select>
+                            </div>
+                        </div> <!-- Cierre de la Fila 7 del modal -->
+                        <div class="row"> <!-- Se abre fila 8 del modal -->
+                            <div class="mb-3">
+                                <label for="editDireccion" class="form-label">Dirección</label>
+                                <input type="text" class="form-control" id="editDireccion">
+                            </div>
+                        </div> <!-- Cierre de la Fila 8 del modal -->
+                    </form>
+                </div> <!-- Cierre del Modal Body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="UpdMiPerfil()">Confirmar</button>
+                </div>
             </div>
         </div>
     </div>
-    
+
+    <!-- Modal Horarios -->
+    <div class="modal fade" id="horariosModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body d-flex flex-column align-items-center">
+                    <div class="row">
+                        <p>
+                            LU, MA, MI ,JU
+                        </p>
+                    </div>
+                    <div class="row">
+                        <p>
+                            11:00 - 20:00
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de Reclamo -->
+    <div class="modal fade" id="reclamoModal" tabindex="-1" aria-labelledby="reclamoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reclamoModalLabel">Reclamo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body"> <!-- Se abre el Modal Body -->
+                    <form id="reclamoForm">
+                        <div class="mb-3">
+                            <label for="reclamoTitulo" class="form-label">Titulo:</label>
+                            <input type="text" class="form-control" id="reclamoTitulo"></label>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reclamoDescripcion" class="form-label">Descripción:</label>
+                            <textarea class="form-control" id="reclamoDescripcion" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div> <!-- Cierre del Modal Body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="Reclamo(idCliente)">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Pide Ya -->
+    <div class="container-fluid d-flex justify-content-center mt-0 mb-2">
+        <button id="pideya-button">
+            ¡Pide Ya!<br>
+        </button>
+        <script>
+            document.getElementById("pideya-button").addEventListener("click", function() {
+            document.getElementById("productos-section").scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+                });
+            });
+            </script>
+    </div>
+
+    <!-- Container con productos y categorías -->
+    <div class="container-fluid" id="productos-section">
+        <div class="row d-flex"  style="height: 95vh;">
+            <div class="col-10" style="height: 100%">
+                <div class="ps-2 pe-3" id="scroll-container"></div>
+            </div>
+            <div class="col-2 d-flex flex-column p-0 pe-2">
+                <h5 class="d-flex">Categorías</h5>
+                <div class="mt-2"id="categoria-scroll" name="categoria"></div>
+                <div class="d-flex justify-content-center align-items-end" style="height: 50%">
+                    <button id="carrito-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" onclick="actualizarCarrito();">
+                        <img src="./img/carrito.png" style="width: 45px">
+                        <span id="cantidadCarrito">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Botón para mostrar el carrito -->
-    <button id="carrito-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" onclick="actualizarCarrito();">
-        <img src="./img/carrito.png" style="width: 45px">
-        <span id="cantidadCarrito">0</span>
-    </button>
 
     <footer>
-        <div class="container-fluid" id="footer-container">
-            
+        <div class="container-fluid mt-5" id="footer-container" style="background-color: #F2F1F1; height: 150px;">
+            <div class="row" style="height: 100%">
+                <div class="col-3 pt-4 pb-4 h-100">
+                    <img src="./img/logo/FUKUSUKE_LOGO.png" height="100%">
+                </div>  
         </div>
     </footer>
 
     <!--https://www.svgrepo.com/collection/dazzle-line-icons/, íconos con licencia libre. -->
-    
+
 </body>
 </html>
 <script src="./js/pagPrincipalPos.js"></script>
