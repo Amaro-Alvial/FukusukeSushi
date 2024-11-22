@@ -1052,40 +1052,60 @@ const resolvers = {
         registrarUsuario: async (_, { personaInput, usuarioInput, usuarioPerfilInput }, { models }) => {
             const { Persona, Usuario, UsuarioPerfil } = models;
             usuarioPerfilInput.perfil = "672bf4c5ed29060af5294ebc"; // Perfil de Cliente
+            let nuevaPersona;
+            try {
+                // Verificar correo externo
+                const correoValido = await verificarCorreoConServicioExterno(usuarioInput.email);
+                if (!correoValido) {
+                    throw new Error("Correo inválido. No se puede registrar el usuario.");
+                }
         
-            // // Verificar correo externo
-            const correoValido = await verificarCorreoConServicioExterno(usuarioInput.email);
-            if (!correoValido) {
-                throw new Error("Correo inválido. No se puede registrar el usuario.");
+                // Crear nueva Persona
+                nuevaPersona = new Persona(personaInput);
+                await nuevaPersona.save();
+        
+                // Hashear la contraseña y crear Usuario
+                const hashedPassword = await bcrypt.hash(usuarioInput.pass, 10);
+                const nuevoUsuario = new Usuario({
+                    ...usuarioInput,
+                    pass: hashedPassword,
+                    persona: nuevaPersona.id,
+                });
+                await nuevoUsuario.save();
+        
+                // Crear UsuarioPerfil
+                const nuevoUsuarioPerfil = new UsuarioPerfil({
+                    ...usuarioPerfilInput,
+                    usuario: nuevoUsuario.id,
+                });
+                await nuevoUsuarioPerfil.save();
+    
+                // Enviar correo de confirmación
+                const correoEnviado = await enviarCorreoConfirmacion(
+                    nuevoUsuario.email,
+                    nuevoUsuario.nombreUsuario
+                );
+                if (!correoEnviado) {
+                    throw new Error("No se pudo enviar el correo de confirmación.");
+                }
+                return {
+                    id: nuevoUsuarioPerfil.id,
+                    usuario: nuevoUsuario.id,
+                    perfil: usuarioPerfilInput.perfil,
+                };
+            } catch (error) {
+                // Si ocurre algún error, eliminar la Persona creada
+                if (nuevaPersona) {
+                    try {
+                        await Persona.findByIdAndDelete(nuevaPersona.id);
+                    } catch (deleteError) {
+                        console.error("Error al eliminar la persona:", deleteError);
+                    }
+                }
+                throw error;
             }
-            const nuevaPersona = new Persona(personaInput);
-            await nuevaPersona.save();
-            // Hashear la contraseña y crear Usuario
-            const hashedPassword = await bcrypt.hash(usuarioInput.pass, 10);
-            const nuevoUsuario = new Usuario({
-                ...usuarioInput,
-                pass: hashedPassword,
-                persona: nuevaPersona.id,
-            });
-            await nuevoUsuario.save();
-            const nuevoUsuarioPerfil = new UsuarioPerfil({
-                ...usuarioPerfilInput,
-                usuario: nuevoUsuario.id,
-            });
-            await nuevoUsuarioPerfil.save();
-            const correoEnviado = await enviarCorreoConfirmacion(
-                nuevoUsuario.email,
-                nuevoUsuario.nombreUsuario
-            );
-            if (!correoEnviado) {
-                throw new Error("No se pudo enviar el correo de confirmación.");
-            }
-            return {
-                id: nuevoUsuarioPerfil.id,
-                usuario: nuevoUsuario.id,
-                perfil: usuarioPerfilInput.perfil,
-            };
         },
+        
     }
 }
 
