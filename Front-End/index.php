@@ -145,6 +145,40 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
         </div>
     </div>
 
+    <!-- Pide Ya -->
+    <div class="container-fluid d-flex justify-content-center mt-0 mb-2">
+        <button id="pideya-button">
+            ¡Pide Ya!<br>
+        </button>
+        <script>
+            document.getElementById("pideya-button").addEventListener("click", function() {
+            document.getElementById("productos-section").scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+                });
+            });
+            </script>
+    </div>
+
+    <!-- Container con productos y categorías -->
+    <div class="container-fluid" id="productos-section">
+        <div class="row d-flex"  style="height: 95vh;">
+            <div class="col-10" style="height: 100%">
+                <div class="ps-2 pe-3" id="scroll-container"></div>
+            </div>
+            <div class="col-2 d-flex flex-column p-0 pe-2">
+                <h5 class="d-flex">Categorías</h5>
+                <div class="mt-2"id="categoria-scroll" name="categoria"></div>
+                <div class="d-flex justify-content-center align-items-end" style="height: 50%">
+                    <button id="carrito-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" onclick="actualizarCarrito();">
+                        <img src="./img/carrito.png" style="width: 45px">
+                        <span id="cantidadCarrito">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal del producto seleccionado-->
     <div class="modal fade" id="productModal" value="" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -444,6 +478,7 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
             </div>
         </div>
     </div>
+    
     <!-- Modal de Reclamo -->
     <div class="modal fade" id="reclamoModal" tabindex="-1" aria-labelledby="reclamoModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -471,100 +506,8 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
             </div>
         </div>
     </div>
-    <!-- Pide Ya -->
-    <div class="container-fluid d-flex justify-content-center mt-2 mb-2" style="background-color: white">
-        <button id="pideya-button">
-            ¡Pide Ya!<br>
-        </button>
-    </div>
 
-    <!-- Modal Horarios -->
-    <div class="modal fade" id="horariosModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body d-flex flex-column align-items-center">
-                    <div class="row">
-                        <p>
-                            LU, MA, MI ,JU
-                        </p>
-                    </div>
-                    <div class="row">
-                        <p>
-                            11:00 - 20:00
-                        </p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal de Reclamo -->
-    <div class="modal fade" id="reclamoModal" tabindex="-1" aria-labelledby="reclamoModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="reclamoModalLabel">Reclamo</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body"> <!-- Se abre el Modal Body -->
-                    <form id="reclamoForm">
-                        <div class="mb-3">
-                            <label for="reclamoTitulo" class="form-label">Titulo:</label>
-                            <input type="text" class="form-control" id="reclamoTitulo"></label>
-                        </div>
-                        <div class="mb-3">
-                            <label for="reclamoDescripcion" class="form-label">Descripción:</label>
-                            <textarea class="form-control" id="reclamoDescripcion" rows="3"></textarea>
-                        </div>
-                    </form>
-                </div> <!-- Cierre del Modal Body -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="Reclamo(idCliente)">Enviar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Pide Ya -->
-    <div class="container-fluid d-flex justify-content-center mt-0 mb-2">
-        <button id="pideya-button">
-            ¡Pide Ya!<br>
-        </button>
-        <script>
-            document.getElementById("pideya-button").addEventListener("click", function() {
-            document.getElementById("productos-section").scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-                });
-            });
-            </script>
-    </div>
-
-    <!-- Container con productos y categorías -->
-    <div class="container-fluid" id="productos-section">
-        <div class="row d-flex"  style="height: 95vh;">
-            <div class="col-10" style="height: 100%">
-                <div class="ps-2 pe-3" id="scroll-container"></div>
-            </div>
-            <div class="col-2 d-flex flex-column p-0 pe-2">
-                <h5 class="d-flex">Categorías</h5>
-                <div class="mt-2"id="categoria-scroll" name="categoria"></div>
-                <div class="d-flex justify-content-center align-items-end" style="height: 50%">
-                    <button id="carrito-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" onclick="actualizarCarrito();">
-                        <img src="./img/carrito.png" style="width: 45px">
-                        <span id="cantidadCarrito">0</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Botón para mostrar el carrito -->
-
+    <!-- Footer -->
     <footer>
         <div class="container-fluid mt-5" id="footer-container" style="background-color: #F2F1F1; height: 150px;">
             <div class="row" style="height: 100%">

@@ -35,7 +35,9 @@ session_start();
         <div class="header-pago d-flex justify-content-between">
             <div>
                 <h1>Estás pagando en:</h1>
-                <img src="./img/unired.png" alt="unired" style="height: 45px">
+                <div class="d-flex justify-content-center">
+                    <img src="./img/logo/FUKUSUKE_LOGO.png" alt="Fukusuke Sushi" style="height: 45px">
+                </div>
             </div>
             <div>
                 <h1>Monto a pagar:</h1>
