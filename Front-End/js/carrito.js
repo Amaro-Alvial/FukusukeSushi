@@ -161,7 +161,7 @@ async function getProductosByIdCarrito(idCarrito) {
 }
 function creaCardCarrito(producto, cantidad, detalleCarrito, precio){
     return `
-    <div class="card mb-3" data-id="${detalleCarrito}" style="height: ">
+    <div class="card mb-3 cards-carrito" data-id="${detalleCarrito}" style="height: ">
         <div class="row g-0" style="height: 100%">
             <div class="col-4">
                 <img src="${producto.foto}" class="img-fluid rounded-start" alt="${producto.nombre}" style="height: 100%; width: auto">
