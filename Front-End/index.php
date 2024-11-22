@@ -316,10 +316,6 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                             </div>
                         </div> <!-- Cierre de la Fila 3 del modal -->
                         <div class= "row"> <!-- Se abre fila 4 del modal -->
-                            <div class="mb-3 col-xxl-5">
-                                <label for="regCaducidad" class="form-label">Caducidad</label>
-                                <input type="date" class="form-control" id="regCaducidad">
-                            </div>
                             <div class="mb-3 col-xxl-7">
                                 <label for="regTelefono" class="form-label">Teléfono</label>
                                 <input type="text" class="form-control" id="regTelefono">

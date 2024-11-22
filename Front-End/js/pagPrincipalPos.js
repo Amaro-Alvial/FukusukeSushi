@@ -40,7 +40,7 @@ async function RegUsuario() {
         persona: "", // Este campo se llena en el backend
     };
     const usuarioPerfilInput = {
-        caducidad: $('#regCaducidad').val(),
+        caducidad: "",
         usuario: "", // Este campo se llena en el backend
         perfil: "", // Este campo se llena en el backend
     };
