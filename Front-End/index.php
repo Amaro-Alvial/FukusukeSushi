@@ -91,12 +91,12 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
 
     <!-- Aviso de iniciar sesión (debería eliminarse/cambiar cuando se inicia sesión) -->
     <?php if (!isset($_SESSION['usuario_id'])): ?>
-        <div class="container-fluid d-flex justify-content-center" id="aviso-iniciasesion">
+        <div class="container-fluid d-flex justify-content-center" id="aviso-carrusel" style="text-align: center">
             Te invitamos a iniciar sesión para disfrutar de nuestra carta.
         </div>
     <?php else: ?>
         <!-- Mostrar si hay sesión activa -->
-        <div class="container-fluid d-flex justify-content-center" id="aviso-iniciasesion">
+        <div class="container-fluid d-flex justify-content-center" id="aviso-carrusel">
             ¡¡Aprovecha nuestras promociones!!
         </div>
     <?php endif; ?>
@@ -167,19 +167,19 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                             <!-- Control de cantidad -->
                             <div class="quantity-container d-flex justify-content-center align-items-end row" style="height: 20%">
                                 <div class="row">
-                                    <div class="quantity-display col-sm-12 col-md-12 col-lg-4" id="productModalPrecio" value="" style="text-align: center; font-size: 22px; font-weight: bold">222</div>
-                                    <div class="col-md-2 col-lg-1 d-flex justify-content-center align-items-center p-0">
+                                    <div class="quantity-display col-sm-4 col-md-12 col-lg-4 col-xl-4" id="productModalPrecio" value="" style="text-align: center; font-size: 22px; font-weight: bold">222</div>
+                                    <div class="col-sm-1 col-md-2 col-lg-1 d-flex justify-content-center align-items-center p-0">
                                         <button type="button" class="quantity-button" onclick="updateQuantity(-1)">
                                             <img src="./img/signo_resta.png" style="width: 24px">
                                         </button>
                                     </div>
                                     <div class="col-1 quantity-display d-flex justify-content-center p-0" id="quantity" style="font-size: 1.2rem;">1</div>
-                                    <div class="col-md-2 col-lg-1 d-flex justify-content-center align-items-center p-0">
+                                    <div class="col-sm-1 col-md-2 col-lg-1 d-flex justify-content-center align-items-center p-0">
                                         <button type="button" class="quantity-button" onclick="updateQuantity(1)">
                                             <img src="./img/signo_mas.png" style="width: 24px;">
                                         </button>
                                     </div>
-                                    <div class="col-md-6 col-lg-5 d-flex justify-content-center align-items-center ps-1 pe-1">
+                                    <div class="col-sm-5 col-md-6 col-lg-5 d-flex justify-content-center align-items-center ps-1 pe-1">
                                         <button type="button" id="agregar-button-modal" data-bs-dismiss="modal" onclick="
                                         <?php echo isset($_SESSION['usuario_id']) ? 'agregarDetalleCarrito();' : ''; ?>" 
                                         <?php echo !isset($_SESSION['usuario_id']) ? 'data-bs-toggle="modal" data-bs-target="#loginModal"' : ''; ?>>
@@ -489,12 +489,15 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
     <!-- Container con productos y categorías -->
     <div class="container-fluid" id="productos-section">
         <div class="row d-flex"  style="height: 95vh;">
-            <div class="col-10" style="height: 100%">
-                <div class="ps-2 pe-3" id="scroll-container"></div>
+            <div class="col-sm-12 col-md-10" id="div-scroll-productos" style="height: 100%">
+                <div class="ps-2 pe-3" id="scroll-productos"></div>
             </div>
-            <div class="col-2 d-flex flex-column p-0 pe-2">
+            <div class="col-2 d-none d-md-flex flex-column p-0 pe-2">
                 <h5 class="d-flex">Categorías</h5>
-                <div class="mt-2"id="categoria-scroll" name="categoria"></div>
+                <div class="mt-2" id="categoria-scroll" name="categoria"></div>
+
+                <!-- Botón para mostrar el carrito -->
+
                 <div class="d-flex justify-content-center align-items-end" style="height: 50%">
                     <button id="carrito-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" onclick="actualizarCarrito();">
                         <img src="./img/carrito.png" style="width: 45px">
@@ -505,8 +508,12 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
         </div>
     </div>
 
-    <!-- Botón para mostrar el carrito -->
+    <button class="d-md-none" id="fixed-carrito-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" onclick="actualizarCarrito();">
+        <img src="./img/carrito.png" style="width: 45px">
+        <span id="cantidadCarrito">0</span>
+    </button>
 
+    
     <footer>
         <div class="container-fluid mt-5" id="footer-container" style="background-color: #F2F1F1; height: 150px;">
             <div class="row" style="height: 100%">

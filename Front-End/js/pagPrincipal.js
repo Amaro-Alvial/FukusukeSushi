@@ -48,15 +48,21 @@ async function cardProductos(item) {
 
     let cardProductos = `
         <div class="card col-xs-12 col-xxs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 p-2" style="border: white" value="${item.id}">
-            <a type="button" data-bs-toggle="modal" data-bs-target="#productModal" class="producto-button" onclick="actualizarModal(this.parentElement.getAttribute('value'));">
+            <a type="button" data-bs-toggle="modal" data-bs-target="#productModal" class="producto-button" onclick="actualizarModal(this.parentElement.getAttribute('value'))">
                 <div class="card-header p-0">
                     <img src="${item.foto}" alt="Foto de ${item.nombre}" style="width: 100%; border-radius: inherit">
                 </div>
-                <div class="card-footer" style="background-color: #F2F1F1">
-                    <div class="row">
+                <div class="card-footer" style="background-color: #F2F1F1; height: 100px">
+                    <div class="row" style="height: 100%">
                         <div class="col-8">
-                            <h5 class="card-title">${item.nombre}</h5>
-                            <p class="card-text" style="font-weight: bold; font-size: 1.2rem">$${precio.precio}</p>
+                            <div class="row d-flex align-items-center" style="height: 67%">
+                                <h5 class="card-title">${item.nombre}</h5>
+                            </div>
+                            <div class="row">
+                                <div class="d-flex">
+                                    <p class="card-text" style="font-weight: bold; font-size: 1.2rem">$${precio.precio}</p>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-4 d-flex justify-content-center align-items-center">
                             <button class="agregar-button-card">
@@ -82,7 +88,7 @@ async function getProductosByIdCategoria(categoria) {
     }
     `;
 
-    document.getElementById('scroll-container').innerHTML = '<div class="row" id="productos-container"></div>';
+    document.getElementById('scroll-productos').innerHTML = '<div class="row" id="productos-container"></div>';
 
     $.ajax({
         type: "POST",
