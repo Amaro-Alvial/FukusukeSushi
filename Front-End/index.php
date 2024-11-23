@@ -43,48 +43,73 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                     <img src="./img/logo/FUKUSUKE_LOGO.png" class="img-fluid" alt="Logo de la empresa" style="height: 60px">
                 </a>
             </div>
-            <ul class="navbar-nav d-flex align-items-center">
+            <ul class="navbar-nav d-flex align-items-center d-flex flex-row">
                 <li class="nav-item">
-                    <button class="pb-1" type="button" id="horarios-button" data-bs-toggle="modal" data-bs-target="#horariosModal">
+                    <button class="botones-navbar pb-1" type="button" data-bs-toggle="modal" data-bs-target="#horariosModal">
                         Horarios
                     <button>
                 </li>
-                <div class="dropdown">
-                    <button type="button" id="button-dropdown-locales" data-bs-toggle="dropdown">
-                        Locales
-                        <img src="./img/dropdown_icon.png" class="img-fluid" alt="Ícono de DropDown" style="width: 22px; padding-bottom: 3px">
+                <li class="nav-item me-3">
+                    <button class="botones-navbar pb-1" type="button">
+                        Local
                     </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" target="_blank" href="https://www.google.com/maps/place/Museo+Interactivo+Mirador+(MIM)/@-33.5194822,-70.611972,15z/data=!4m2!3m1!1s0x0:0x4e84cc2277ad807f?sa=X&ved=1t:2428&ictx=111">Local 1</a></li>
-                        <li><a class="dropdown-item" href="#">Local 2</a></li>
-                        <li><a class="dropdown-item" href="#">Local 3</a></li>
-                    </ul>
+                </li>
+                <div class="d-none d-sm-flex">
+                    <?php if (!isset($_SESSION['usuario_id'])): ?>
+                        <!-- Mostrar si no hay sesión activa -->
+                        <li class="nav-item">
+                            <button type="button" id="login-button" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                Iniciar Sesión
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" id="signup-button" data-bs-toggle="modal" data-bs-target="#regModal">
+                                Crear Cuenta 
+                            </button>
+                        </li>
+                    <?php else: ?>
+                        <!-- Mostrar si hay sesión activa -->
+                        <li class="nav-item dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                                Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre_usuario']); ?>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="userMenu">
+                                <li><a class="dropdown-item" href="#" onclick="MiPerfil(idCliente)">Mi Perfil</a></li>
+                                <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="ModalReclamo()">Reclamo</a></li>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
                 </div>
-                <?php if (!isset($_SESSION['usuario_id'])): ?>
-                    <!-- Mostrar si no hay sesión activa -->
-                    <li class="nav-item">
-                        <button type="button" id="login-button" data-bs-toggle="modal" data-bs-target="#loginModal">
-                            Iniciar Sesión
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <button type="button" id="signup-button" data-bs-toggle="modal" data-bs-target="#regModal">
-                            Crear Cuenta 
-                        </button>
-                    </li>
-                <?php else: ?>
-                    <!-- Mostrar si hay sesión activa -->
-                    <li class="nav-item dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
-                            Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre_usuario']); ?>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="userMenu">
-                            <li><a class="dropdown-item" href="#" onclick="MiPerfil(idCliente)">Mi Perfil</a></li>
-                            <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="ModalReclamo()">Reclamo</a></li>
-                        </ul>
-                    </li>
-                <?php endif; ?>
+
+                <div class="d-sm-none">
+                    <?php if (!isset($_SESSION['usuario_id'])): ?>
+                        <!-- Mostrar si no hay sesión activa -->
+                        <li class="nav-item dropdown me-2 position-relative">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="loginMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="./img/user_icon.png" height="25px">
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end position-absolute" aria-labelledby="loginMenu">
+                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#loginModal">Iniciar Sesión</a></li>
+                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#regModal">Crear Cuenta</a></li>
+                            </ul>
+                        </li>
+                    <?php else: ?>
+                        <!-- Mostrar si hay sesión activa -->
+                        <li class="nav-item dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                                Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre_usuario']); ?>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="userMenu">
+                                <li><a class="dropdown-item" href="#" onclick="MiPerfil(idCliente)">Mi Perfil</a></li>
+                                <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="ModalReclamo()">Reclamo</a></li>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
+                </div>
+
+
             </ul>
         </div>
     </nav>
@@ -122,8 +147,7 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                     <img src="./img/banner/Banner1.webp" class="img" id="img-sushi-bienvenida">
                 </div>
             </div>
-        </div>
-        <div>
+        
             <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon"></span>
             </button>
@@ -168,19 +192,19 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                             <!-- Control de cantidad -->
                             <div class="quantity-container d-flex justify-content-center align-items-end row" style="height: 20%">
                                 <div class="row">
-                                    <div class="quantity-display col-sm-4 col-md-12 col-lg-4 col-xl-4" id="productModalPrecio" value="" style="text-align: center; font-size: 22px; font-weight: bold">222</div>
-                                    <div class="col-sm-1 col-md-2 col-lg-1 d-flex justify-content-center align-items-center p-0">
+                                    <div class="quantity-display col-3 col-sm-4 col-md-12 col-lg-4 col-xl-4" id="productModalPrecio" value="" style="text-align: center; font-size: 22px; font-weight: bold">222</div>
+                                    <div class="col-1 col-sm-1 col-md-2 col-lg-1 d-flex justify-content-center align-items-center p-0">
                                         <button type="button" class="quantity-button" onclick="updateQuantity(-1)">
                                             <img src="./img/signo_resta.png" style="width: 24px">
                                         </button>
                                     </div>
                                     <div class="col-1 quantity-display d-flex justify-content-center p-0" id="quantity" style="font-size: 1.2rem;">1</div>
-                                    <div class="col-sm-1 col-md-2 col-lg-1 d-flex justify-content-center align-items-center p-0">
+                                    <div class="col-1 col-sm-1 col-md-2 col-lg-1 d-flex justify-content-center align-items-center p-0">
                                         <button type="button" class="quantity-button" onclick="updateQuantity(1)">
                                             <img src="./img/signo_mas.png" style="width: 24px;">
                                         </button>
                                     </div>
-                                    <div class="col-sm-5 col-md-6 col-lg-5 d-flex justify-content-center align-items-center ps-1 pe-1">
+                                    <div class="col-6 col-sm-5 col-md-6 col-lg-5 d-flex justify-content-center align-items-center ps-1 pe-1">
                                         <button type="button" id="agregar-button-modal" data-bs-dismiss="modal" onclick="
                                         <?php echo isset($_SESSION['usuario_id']) ? 'agregarDetalleCarrito();' : ''; ?>" 
                                         <?php echo !isset($_SESSION['usuario_id']) ? 'data-bs-toggle="modal" data-bs-target="#loginModal"' : ''; ?>>
@@ -487,15 +511,17 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
             </script>
     </div>
 
+    <div class="container-fluid d-md-none mt-2 d-flex" id="categoria-scroll" name="categoria"></div>
+
     <!-- Container con productos y categorías -->
-    <div class="container-fluid" id="productos-section">
-        <div class="row d-flex"  style="height: 95vh;">
-            <div class="col-sm-12 col-md-10" id="div-scroll-productos" style="height: 100%">
+    <div class="container-fluid" id="productos-section" style="height: auto">
+        <div class="row d-flex" id="row-productos">
+            <div class="col-sm-12 col-md-10" id="div-scroll-productos">
                 <div class="ps-2 pe-3" id="scroll-productos"></div>
             </div>
-            <div class="col-2 d-none d-md-flex flex-column p-0 pe-2">
-                <h5 class="d-flex">Categorías</h5>
-                <div class="mt-2" id="categoria-scroll" name="categoria"></div>
+            <div class="col-2 d-none d-md-flex flex-column p-0 pe-2" style="height: auto">
+                <h5 class="d-flex d-flex justify-content-center pe-3">Categorías</h5>
+                <div class="mt-2" id="categoria-scroll2" name="categoria"></div>
 
                 <!-- Botón para mostrar el carrito -->
 
@@ -515,12 +541,13 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
     </button>
 
     
-    <footer>
-        <div class="container-fluid mt-5" id="footer-container" style="background-color: #F2F1F1; height: 150px;">
+    <footer class="d-none d-md-flex">
+        <div class="container-fluid mt-5" id="footer-container" style="background-color: #F2F1F1; height: 150px">
             <div class="row" style="height: 100%">
                 <div class="col-3 pt-4 pb-4 h-100">
                     <img src="./img/logo/FUKUSUKE_LOGO.png" height="100%">
                 </div>  
+            </div>
         </div>
     </footer>
 

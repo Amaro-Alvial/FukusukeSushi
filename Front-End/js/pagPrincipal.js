@@ -2,7 +2,7 @@ let optionCategorias = [];
 
 function optionCategoria(item){
     optionCategorias.push(`
-        <div class="col-12 ps-1" style="height: 40px">
+        <div class="container-categoria-button" style="height: 40px;">
             <button class="categoria-button" value="${item.id}">${item.nombre}</button>
         </div>
     `);
@@ -38,6 +38,7 @@ function getCategorias(){
         success: function(response){
             response.data.getCategorias.forEach(optionCategoria);
             document.getElementById('categoria-scroll').innerHTML = optionCategorias.join("");
+            document.getElementById('categoria-scroll2').innerHTML = optionCategorias.join("");
         }
     })
 }
@@ -47,7 +48,7 @@ async function cardProductos(item) {
     let stock = disponibilidad.disponibilidad ? "Disponible" : "No disponible";
 
     let cardProductos = `
-        <div class="card col-xs-12 col-xxs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 p-2" style="border: white" value="${item.id}">
+        <div class="card col-xs-12 col-xxs-12 col-sm-6 col-md-6 col-lg-6 col-xl-4 col-xxl-3 p-2" style="border: white" value="${item.id}">
             <a type="button" data-bs-toggle="modal" data-bs-target="#productModal" class="producto-button" onclick="actualizarModal(this.parentElement.getAttribute('value'))">
                 <div class="card-header p-0">
                     <img src="${item.foto}" alt="Foto de ${item.nombre}" style="width: 100%; border-radius: inherit">
