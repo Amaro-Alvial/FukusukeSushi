@@ -219,7 +219,7 @@ require_once 'session.php';
                         <div class="row"> <!-- Se abre fila 3 del modal -->
                             <div class="mb-3 col-12">
                                 <label for="editNombreUsuario" class="form-label">Nombre de Usuario</label>
-                                <input type="text" class="form-control" id="editNombreUsuario" disabled>
+                                <input type="text" class="form-control" id="editNombreUsuario">
                             </div>
                             <div class="mb-3 col-12">
                                 <label for="editPass" class="form-label">Contraseña</label>
@@ -227,6 +227,10 @@ require_once 'session.php';
                             </div>
                         </div> <!-- Cierre de la Fila 3 del modal -->
                         <div class= "row"> <!-- Se abre fila 4 del modal -->
+                            <div class="mb-3 col-12">
+                                <label for="editCaducidad" class="form-label">Caducidad</label>
+                                <input type="date" class="form-control" id="editCaducidad">
+                            </div>
                             <div class="mb-3 col-12">
                                 <label for="editTelefono" class="form-label">Teléfono</label>
                                 <input type="text" class="form-control" id="editTelefono">
@@ -261,12 +265,16 @@ require_once 'session.php';
                                 <label for="editDireccion" class="form-label">Dirección</label>
                                 <input type="text" class="form-control" id="editDireccion">
                             </div>
+                            <div>
+                                <label for="editTipo" class="form-label">Tipo</label>
+                                <select class="form-select" name="tipos" id="editTipo"></select>
+                            </div>
                         </div> <!-- Cierre de la Fila 8 del modal -->
                     </form>
                 </div> <!-- Cierre del Modal Body -->
                 <div class="modal-footer">
                     <button type="button" class="btn-modals2" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn-modals" onclick="UpdMiPerfil()">Confirmar</button>
+                    <button type="button" class="btn-modals" onclick="UpdConexiones()">Confirmar</button>
                 </div>
             </div>
         </div>
