@@ -115,23 +115,24 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                 <div class="carousel-item active">
                     <img src="./img/banner/Banner2.webp" class="img" id="img-sushi-bienvenida">
                 </div>
-            <div class="carousel-item">
-                <img src="./img/banner/Banner3.webp" class="img" id="img-sushi-bienvenida">
+                <div class="carousel-item">
+                    <img src="./img/banner/Banner3.webp" class="img" id="img-sushi-bienvenida">
+                </div>
+                <div class="carousel-item">
+                    <img src="./img/banner/Banner1.webp" class="img" id="img-sushi-bienvenida">
+                </div>
             </div>
-            <div class="carousel-item">
-                <img src="./img/banner/Banner1.webp" class="img" id="img-sushi-bienvenida">
-            </div>
-
         </div>
-
-        <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
-        </button>
+        <div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
         </div>
     </div>
+
     
     <!--Offcanvas (Carrito)-->
     <div class="offcanvas offcanvas-end" id="carrito" value="">
@@ -498,7 +499,7 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
 
                 <!-- Botón para mostrar el carrito -->
 
-                <div class="d-flex justify-content-center align-items-end" style="height: 50%">
+                <div class="d-flex justify-content-center mt-3">
                     <button id="carrito-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" onclick="actualizarCarrito();">
                         <img src="./img/carrito.png" style="width: 45px">
                         <span id="cantidadCarrito">0</span>
