@@ -98,9 +98,9 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                         <!-- Mostrar si hay sesión activa -->
                         <li class="nav-item dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
-                                Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre_usuario']); ?>
+                                <img src="./img/user_icon.png" height="25px">
                             </button>
-                            <ul class="dropdown-menu" aria-labelledby="userMenu">
+                            <ul class="dropdown-menu dropdown-menu-end position-absolute" aria-labelledby="userMenu">
                                 <li><a class="dropdown-item" href="#" onclick="MiPerfil(idCliente)">Mi Perfil</a></li>
                                 <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
                                 <li><a class="dropdown-item" href="#" onclick="ModalReclamo()">Reclamo</a></li>
@@ -175,7 +175,7 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="productModalLabel">Nombre del Producto</h5>
+                    <h5 class="modal-title" id="productModalLabel" style="font-weight: bold">Nombre del Producto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
@@ -187,7 +187,7 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                         
                         <!-- Información del producto (lado derecho) -->
                         <div class="col-md-6">
-                            <p id="productModalDesc" style="height: 80%; margin: 0 0">Descripción detallada del producto. Aquí puedes añadir más detalles relevantes.</p>
+                            <p id="productModalDesc" style="height: 80%; margin: 0 0; font-size: 1.1rem">Descripción detallada del producto. Aquí puedes añadir más detalles relevantes.</p>
                             
                             <!-- Control de cantidad -->
                             <div class="quantity-container d-flex justify-content-center align-items-end row" style="height: 20%">
@@ -238,14 +238,14 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                         <div class="d-flex flex-column align-items-center">
                             <div class="mb-3">
                                 <label for="loginNombreUsuario" class="form-label">Nombre de Usuario</label>
-                                <input type="text" class="form-control" id="loginNombreUsuario" placeholder="Ingrese nombre de usuario." name="nombreUsuario" required>
+                                <input type="text" style="width: 400px" class="form-control" id="loginNombreUsuario" placeholder="Ingrese nombre de usuario." name="nombreUsuario" required>
                             </div>
                             <div class="mb-3">
                                 <label for="loginPass" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" id="loginPass" placeholder="Ingrese su contraseña."name="pass" required>
+                                <input type="password" style="width: 400px" class="form-control" id="loginPass" placeholder="Ingrese su contraseña."name="pass" required>
                             </div>
                             <div class="mt-2 mb-3">
-                                <button type="Button" class="btn btn-primary" id="login-button-modal" onclick="IniciarSesion()">Iniciar Sesión</button>
+                                <button type="Button" class="btn-modals" id="login-button-modal" onclick="IniciarSesion()">Iniciar Sesión</button>
                             </div>
                             <div>
                                 Si no tienes una cuenta aún,
@@ -273,22 +273,22 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                 <div class="modal-body"> <!-- Se abre el Modal Body -->
                     <form id="regForm">
                         <div class ="row"> <!-- Se abre fila 1 del modal -->
-                            <div class="mb-3 col-7">
+                            <div class="mb-3 col-12">
                                 <label for="regRun" class="form-label">RUN</label>
                                 <input type="text" class="form-control" id="regRun">
                             </div>
-                            <div class="mb-3 col-5">
+                            <div class="mb-3 col-12">
                                 <label for="regFechaNacimiento" class="form-label">Fecha de Nacimiento</label>
                                 <input type="date" class="form-control" id="regFechaNacimiento">
                             </div>
                         </div> <!-- Cierre de la Fila 1 del modal -->
                         <div class = "row"> <!-- Se abre fila 2 del modal -->
-                            <div class="mb-3 col-xxl-9">
+                            <div class="mb-3 col-12">
                                 <label for="regNombre" class="form-label">Nombre Completo</label>
                                 <input type="text" class="form-control" id="regNombre">
                             </div>
 
-                            <div class="mb-3 col-xxl-3">
+                            <div class="mb-3 col-12">
                                 <label for="regSexo" class="form-label">Sexo</label>
                                 <select class="form-select" id="regSexo">
                                     <option value="M">M</option>
@@ -297,27 +297,27 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                             </div> 
                         </div> <!-- Cierre de la Fila 2 del modal -->
                         <div class="row"> <!-- Se abre fila 3 del modal -->
-                            <div class="mb-3 col-xxl-6">
+                            <div class="mb-3 col-12">
                                 <label for="regNombreUsuario" class="form-label">Nombre de Usuario</label>
                                 <input type="text" class="form-control" id="regNombreUsuario">
                             </div>
-                            <div class="mb-3 col-xxl-6">
+                            <div class="mb-3 col-12">
                                 <label for="regPass" class="form-label">Contraseña</label>
                                 <input type="password" class="form-control" id="regPass">
                             </div>
                         </div> <!-- Cierre de la Fila 3 del modal -->
                         <div class= "row"> <!-- Se abre fila 4 del modal -->
-                            <div class="mb-3 col-xxl-5">
+                            <div class="mb-3 col-12">
                                 <label for="regCaducidad" class="form-label">Caducidad</label>
                                 <input type="date" class="form-control" id="regCaducidad">
                             </div>
-                            <div class="mb-3 col-xxl-7">
+                            <div class="mb-3 col-12">
                                 <label for="regTelefono" class="form-label">Teléfono</label>
                                 <input type="text" class="form-control" id="regTelefono">
                             </div>
                         </div> <!-- Cierre de la Fila 4 del modal -->
                         <div class = "row"> <!-- Se abre fila 5 del modal -->
-                            <div class="mb-3 col-xxl-8">
+                            <div class="mb-3 col-12">
                                 <label for="regEmail" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="regEmail">
                             </div>
@@ -346,12 +346,17 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                                 <input type="text" class="form-control" id="regDireccion">
                             </div>
                         </div> <!-- Cierre de la Fila 8 del modal -->
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="button" class="btn-modals2" data-bs-dismiss="modal">Cancelar</button>
+                            <button id="confirmarRegBtn"type="button" class="btn-modals" onclick="RegUsuario()">Confirmar</button>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            ¿Ya tienes una cuenta?,
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">¡Ingresa!</a>
+                            .
+                        </div>
                     </form>
                 </div> <!-- Cierre del Modal Body -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button id="confirmarRegBtn"type="button" class="btn btn-primary" onclick="RegUsuario()">Confirmar</button>
-                </div>
             </div>
         </div>
     </div>
@@ -367,21 +372,21 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                 <div class="modal-body"> <!-- Se abre el Modal Body -->
                     <form id="editForm">
                         <div class ="row"> <!-- Se abre fila 1 del modal -->
-                            <div class="mb-3 col-xxl-7">
+                            <div class="mb-3 col-12">
                                 <label for="editRun" class="form-label">RUN</label>
                                 <input type="text" class="form-control" id="editRun" disabled>
                             </div>
-                            <div class="mb-3 col-xxl-5">
+                            <div class="mb-3 col-12">
                                 <label for="editFechaNacimiento" class="form-label">Fecha de Nacimiento</label>
                                 <input type="date" class="form-control" id="editFechaNacimiento" disabled>
                             </div>
                         </div> <!-- Cierre de la Fila 1 del modal -->
                         <div class = "row"> <!-- Se abre fila 2 del modal -->
-                            <div class="mb-3 col-xxl-9">
+                            <div class="mb-3 col-12">
                                 <label for="editNombre" class="form-label">Nombre Completo</label>
                                 <input type="text" class="form-control" id="editNombre">
                             </div>
-                            <div class="mb-3 col-xxl-3">
+                            <div class="mb-3 col-12">
                                 <label for="editSexo" class="form-label">Sexo</label>
                                 <select class="form-select" id="editSexo">
                                     <option value="M">M</option>
@@ -390,23 +395,23 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                             </div> 
                         </div> <!-- Cierre de la Fila 2 del modal -->
                         <div class="row"> <!-- Se abre fila 3 del modal -->
-                            <div class="mb-3 col-xxl-6">
+                            <div class="mb-3 col-12">
                                 <label for="editNombreUsuario" class="form-label">Nombre de Usuario</label>
                                 <input type="text" class="form-control" id="editNombreUsuario" disabled>
                             </div>
-                            <div class="mb-3 col-xxl-6">
+                            <div class="mb-3 col-12">
                                 <label for="editPass" class="form-label">Contraseña</label>
                                 <input type="password" class="form-control" id="editPass">
                             </div>
                         </div> <!-- Cierre de la Fila 3 del modal -->
                         <div class= "row"> <!-- Se abre fila 4 del modal -->
-                            <div class="mb-3 col-xxl-7">
+                            <div class="mb-3 col-12">
                                 <label for="editTelefono" class="form-label">Teléfono</label>
                                 <input type="text" class="form-control" id="editTelefono">
                             </div>
                         </div> <!-- Cierre de la Fila 4 del modal -->
                         <div class = "row"> <!-- Se abre fila 5 del modal -->
-                            <div class="mb-3 col-xxl-8">
+                            <div class="mb-3 col-12">
                                 <label for="editEmail" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="editEmail">
                             </div>
@@ -438,8 +443,8 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                     </form>
                 </div> <!-- Cierre del Modal Body -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="UpdMiPerfil()">Confirmar</button>
+                    <button type="button" class="btn-modals2" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn-modals" onclick="UpdMiPerfil()">Confirmar</button>
                 </div>
             </div>
         </div>
@@ -469,6 +474,7 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
             </div>
         </div>
     </div>
+
     <!-- Modal de Reclamo -->
     <div class="modal fade" id="reclamoModal" tabindex="-1" aria-labelledby="reclamoModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -490,12 +496,13 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                     </form>
                 </div> <!-- Cierre del Modal Body -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="Reclamo(idCliente)">Enviar</button>
+                    <button type="button" class="btn-modals2" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn-modals" onclick="Reclamo(idCliente)">Enviar</button>
                 </div>
             </div>
         </div>
     </div>
+
     <!-- Pide Ya -->
     <div class="container-fluid d-flex justify-content-center mt-0 mb-2">
         <button id="pideya-button">
@@ -510,7 +517,8 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
             });
             </script>
     </div>
-
+    
+    <!-- Scroll pantallas pequeñas -->
     <div class="container-fluid d-md-none mt-2 d-flex" id="categoria-scroll" name="categoria"></div>
 
     <!-- Container con productos y categorías -->
@@ -535,12 +543,13 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
         </div>
     </div>
 
+    <!-- Botón de carrito para pantallas pequeñas -->
     <button class="d-md-none" id="fixed-carrito-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" onclick="actualizarCarrito();">
         <img src="./img/carrito.png" style="width: 45px">
-        <span id="cantidadCarrito">0</span>
+        <span id="cantidadCarrito2">0</span>
     </button>
 
-    
+    <!-- Footer -->
     <footer class="d-none d-md-flex">
         <div class="container-fluid mt-5" id="footer-container" style="background-color: #F2F1F1; height: 150px">
             <div class="row" style="height: 100%">

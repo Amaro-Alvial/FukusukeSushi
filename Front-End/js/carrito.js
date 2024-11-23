@@ -158,14 +158,14 @@ function creaCardCarrito(producto, cantidad, detalleCarrito, precio){
 
                     <!-- Contador de cantidad de productos -->
                     <div class="row">
-                        <div class="col-6 d-flex align-items-center">
+                        <div class="col-5 d-flex align-items-center">
                             <button class="btn btn-outline-secondary btn-sm" onclick="cambiarDetalleCarrito('${detalleCarrito}', '${producto.id}', -1)">-</button>
                             <span id="cantidad-${detalleCarrito}" class="mx-2">${cantidad}</span>
                             <button class="btn btn-outline-secondary btn-sm" onclick="cambiarDetalleCarrito('${detalleCarrito}', '${producto.id}',  1)">+</button>
                         </div>
 
                         <div class="col-6">
-                            <button class="btn btn-danger btn-sm" onclick="eliminaDetalleCarrito('${detalleCarrito}')">Eliminar</button>
+                            <button class="btn btn-danger btn-sm" onclick="eliminaDetalleCarrito('${detalleCarrito}')" style="font-weight: bold; font-size: 0.9rem">Eliminar</button>
                         </div>
                     </div>
                 </div>
@@ -313,4 +313,7 @@ async function eliminaDetalleCarrito(detalleCarrito){
 function cambiarCantidadCarrito(cantidad){
     let cantidadActual = parseInt(document.getElementById('cantidadCarrito').innerHTML);
     document.getElementById('cantidadCarrito').innerHTML = cantidadActual + cantidad;
+
+    let cantidadActual2 = parseInt(document.getElementById('cantidadCarrito2').innerHTML);
+    document.getElementById('cantidadCarrito2').innerHTML = cantidadActual2 + cantidad;
 }

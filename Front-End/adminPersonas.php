@@ -15,97 +15,170 @@ require_once 'session.php';
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="./js/adminPersonas.js"></script>
+    <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
-<button class="btn btn-secondary dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
-    Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre_usuario']); ?>
-</button>
-<ul class="dropdown-menu" aria-labelledby="userMenu">
-    <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
-</ul>                      
-<div class="container mt-3"> <!-- Se abre el Container -->
-  <h2>Administración de Personas</h2>
-  <form>
-    <div class="row"> <!-- Se abre fila 1 -->
-        <div class="mb-3 mt-3 col-xxl-6">
-            <label for="nombreCompleto">Nombre Completo:</label>
-            <input type="nombreCompleto" class="form-control" id="nombreCompleto" placeholder="Ingrese el nombre completo" name="nombreCompleto">
+
+    <!-- Navbar Principal -->
+    <nav class="navbar navbar-expand-sm pt-0 pb-0" id="navbar-principal" style="box-shadow: 0px 2px 3px #C0C0C0;">
+        <div class="container-fluid p-2" id="navbar-container">
+            <div class="container-logo">
+                <a id="logotype" href="./index.php">
+                    <img src="./img/logo/FUKUSUKE_LOGO.png" class="img-fluid" alt="Logo de la empresa" style="height: 60px">
+                </a>
+            </div>
+            <ul class="navbar-nav d-flex align-items-center d-flex flex-row">
+                <li class="nav-item">
+                    <button class="botones-navbar pb-1" type="button" data-bs-toggle="modal" data-bs-target="#horariosModal">
+                        Horarios
+                    <button>
+                </li>
+                <li class="nav-item me-3">
+                    <button class="botones-navbar pb-1" type="button">
+                        Local
+                    </button>
+                </li>
+                <div class="d-none d-sm-flex">
+                    <?php if (!isset($_SESSION['usuario_id'])): ?>
+                        <!-- Mostrar si no hay sesión activa -->
+                        <li class="nav-item">
+                            <button type="button" id="login-button" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                Iniciar Sesión
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" id="signup-button" data-bs-toggle="modal" data-bs-target="#regModal">
+                                Crear Cuenta 
+                            </button>
+                        </li>
+                    <?php else: ?>
+                        <!-- Mostrar si hay sesión activa -->
+                        <li class="nav-item dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                                Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre_usuario']); ?>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="userMenu">
+                                <li><a class="dropdown-item" href="#" onclick="MiPerfil(idCliente)">Mi Perfil</a></li>
+                                <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="ModalReclamo()">Reclamo</a></li>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
+                </div>
+
+                <div class="d-sm-none">
+                    <?php if (!isset($_SESSION['usuario_id'])): ?>
+                        <!-- Mostrar si no hay sesión activa -->
+                        <li class="nav-item dropdown me-2 position-relative">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="loginMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="./img/user_icon.png" height="25px">
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end position-absolute" aria-labelledby="loginMenu">
+                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#loginModal">Iniciar Sesión</a></li>
+                                <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#regModal">Crear Cuenta</a></li>
+                            </ul>
+                        </li>
+                    <?php else: ?>
+                        <!-- Mostrar si hay sesión activa -->
+                        <li class="nav-item dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="./img/user_icon.png" height="25px">
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end position-absolute" aria-labelledby="userMenu">
+                                <li><a class="dropdown-item" href="#" onclick="MiPerfil(idCliente)">Mi Perfil</a></li>
+                                <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="ModalReclamo()">Reclamo</a></li>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
+                </div>
+            </ul>
         </div>
-        <div class="mb-3 mt-3 col-xxl-2">
-            <label for="run">Run:</label>
-            <input type="run" class="form-control" id="run" placeholder="Ingrese run" name="run">
-        </div>
-        <div class="mb-3 mt-3 col-xxl-3">
-            <label for="fechaNacimiento">Fecha de Nacimiento:</label>
-            <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento">
-        </div>
-        <div class="mb-3 mt-3 col-xxl-1">
-            <label for="sexo">Sexo: </label> <br>
-            <select class="form-select" name="sexo" id="sexo">
-                <option value="M">M</option>
-                <option value="F">F</option>
-            </select>
-        </div>
-    </div> <!-- Cierre de la Fila 1 -->
-    <div class="row"> <!-- Se abre fila 2 -->
-        <div class="mb-3 mt-3 col-xxl-4">
-            <label for="region">Región:</label> <br>
-            <select class="form-select" name="region" id="cmbRegion"></select>
-        </div>
-        <div class="mb-3 mt-3 col-xxl-3">
-            <label for="provincia">Provincia:</label> <br>
-            <select class="form-select" name="provincia" id="cmbProvincia"><option value="defaultProvincia">Seleccione la Provincia</option></select>
-        </div>
-        <div class="mb-3 mt-3 col-xxl-3">
-            <label for="comuna">Comuna:</label> <br>
-            <select class="form-select" name="comuna" id="cmbComuna"><option value="defaultComuna">Seleccione la Comuna</option></select>
-        </div>
-        <div class="mb-3 mt-3 col-xxl-2">
-            <label for="telefono">Teléfono:</label>
-            <input type="tel" class="form-control" id="telefono" placeholder="Ejemplo: +56912345678" name="telefono" pattern="^\+569\d{8}$" title="Debe ingresar un número válido en formato +56912345678" required>
-        </div>
-    </div> <!-- Cierre de la Fila 2 -->
-    <div class="row"> <!-- Se abre fila 3 -->
-        <div class="mb-3 mt-3 col-xxl-6">
-            <label for="direccion">Dirección:</label>
-            <input type="direccion" class="form-control" id="direccion" placeholder="Ingrese la dirección" name="direccion">
-        </div>
-        <div class="mb-3 mt-3 col-xxl-6">
-            <label for="nombreUsuario">Nombre de Usuario:</label>
-            <input type="nombreUsuario" class="form-control" id="nombreUsuario" placeholder="Ingrese el nombre de usuario" name="nombreUsuario">
-        </div>
-    </div> <!-- Cierre de la Fila 3 -->
-    <div class="row"> <!-- Se abre fila 4 -->
-        <div class="mb-3 mt-3 col-xxl-2">
-            <label for="tipo">Tipo:</label> <br>
-            <select class="form-select" name="tipos" id="cmbPerfil"></select>
-        </div>
-        <div class="mb-3 mt-3 col-xxl-2">
-            <label for="caducidad">Caducidad (opcional):</label> <br>
-            <input type="date" class="form-control" id="caducidad" name="caducidad">
-        </div>
-        <div class="mb-3 mt-3 col-xxl-5">
-            <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" placeholder="Ingrese email" name="email">
-        </div>
-        <div class="mb-3 mt-3 col-xxl-3">
-            <label for="pass">Contraseña:</label>
-            <input type="password" class="form-control" id="pass" placeholder="Ingrese contraseña" name="pass">
-        </div>
-    </div> <!-- Cierre de la Fila 4 -->
-    
-    <button type="button" class="btn btn-primary" onclick="addPersona();">Agregar Persona</button>
-  </form>
-  <h2 class="mt-5 mb-3">Navegación de Usuarios</h2>
-  <div class="row"> <!-- Se abre fila 5 -->
-    <div class="mb-3 mt-3 col-xxl-2">
-        <label for="tipos2">Rol:</label> <br>
-        <select class="form-select" name="tipos2" id="cmbPerfil2"></select>
-    </div>
-  </div> <!-- Cierre de la Fila 5 -->
-  <div class="row"> <!-- Se abre fila 6 -->
-      <table id="tblPersona"></table>
-  </div> <!-- Cierre de la Fila 6 -->
+    </nav>
+                      
+    <div class="container-fluid mt-3"> <!-- Se abre el Container -->
+        <h2>Administración de Personas</h2>
+        <form>
+            <div class="row"> <!-- Se abre fila 1 -->
+                <div class="mb-3 mt-3 col-md-4 col-lg-5 col-xl-6 col-xxl-6">
+                    <label for="nombreCompleto">Nombre Completo:</label>
+                    <input type="nombreCompleto" widht="auto" class="form-control" id="nombreCompleto" placeholder="Ingrese el nombre completo" name="nombreCompleto">
+                </div>
+                <div class="mb-3 mt-3 col-md-3 col-lg-2 col-xl-2 col-xxl-2">
+                    <label for="run">Run:</label>
+                    <input type="run" widht="100%" class="form-control" id="run" placeholder="Ingrese run" name="run">
+                </div>
+                <div class="mb-3 mt-3 col-md-3 col-lg-3 col-xl-2 col-xxl-2">
+                    <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+                    <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento">
+                </div>
+                <div class="mb-3 mt-3 col-md-2 col-lg-2 col-xl-2 col-xxl-2">
+                    <label for="sexo">Sexo: </label> <br>
+                    <select class="form-select" name="sexo" id="sexo">
+                        <option value="M">M</option>
+                        <option value="F">F</option>
+                    </select>
+                </div>
+            </div> <!-- Cierre de la Fila 1 -->
+            <div class="row"> <!-- Se abre fila 2 -->
+                <div class="mb-3 mt-3 col-md-6 col-lg-3 col-xl-3 col-xxl-4">
+                    <label for="region">Región:</label> <br>
+                    <select class="form-select" name="region" id="cmbRegion"></select>
+                </div>
+                <div class="mb-3 mt-3 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                    <label for="provincia">Provincia:</label> <br>
+                    <select class="form-select" name="provincia" id="cmbProvincia"><option value="defaultProvincia">Seleccione la Provincia</option></select>
+                </div>
+                <div class="mb-3 mt-3 col-md-6 col-lg-3 col-xl-3 col-xxl-3">
+                    <label for="comuna">Comuna:</label> <br>
+                    <select class="form-select" name="comuna" id="cmbComuna"><option value="defaultComuna">Seleccione la Comuna</option></select>
+                </div>
+                <div class="mb-3 mt-3 col-md-6 col-lg-3 col-xl-3 col-xxl-2">
+                    <label for="telefono">Teléfono:</label>
+                    <input type="tel" class="form-control" id="telefono" placeholder="Ejemplo: +56912345678" name="telefono" pattern="^\+569\d{8}$" title="Debe ingresar un número válido en formato +56912345678" required>
+                </div>
+            </div> <!-- Cierre de la Fila 2 -->
+            <div class="row"> <!-- Se abre fila 3 -->
+                <div class="mb-3 mt-3 col-xxl-6">
+                    <label for="direccion">Dirección:</label>
+                    <input type="direccion" class="form-control" id="direccion" placeholder="Ingrese la dirección" name="direccion">
+                </div>
+                <div class="mb-3 mt-3 col-xxl-6">
+                    <label for="nombreUsuario">Nombre de Usuario:</label>
+                    <input type="nombreUsuario" class="form-control" id="nombreUsuario" placeholder="Ingrese el nombre de usuario" name="nombreUsuario">
+                </div>
+            </div> <!-- Cierre de la Fila 3 -->
+            <div class="row"> <!-- Se abre fila 4 -->
+                <div class="mb-3 mt-3 col-xxl-2">
+                    <label for="tipo">Tipo:</label> <br>
+                    <select class="form-select" name="tipos" id="cmbPerfil"></select>
+                </div>
+                <div class="mb-3 mt-3 col-xxl-2">
+                    <label for="caducidad">Caducidad (opcional):</label> <br>
+                    <input type="date" class="form-control" id="caducidad" name="caducidad">
+                </div>
+                <div class="mb-3 mt-3 col-xxl-5">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" placeholder="Ingrese email" name="email">
+                </div>
+                <div class="mb-3 mt-3 col-xxl-3">
+                    <label for="pass">Contraseña:</label>
+                    <input type="password" class="form-control" id="pass" placeholder="Ingrese contraseña" name="pass">
+                </div>
+            </div> <!-- Cierre de la Fila 4 -->
+            
+            <button type="button" class="btn btn-primary" onclick="addPersona();">Agregar Persona</button>
+        </form>
+        <h2 class="mt-5 mb-3">Navegación de Usuarios</h2>
+        <div class="row"> <!-- Se abre fila 5 -->
+            <div class="mb-3 mt-3 col-xxl-2">
+                <label for="tipos2">Rol:</label> <br>
+                <select class="form-select" name="tipos2" id="cmbPerfil2"></select>
+            </div>
+        </div> <!-- Cierre de la Fila 5 -->
+        <div class="row"> <!-- Se abre fila 6 -->
+            <table id="tblPersona"></table>
+        </div> <!-- Cierre de la Fila 6 -->
 </div> <!-- Cierre del Container -->
 
 <!-- Modal de Editar -->

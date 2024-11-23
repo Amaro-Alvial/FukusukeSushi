@@ -17,6 +17,27 @@ button {
     outline: none;            
 }
 
+.btn-modals {
+    color: white;
+    background-color: #0CB5E5;
+    font-weight: bold;
+    height: 40px;
+    width: 120px;
+    border-radius: 10px;
+}
+
+.btn-modals:hover {
+    background-color: #21C1EE;
+}
+
+.btn-modals2 {
+    color: black;
+    font-weight: bold;
+    height: 40px;
+    width: 100px;
+    border-radius: 10px;
+}
+
 /* Botones de inicio de sesión y crear cuenta. */
 
 #login-button {
@@ -71,7 +92,6 @@ button {
 }
 
 .form-control {
-    width: 400px;
     height: 30px;
 }
 
