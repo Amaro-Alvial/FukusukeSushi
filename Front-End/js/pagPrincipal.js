@@ -2,7 +2,7 @@ let optionCategorias = [];
 
 function optionCategoria(item){
     optionCategorias.push(`
-        <div class="col-12 ps-1" style="height: 13%">
+        <div class="col-12 ps-1" style="height: 40px">
             <button class="categoria-button" value="${item.id}">${item.nombre}</button>
         </div>
     `);
