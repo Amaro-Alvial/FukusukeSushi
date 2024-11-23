@@ -15,13 +15,13 @@ async function trtdBoleta(boleta) {
         );
         const total = precios.reduce((acc, curr) => acc + curr, 0);
         const newRow = `
-            <tr>
-                <td>${boleta.id}</td>
-                <td>${boleta.fecha}</td>
-                <td>${cliente.nombreUsuario}</td>
-                <td>${cajeroVirtual.nombreUsuario}</td>
-                <td>${total.toFixed(2)}</td>
-                <td>
+            <tr height="40px">
+                <td style="width: 130px; padding-right: 10px">${boleta.id}</td>
+                <td style="width: 130px; padding-right: 10px">${boleta.fecha}</td>
+                <td style="width: 130px; padding-right: 10px">${cliente.nombreUsuario}</td>
+                <td style="width: 130px; padding-right: 10px">${cajeroVirtual.nombreUsuario}</td>
+                <td style="width: 130px; padding-right: 10px">${total.toFixed(2)}</td>
+                <td style="width: 130px; padding-right: 10px">
                     <button 
                         class="btn btn-success btn-sm" 
                         onclick="AbrirModalBoleta('${boleta.id}')">

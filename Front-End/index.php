@@ -108,8 +108,6 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                         </li>
                     <?php endif; ?>
                 </div>
-
-
             </ul>
         </div>
     </nav>

@@ -7,7 +7,7 @@ async function cardProductos(item) {
     let stock = disponibilidad.disponibilidad ? "Disponible" : "No disponible";
 
     let cardProducto = `
-        <div class="card col-xxl-3 card-dark p-2">
+        <div class="card col-sm-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 card-dark p-2">
             <div class="card-header">
                 <h4 class="card-title">${item.nombre}</h4>
             </div>
@@ -18,7 +18,7 @@ async function cardProductos(item) {
             </div>
             <div class="card-footer">
                 <div class="row"> 
-                    <p class="card-text col-6">$${precio.precio}</p>
+                    <p class="card-text col-6 d-flex justify-content-center" style="font-size: 1.1rem">$${precio.precio}</p>
                     <h5 class="card-text col-6">${stock}</h5>
                 </div>
                 <div class="row justify-content-center">

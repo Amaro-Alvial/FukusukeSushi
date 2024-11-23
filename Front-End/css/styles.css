@@ -79,6 +79,18 @@ button {
     border: none;
 }
 
+#infoMenu {
+    font-weight: bold;
+}
+
+#infoMenu:hover {
+    text-decoration: underline;
+}
+
+#infoMenu:focus {
+    border: none;
+}
+
 #loginMenu {
     font-weight: bold;
     background-color: #FF745E;
