@@ -546,7 +546,21 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
             <div class="row" style="height: 100%">
                 <div class="col-3 pt-4 pb-4 h-100">
                     <img src="./img/logo/FUKUSUKE_LOGO.png" height="100%">
-                </div>  
+                </div>
+                <div class="col-4 ms-auto d-flex flex-column justify-content-start align-items-center mt-3">
+                    <div class="mb-2" style="color: black;">
+                        Nuestras redes:
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center mt-2 gap-3">
+                        <!-- Ejemplo de contenidos adicionales -->
+                        <a id="facebook" href="https://www.facebook.com/?locale=es_LA" target="_blank" rel="noopener noreferrer"><img src="./img/redes/facebook-icon.png" style="width: 60px"></a>
+                        <a id="instagram" href="https://www.instagram.com" target="_blank" rel="noopener noreferrer"><img src="./img/redes/instagram-icon.png" style="width: 60px"></a>
+                        <a id="twitter" href="https://x.com/?lang=es" target="_blank" rel="noopener noreferrer"><img src="./img/redes/twitter-icon.png" style="width: 60px"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center" style="color: black; background-color: #F2F1F1; height: 20%; text-align: center">
+                @ COPYRIGHT 2024 FukusukeSushi
             </div>
         </div>
     </footer>
