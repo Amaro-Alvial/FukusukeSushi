@@ -24,7 +24,7 @@ async function abrirModalEditar(run) {
     document.getElementById('editEmail').value = item2.email;
     document.getElementById('editPass').value = item2.pass;
     document.getElementById('editNombreUsuario').value = item2.nombreUsuario;
-    document.getElementById('editTipo').value = item4.id;
+    document.getElementById('editTipo').value = item4.tipo;
     document.getElementById('editRegion').value = region.id;
     document.getElementById('editProvincia').value = provincia.id;
     document.getElementById('editComuna').value = comuna.id;

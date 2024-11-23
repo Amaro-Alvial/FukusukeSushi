@@ -500,7 +500,6 @@ function GetPerfiles(){
             response.data.getPerfils.forEach(optionPerfil);
             document.getElementById('cmbPerfil').innerHTML = optionsPerfil.join("");
             document.getElementById('cmbPerfil2').innerHTML = optionsPerfil.join("");
-            document.getElementById('editTipo').innerHTML = optionsPerfil.join("");
         }
     });
 }

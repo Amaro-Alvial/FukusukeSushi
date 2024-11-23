@@ -264,9 +264,9 @@ require_once 'session.php';
                                 <label for="editDireccion" class="form-label">Dirección</label>
                                 <input type="text" class="form-control" id="editDireccion">
                             </div>
-                            <div>
+                            <div class="mb-3">
                                 <label for="editTipo" class="form-label">Tipo</label>
-                                <select class="form-select" name="tipos" id="editTipo"></select>
+                                <input type="text" class="form-control" id="editTipo" disabled>
                             </div>
                         </div> <!-- Cierre de la Fila 8 del modal -->
                     </form>
