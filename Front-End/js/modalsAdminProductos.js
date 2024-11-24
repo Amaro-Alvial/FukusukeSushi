@@ -77,7 +77,7 @@ async function editProducto() {
 }
 async function modalBorrarProducto(idProducto) {
     let producto = await GetProductoById(idProducto);
-    document.getElementById('delConfirmacion').textContent = `¿Está seguro que desea eliminar el producto: ${producto.nombre} con ID:?`;
+    document.getElementById('delConfirmacion').textContent = `¿Está seguro que desea eliminar el producto: ${producto.nombre} con ID: ${producto.id}?`;
     document.getElementById('delConfirmacion').value = producto.id;
     var delModal = new bootstrap.Modal(document.getElementById('delModal'));
     delModal.show();

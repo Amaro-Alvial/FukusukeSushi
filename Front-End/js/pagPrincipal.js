@@ -606,6 +606,9 @@ function AddReclamo(titulo, descripcion, cliente){
         }),
         success: function(response){
             alert("Reclamo enviado con exito");
+            const modalElement = document.getElementById('reclamoModal');
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            modalInstance.hide();
         }
     });
 }

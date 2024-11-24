@@ -97,7 +97,7 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                                 <input type="text" class="form-control" id="cvv" name="cvv" maxlength="3" required>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-pago btn-block" onclick="cargando();">Continuar</button>
+                        <button type="button" class="btn btn-pago btn-block" onclick="cargando();">Continuar</button>
                         <button type="button" class="btn btn-volver btn-block" onclick="window.location.href='index.php'">Volver</button>
                     </form>
                 </div>
