@@ -27,9 +27,9 @@ async function trtdBoleta(boleta) {
         const comuna = await GetComunaById(persona.comuna);
         const newRow = `
             <tr>
-                <td>${boleta.id}</td>
-                <td>${comuna.nombre}</td>
-                <td>
+                <td style="padding-right: 10px">${boleta.id}</td>
+                <td class="d-none d-sm-flex" style="padding-right: 10px">${comuna.nombre}</td>
+                <td style="padding-right: 10px">
                     <button 
                         class="btn btn-primary btn-sm" 
                         onclick="AbrirModalBoleta('${boleta.id}')">

@@ -275,7 +275,7 @@ require_once 'session.php';
                 </div> <!-- Cierre del Modal Body -->
                 <div class="modal-footer">
                     <button type="button" class="btn-modals2" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn-modals" onclick="UpdConexiones()">Confirmar</button>
+                    <button type="button" class="btn btn-primary" style="font-weight: bold" onclick="UpdConexiones()">Confirmar</button>
                 </div>
             </div>
         </div>
