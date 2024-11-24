@@ -13,6 +13,13 @@ document.getElementById('categoria-scroll').addEventListener('click', function(e
     }
 });
 
+document.getElementById('categoria-scroll2').addEventListener('click', function(event) {
+    if (event.target.classList.contains('categoria-button')) {
+        const categoriaId = event.target.value;
+        getProductosByIdCategoria(categoriaId);
+    }
+});
+
 document.getElementById('login-form').addEventListener('submit', function(){
     let email = document.getElementById('email').value;
     let pass = document.getElementById('pwd').value;
@@ -88,6 +95,7 @@ async function RegUsuario() {
         },
     });
 }
+
 async function IniciarSesion() {
     const nombreUsuario = $('#loginNombreUsuario').val();
     const pass = $('#loginPass').val();
@@ -190,6 +198,7 @@ function validarFormulario() {
     }
     return true;
 }
+
 async function MiPerfil(idCliente) {
     let usuario = await GetUsuarioById(idCliente);
     let persona = await GetPersonaById(usuario.persona);
@@ -242,6 +251,7 @@ function ModalReclamo(){
     var reclamoModal = new bootstrap.Modal(document.getElementById('reclamoModal'));
     reclamoModal.show();
 }
+
 function Reclamo(idCliente){
     let titulo = document.getElementById('reclamoTitulo').value;
     let descripcion = document.getElementById('reclamoDescripcion').value;
@@ -251,24 +261,28 @@ function Reclamo(idCliente){
     }
     AddReclamo(titulo, descripcion, idCliente);
 }
+
 document.getElementById('regRegion').addEventListener('change', function() {
     const regionId = document.getElementById('regRegion').value;
     if (regionId) {
         GetProvinciasByIdRegion(regionId);
     }
 });
+
 document.getElementById('regProvincia').addEventListener('change', function() {
     const provinciaId = document.getElementById('regProvincia').value;
     if (provinciaId) {
         GetComunasByIdProvincia(provinciaId);
     }
 });
+
 document.getElementById('editRegion').addEventListener('change', function() {
     const regionId = document.getElementById('editRegion').value;
     if (regionId) {
         GetProvinciasByIdRegion(regionId);
     }
 });
+
 document.getElementById('editProvincia').addEventListener('change', function() {
     const provinciaId = document.getElementById('editProvincia').value;
     if (provinciaId) {

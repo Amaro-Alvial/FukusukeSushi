@@ -2,7 +2,7 @@ let optionCategorias = [];
 
 function optionCategoria(item){
     optionCategorias.push(`
-        <div class="col-12 ps-1" style="height: 13%">
+        <div class="container-categoria-button" style="height: 40px;">
             <button class="categoria-button" value="${item.id}">${item.nombre}</button>
         </div>
     `);
@@ -11,9 +11,11 @@ function optionCategoria(item){
 function optionProvincia(item) {
     optionsProvincia.push('<option value="' + item.id + '">' + item.nombre + '</option>');
 }
+
 function optionRegion(item) {
     optionsRegion.push('<option value="' + item.id + '">' + item.nombre + '</option>');
 }
+
 function optionComuna(item) {
     optionsComuna.push('<option value="' + item.id + '">' + item.nombre + '</option>');
 }
@@ -38,25 +40,33 @@ function getCategorias(){
         success: function(response){
             response.data.getCategorias.forEach(optionCategoria);
             document.getElementById('categoria-scroll').innerHTML = optionCategorias.join("");
+            document.getElementById('categoria-scroll2').innerHTML = optionCategorias.join("");
         }
     })
 }
+
 async function cardProductos(item) {
     let precio = await GetUltimoPrecioHistoricoByIdProducto(item.id);
     let disponibilidad = await GetUltimoDisponibleHistoricoByIdProducto(item.id);
     let stock = disponibilidad.disponibilidad ? "Disponible" : "No disponible";
 
     let cardProductos = `
-        <div class="card col-xs-12 col-xxs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 col-xxl-3 p-2" style="border: white" value="${item.id}">
-            <a type="button" data-bs-toggle="modal" data-bs-target="#productModal" class="producto-button" onclick="actualizarModal(this.parentElement.getAttribute('value'));">
+        <div class="card col-xs-12 col-xxs-12 col-sm-6 col-md-6 col-lg-6 col-xl-4 col-xxl-3 p-2" style="border: white" value="${item.id}">
+            <a type="button" data-bs-toggle="modal" data-bs-target="#productModal" class="producto-button" onclick="actualizarModal(this.parentElement.getAttribute('value'))">
                 <div class="card-header p-0">
                     <img src="${item.foto}" alt="Foto de ${item.nombre}" style="width: 100%; border-radius: inherit">
                 </div>
-                <div class="card-footer" style="background-color: #F2F1F1">
-                    <div class="row">
+                <div class="card-footer" style="background-color: #F2F1F1; height: 100px">
+                    <div class="row" style="height: 100%">
                         <div class="col-8">
-                            <h5 class="card-title">${item.nombre}</h5>
-                            <p class="card-text" style="font-weight: bold; font-size: 1.2rem">$${precio.precio}</p>
+                            <div class="row d-flex align-items-center" style="height: 67%">
+                                <h5 class="card-title">${item.nombre}</h5>
+                            </div>
+                            <div class="row">
+                                <div class="d-flex">
+                                    <p class="card-text" style="font-weight: bold; font-size: 1.2rem">$${precio.precio}</p>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-4 d-flex justify-content-center align-items-center">
                             <button class="agregar-button-card">
@@ -70,6 +80,7 @@ async function cardProductos(item) {
     `;
     document.getElementById('productos-container').insertAdjacentHTML('beforeend', cardProductos);
 }
+
 async function getProductosByIdCategoria(categoria) {
     const query = `
     query getProductosByIdCategoria($id: String){
@@ -82,7 +93,7 @@ async function getProductosByIdCategoria(categoria) {
     }
     `;
 
-    document.getElementById('scroll-container').innerHTML = '<div class="row" id="productos-container"></div>';
+    document.getElementById('scroll-productos').innerHTML = '<div class="row" id="productos-container"></div>';
 
     $.ajax({
         type: "POST",
@@ -102,6 +113,7 @@ async function getProductosByIdCategoria(categoria) {
         },
     });
 }
+
 function GetUltimoPrecioHistoricoByIdProducto(idProducto){
     let query = `
     query miQuery($id: String){
@@ -130,6 +142,7 @@ function GetUltimoPrecioHistoricoByIdProducto(idProducto){
         });
     });
 }
+
 function GetUltimoDisponibleHistoricoByIdProducto(idProducto){
     let query = `
     query miQuery($id: String){
@@ -158,6 +171,7 @@ function GetUltimoDisponibleHistoricoByIdProducto(idProducto){
         });
     });
 }
+
 function GetComunasByIdProvincia(idProvincia){
     let query = `
     query miQuery($input: String){
@@ -187,6 +201,7 @@ function GetComunasByIdProvincia(idProvincia){
         }
     });
 }
+
 function GetProvinciasByIdRegion(idRegion){
     let query = `
     query miQuery($input: String){
@@ -217,6 +232,7 @@ function GetProvinciasByIdRegion(idRegion){
         }
     });
 }
+
 function GetRegionById(idRegion){
     let query = `
     query miQuery($id: ID!){
@@ -244,6 +260,7 @@ function GetRegionById(idRegion){
         });
     });
 }
+
 function GetProvinciaById(idProvincia){
     let query = `
     query miQuery($id: ID!){
@@ -272,6 +289,7 @@ function GetProvinciaById(idProvincia){
         });
     });
 }
+
 function GetComunaById(idComuna){
     let query = `
     query miQuery($id: ID!){
@@ -300,6 +318,7 @@ function GetComunaById(idComuna){
         });
     });
 }
+
 function GetComunas(){
     let query = `
     query miQuery {
@@ -327,6 +346,7 @@ function GetComunas(){
         }
     });
 }
+
 function GetProvincias(){
     let query = `
     query miQuery {
@@ -355,6 +375,7 @@ function GetProvincias(){
         }
     });
 }
+
 function GetRegiones(){
     let query = `
     query miQuery {
@@ -382,6 +403,7 @@ function GetRegiones(){
         }
     });
 }
+
 function GetPerfilById(idPerfil){
     let query = `
     query miQuery($id: ID!){
@@ -409,6 +431,7 @@ function GetPerfilById(idPerfil){
         });
     });
 }
+
 function GetUsuarioById(idUsuario){
     let query = `
     query miQuery($id: ID!){
@@ -439,6 +462,7 @@ function GetUsuarioById(idUsuario){
         });
     });
 }
+
 function GetPersonaById(idPersona){
     let query = `
     query miQuery($id: ID!){
@@ -472,6 +496,7 @@ function GetPersonaById(idPersona){
         });
     });
 }
+
 function UpdPersona(idPersona, run, nombreCompleto, direccion, fechaNacimiento, sexo, telefono, comuna){
     let mutation = `
     mutation miMutation($id: ID!, $input: PersonaInput){
@@ -511,6 +536,7 @@ function UpdPersona(idPersona, run, nombreCompleto, direccion, fechaNacimiento, 
         }
     });
 }
+
 function UpdUsuario(idUsuario, email, pass, nombreUsuario, idPersona){
     let mutation = `
     mutation miMutation($id: ID! ,$input: UsuarioInput){
@@ -551,6 +577,7 @@ function UpdUsuario(idUsuario, email, pass, nombreUsuario, idPersona){
         });
     });
 }
+
 function AddReclamo(titulo, descripcion, cliente){
     let mutation = `
     mutation miMutation($input: ReclamoInput){
