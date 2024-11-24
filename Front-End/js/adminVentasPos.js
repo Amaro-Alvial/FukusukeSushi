@@ -192,7 +192,7 @@ async function offCanvasReclamos(){
         contentTableReclamos.push(`
             <tr>
                 <td>${cliente.nombreUsuario}</td>
-                <td><button class="btn btn-warning" onclick="Revisar( '${item.id}' )">Revisar</button></td>
+                <td style="padding-left: 30px"><button class="btn btn-warning" onclick="Revisar( '${item.id}' )">Revisar</button></td>
             </tr>
         `);
     }

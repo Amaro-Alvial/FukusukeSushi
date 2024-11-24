@@ -1,17 +1,33 @@
 let contentTablePersona = [];
+let contentTablePersonaAux = [];
 
 async function trtdPersona(item){
     comuna = await GetComunaById(item.comuna)
     contentTablePersona.push(`
-        <tr>
-            <td>${item.run}</td>
-            <td>${item.nombreCompleto}</td>
-            <td>${comuna.nombre}</td>
-            <td>${item.direccion}</td>
-            <td>${item.telefono}</td>
-            <td>
-                <button class="btn btn-success btn-sm" onclick="abrirModalEditar('${item.run}')">Editar</button>
-                <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${item.id}', '${item.run}')">Eliminar</button>
+        <tr style="height: 40px; border-color: #C0C0C0">
+            <td style="width: 130px; padding-right: 10px">${item.run}</td>
+            <td style="width: 220px; padding-right: 10px"">${item.nombreCompleto}</td>
+            <td style="width: 130px; padding-right: 10px"">${comuna.nombre}</td>
+            <td style="width: 280px; padding-right: 10px"">${item.direccion}</td>
+            <td style="width: 130px; padding-right: 10px"">${item.telefono}</td>
+            <td style="height: 30px; width: 140px; padding-right: 20px"">
+                <div class="d-flex justify-content-center align-items-center">
+                    <button class="btn btn-success btn-sm me-1" onclick="abrirModalEditar('${item.run}')">Editar</button>
+                    <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${item.id}', '${item.run}')">Eliminar</button>
+                </div>
+            </td>
+            </td>
+        </tr>
+    `);
+    contentTablePersonaAux.push(`
+        <tr style="height: 40px; border-color: #C0C0C0">
+            <td style="width: 130px; padding-right: 10px">${item.run}</td>
+            <td style="width: 220px; padding-right: 10px"">${item.nombreCompleto}</td>
+            <td style="height: 30px; width: 140px; padding-right: 20px"">
+                <div class="d-flex justify-content-center align-items-center">
+                    <button class="btn btn-success btn-sm me-1" onclick="abrirModalEditar('${item.run}')">Editar</button>
+                    <button class="btn btn-danger btn-sm" onclick="openDeleteModal('${item.id}', '${item.run}')">Eliminar</button>
+                </div>
             </td>
             </td>
         </tr>
@@ -527,11 +543,14 @@ async function GetPersonas(){
         }),
         success: async function(response){
             contentTablePersona = [];
+            contentTablePersonaAux = [];
             contentTablePersona.push('<tr><td>RUN</td><td>NOMBRE</td><td>COMUNA</td><td>DIRECCIÓN</td><td>TELEFONO</td><td>Editar/Eliminar</td></tr>');
+            contentTablePersonaAux.push('<tr><td>RUN</td><td>NOMBRE</td><td>Editar/Eliminar</td></tr>');
             for (const item of response.data.getPersonas) {
                 await trtdPersona(item);
             }
             document.getElementById('tblPersona').innerHTML = contentTablePersona.join("");
+            document.getElementById('tblPersonaAux').innerHTML = contentTablePersonaAux.join("");
         }
     });
 }

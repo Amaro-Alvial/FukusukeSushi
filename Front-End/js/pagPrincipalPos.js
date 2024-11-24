@@ -13,12 +13,20 @@ document.getElementById('categoria-scroll').addEventListener('click', function(e
     }
 });
 
+document.getElementById('categoria-scroll2').addEventListener('click', function(event) {
+    if (event.target.classList.contains('categoria-button')) {
+        const categoriaId = event.target.value;
+        getProductosByIdCategoria(categoriaId);
+    }
+});
+
 document.getElementById('login-form').addEventListener('submit', function(){
     let email = document.getElementById('email').value;
     let pass = document.getElementById('pwd').value;
 
     getUsuarioByIdPerfil
 });
+
 //Dejar listo el carrito del usuario
 //console.log(idCliente);
 

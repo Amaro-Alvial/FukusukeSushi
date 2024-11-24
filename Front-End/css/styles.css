@@ -17,6 +17,27 @@ button {
     outline: none;            
 }
 
+.btn-modals {
+    color: white;
+    background-color: #0CB5E5;
+    font-weight: bold;
+    height: 40px;
+    width: 120px;
+    border-radius: 10px;
+}
+
+.btn-modals:hover {
+    background-color: #21C1EE;
+}
+
+.btn-modals2 {
+    color: black;
+    font-weight: bold;
+    height: 40px;
+    width: 100px;
+    border-radius: 10px;
+}
+
 /* Botones de inicio de sesión y crear cuenta. */
 
 #login-button {
@@ -25,7 +46,7 @@ button {
     font-weight: bold;
     height: 45px;
     width: 130px;
-    border-radius: 75px;
+    border-radius: 15px;
     margin-right: -40px;
     position: relative;
     z-index: 2;
@@ -41,7 +62,7 @@ button {
     font-weight: bold;
     height: 45px;
     width: 150px;
-    border-radius: 75px;
+    border-radius: 15px;
     padding-left: 35px;
     position: relative;
     z-index: 1;
@@ -58,6 +79,24 @@ button {
     border: none;
 }
 
+#infoMenu {
+    font-weight: bold;
+}
+
+#infoMenu:hover {
+    text-decoration: underline;
+}
+
+#infoMenu:focus {
+    border: none;
+}
+
+#loginMenu {
+    font-weight: bold;
+    background-color: #FF745E;
+    border: none;
+}
+
 #userMenu:hover {
     font-weight: bold;
     background-color: #FF8B78;
@@ -65,18 +104,17 @@ button {
 }
 
 .form-control {
-    width: 400px;
     height: 30px;
 }
 
 /* Botón modal horarios. */
 
-#horarios-button {
+.botones-navbar {
     font-weight: bold;
     margin: 0 10px;
 }
 
-#horarios-button:hover {
+.botones-navbar:hover {
     text-decoration: underline;
 }
 
@@ -108,16 +146,18 @@ button {
 
 /*--------------------------*/
 
-#aviso-iniciasesion {
+#aviso-carrusel {
     background-color: #FF745E;
     color: white;
     font-weight: bold;
     padding: 5px 0px;
 }
+
 #img-sushi-bienvenida {
     width: 100%;
     height: 400px;
 }
+
 #pideya-button {
     color: #FF745E;
     width: 200px;
@@ -145,15 +185,24 @@ button {
 /* Select categorias. */
 
 #categoria-scroll {
+    overflow-x: scroll;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+#categoria-scroll2 {
     border: none;
     width: 100%;
-    height: 50%;
+    height: 60%;
     overflow-y: scroll;
 }
 
 .categoria-button {
     background-color: white;
     height: 100%;
+    width: 100%;
+    padding: 0 10px;
 }
 
 .categoria-button:focus{
@@ -161,39 +210,69 @@ button {
     color: #FF745E;
 }
 
-#scroll-container {
-    height: 100%; 
-    overflow-y: auto; 
-    background-color: white;
+@media (max-width: 768px) {
+    #scroll-productos {
+        height: auto;
+        background-color: white;
+    }
+
+    #div-scroll-productos {
+        height: auto;
+    }
+}
+
+@media (min-width: 768px) {
+    #scroll-productos {
+        height: 100%; 
+        overflow-y: auto;
+        background-color: white;
+    }
+
+    #div-scroll-productos {
+        height: 100%;
+    }
+
+    #row-productos {
+        height: 95vh;
+    }
 }
 
 /* Botón carrito. */
 
-@media (max-width: 480px) {
-    #carrito-button {
-        background-color: #FF745E;
-        position: sticky;
-        bottom: 1rem;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-    }
+#fixed-carrito-button {
+    background-color: #FF745E;
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
 }
 
-@media (min-width: 480px) {
-    #carrito-button {
-        background-color: #FF745E;
-        width: 99%;
-        height: 60px;
-        border-radius: 10px;
-    }
+#fixed-carrito-button span {
+    position: absolute;
+    color: #FF745E;
+    background-color: white;
+    font-weight: bold;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-left: -10px;
+    margin-top: -7px;
+}
 
-    #carrito-button:hover {
-        background-color: #FF8B78;
-        width: 100%;
-        height: 61px;
-        border-radius: 10px;
-    }
+#carrito-button {
+    background-color: #FF745E;
+    width: 99%;
+    height: 60px;
+    border-radius: 10px;
+}
+
+#carrito-button:hover {
+    background-color: #FF8B78;
+    width: 100%;
+    height: 61px;
+    border-radius: 10px;
 }
 
 #carrito-button span {
@@ -211,6 +290,7 @@ button {
 .producto-button {
     text-decoration: none;
     color: black;
+    height: 100%;
 }
 
 .agregar-button-card {
