@@ -278,17 +278,14 @@ document.addEventListener('DOMContentLoaded', function () {
         input.addEventListener('change', function () {
             // Recorre todos los radios y encuentra el seleccionado
             const metodoSeleccionado = document.querySelector('input[name="metodoPago"]:checked');
-
+            document.getElementById('lado-enmedio').style.display = 'flex';
             if (metodoSeleccionado) {
-                console.log("Método de pago seleccionado:", metodoSeleccionado.id);
-
-                // Dependiendo del ID seleccionado, puedes mostrar el formulario correspondiente
                 if (metodoSeleccionado.id === 'tarjetaCredito') {
-                    // Lógica para cuando se selecciona Tarjetas
-                    console.log("Pago con tarjeta seleccionado.");
+                    document.getElementById('lado-derecho1').style.display = 'block';
+                    document.getElementById('lado-derecho2').style.display = 'none';
                 } else if (metodoSeleccionado.id === 'onepay') {
-                    // Lógica para cuando se selecciona Onepay
-                    console.log("Pago con Onepay seleccionado.");
+                    document.getElementById('lado-derecho2').style.display = 'block';
+                    document.getElementById('lado-derecho1').style.display = 'none';
                 }
             }
         });

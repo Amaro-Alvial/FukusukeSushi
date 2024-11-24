@@ -40,7 +40,8 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
     </div>
     <div class="container">
         <div class="container-pago row d-flex">
-            <div class="container col-12 col-xl-6">
+            <!-- Lado izquierdo -->
+            <div class="container col-12 col-xl-6 align-items-stretch">
                 <!-- Header de Pago -->
                 <div class="header-pago d-flex justify-content-between align-items-start">
                     <div>
@@ -75,14 +76,27 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                         </label>
                     </div>
                 </div>
-            </div>    
+                <br>
+                <div>
+                    <button type="button" class="btn btn-volver btn-block" onclick="window.location.href='index.php'">Volver</button>
+                </div>
+            </div>
 
-            <div class="container col-12 col-xl-1" id="lado-enmedio"><br></div>
+            <!-- Separación -->
+            <div class="container col-12 col-xl-1" id="lado-enmedio" style="display:none"><br></div>
 
-            <div class="container col-12 col-xl-5" id="lado-derecho1">
+            <!-- Lado Derecho 1 -->
+            <div class="container col-12 col-xl-5" id="lado-derecho1" style="display:none">
                 <!-- Formulario de Pago -->
+                <div class="d-flex justify-content-center">
+                    <h4 class="d-none d-sm-block">Ingresa los datos de tu tarjeta:</h4>
+                    <p class="d-xs-block d-sm-none">Ingresa los datos de tu tarjeta:</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <img class="d-none d-md-block" src="./img/tarjeta.png" alt="Tarjeta PNG" style="height: 150px">
+                </div>
                 <div class="form-pago" id="form-pago">
-                <form>
+                    <form>
                         <div class="form-group">
                             <label for="numeroTarjeta">Número de tarjeta</label>
                             <input type="text" class="form-control" id="numeroTarjeta" name="numeroTarjeta" maxlength="16" placeholder="XXXX XXXX XXXX XXXX" required>
@@ -98,9 +112,20 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                             </div>
                         </div>
                         <button type="button" class="btn btn-pago btn-block" onclick="cargando();">Continuar</button>
-                        <button type="button" class="btn btn-volver btn-block" onclick="window.location.href='index.php'">Volver</button>
                     </form>
                 </div>
+            </div>
+
+            <!-- Lado Derecho 2 -->
+            <div class="container col-12 col-xl-5" id="lado-derecho2" style="display:none">
+                <div class="d-flex justify-content-center">
+                    <h4 class="d-none d-sm-block">Escanea el QR para continuar:</h4>
+                    <p class="d-xs-block d-sm-none">Escanea el QR para continuar:</p>
+                </div>
+                <div class="d-flex justify-content-center mb-2">
+                    <img src="./img/qr_importante.png" alt="Código QR" style="height: 300px">
+                </div>
+                <button type="button" class="btn btn-pago btn-block" onclick="cargando();">Continuar</button>
             </div>
         </div>
     </div>
