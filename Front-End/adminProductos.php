@@ -83,9 +83,7 @@ require_once 'session.php';
                                 <img src="./img/user_icon.png" height="25px">
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end position-absolute" aria-labelledby="userMenu">
-                                <li><a class="dropdown-item" href="#" onclick="MiPerfil(idCliente)">Mi Perfil</a></li>
                                 <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
-                                <li><a class="dropdown-item" href="#" onclick="ModalReclamo()">Reclamo</a></li>
                             </ul>
                         </li>
                     <?php endif; ?>

@@ -84,9 +84,7 @@ require_once 'session.php';
                                 <img src="./img/user_icon.png" height="25px">
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end position-absolute" aria-labelledby="userMenu">
-                                <li><a class="dropdown-item" href="#" onclick="MiPerfil(idCliente)">Mi Perfil</a></li>
                                 <li><a class="dropdown-item" href="logout.php">Cerrar Sesión</a></li>
-                                <li><a class="dropdown-item" href="#" onclick="ModalReclamo()">Reclamo</a></li>
                             </ul>
                         </li>
                     <?php endif; ?>
@@ -175,9 +173,13 @@ require_once 'session.php';
                 <select class="form-select" width="50%" name="tipos2" id="cmbPerfil2"></select>
             </div>
         </div> <!-- Cierre de la Fila 5 -->
-        <div class="row"> <!-- Se abre fila 6 -->
-            <div class="ms-4" style="overflow-x: scroll" >
+        <div class="row">
+            <div class="ms-4 d-none d-md-block" style="overflow-x: scroll">
                 <table id="tblPersona"></table>
+            </div>
+            <!-- Tabla auxiliar para pantallas desde sm hacía abajo -->
+            <div class="ms-4 d-block d-md-none" style="overflow-x: scroll">
+                <table id="tblPersonaAux"></table>
             </div>
         </div> <!-- Cierre de la Fila 6 -->
 </div> <!-- Cierre del Container -->

@@ -1,4 +1,3 @@
-contentTableVentas=[];
 async function trtdBoleta(boleta) {
     try {
         const [detalleCompras, cliente, horarioCaja] = await Promise.all([
@@ -30,7 +29,20 @@ async function trtdBoleta(boleta) {
                 </td>
             </tr>
         `;
+        const newRowAux = `
+            <tr height="40px">
+                <td style="width: 130px; padding-right: 10px">${boleta.id}</td>
+                <td style="width: 130px; padding-right: 10px">
+                    <button 
+                        class="btn btn-success btn-sm" 
+                        onclick="AbrirModalBoleta('${boleta.id}')">
+                        DETALLES
+                    </button>
+                </td>
+            </tr>
+        `;
         document.getElementById('tblVenta').insertAdjacentHTML('beforeend', newRow);
+        document.getElementById('tblVentaAux').insertAdjacentHTML('beforeend', newRowAux);
     } catch (error) {
         console.error("Error en trtdBoleta:", error);
     }
@@ -59,9 +71,10 @@ function GetBoletasByFecha(fecha) {
             }
         }),
         success: async function(response) {
-            contentTableVentas = [];
             const encabezados = '<tr><td>ID</td><td>FECHA</td><td>CLIENTE</td><td>CAJERO</td><td>TOTAL</td><td>Detalles</td></tr>';
+            const ecabezadosAux = '<tr><td>ID</td><td>Detalles</td></tr>';
             document.getElementById('tblVenta').innerHTML = encabezados;
+            document.getElementById('tblVentaAux').innerHTML = ecabezadosAux;
             for (const item of response.data.getBoletasByFecha) {
                 trtdBoleta(item);
             }
@@ -93,9 +106,10 @@ function GetBoletasByMes(mes) {
             }
         }),
         success: async function(response) {
-            contentTableVentas = [];
             const encabezados = '<tr><td>ID</td><td>FECHA</td><td>CLIENTE</td><td>CAJERO</td><td>TOTAL</td><td>Detalles</td></tr>';
+            const ecabezadosAux = '<tr><td>ID</td><td>Detalles</td></tr>';
             document.getElementById('tblVenta').innerHTML = encabezados;
+            document.getElementById('tblVentaAux').innerHTML = ecabezadosAux;
             for (const item of response.data.getBoletasByMes) {
                 trtdBoleta(item);
             }
@@ -415,9 +429,10 @@ async function GetBoletas() {
             variables: {}
         }),
         success: async function(response) {
-            contentTableVentas = [];
             const encabezados = '<tr><td>ID</td><td>FECHA</td><td>CLIENTE</td><td>CAJERO</td><td>TOTAL</td><td>Detalles</td></tr>';
+            const ecabezadosAux = '<tr><td>ID</td><td>Detalles</td></tr>';
             document.getElementById('tblVenta').innerHTML = encabezados;
+            document.getElementById('tblVentaAux').innerHTML = ecabezadosAux;
             for (const item of response.data.getBoletas) {
                 trtdBoleta(item);
             }
