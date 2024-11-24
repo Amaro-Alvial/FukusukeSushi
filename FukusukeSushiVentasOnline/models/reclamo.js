@@ -23,7 +23,7 @@ const reclamoSchema = new mongoose.Schema({
 // Middleware `pre` para validar la existencia del cliente
 reclamoSchema.pre('save', async function (next) {
   try {
-    const Cliente = mongoose.model('Cliente');
+    const Cliente = mongoose.model('Usuario');
 
     const clienteExiste = await Cliente.exists({ _id: this.cliente });
     if (!clienteExiste) {
