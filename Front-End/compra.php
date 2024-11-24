@@ -1,5 +1,13 @@
 <?php
 require_once 'session.php';
+if (isset($_SESSION['usuario_id']) && ($_SESSION['perfil'] == 'Admin' or $_SESSION['perfil'] == 'Dueno')) {
+    header('Location: adminPersonas.php');
+    exit();
+}
+if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
+    header('Location: ordenesDespacho.php');
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
