@@ -145,8 +145,11 @@ require_once 'session.php';
             </div>
     </div> <!-- Cierre de la Fila 1 -->
     <div class="row"> <!-- Se abre fila 2 -->
-        <div class="d-flex justify-content-center" style="height: 700px; overflow-x: scroll; overflow-y: scroll">
+        <div class="d-flex justify-content-center d-none d-md-block" style="height: 700px; overflow-x: scroll; overflow-y: scroll">
             <table id="tblVenta"></table>
+        </div>
+        <div class="d-flex justify-content-center d-block d-md-none" style="height: 700px; overflow-x: scroll; overflow-y: scroll">
+            <table id="tblVentaAux"></table>
         </div>
     </div> <!-- Cierre de la Fila 2 -->
     </div> <!-- Cierre del Container -->
@@ -189,8 +192,7 @@ require_once 'session.php';
             </div>
         </div>
     </div> <!-- Cierre del Modal de Reclamo -->
-    
-    <!-- Modal de Detallear Producto -->
+    <!-- Modal de Detalles Producto -->
     <div class="modal fade" id="DetalleModal" tabindex="-1" aria-labelledby="DetalleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
