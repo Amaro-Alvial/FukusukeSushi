@@ -525,7 +525,7 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
             <div class="col-sm-12 col-md-10" id="div-scroll-productos">
                 <div class="ps-2 pe-3" id="scroll-productos"></div>
             </div>
-            <div class="col-2 d-none d-md-flex flex-column p-0 pe-2" style="height: auto">
+            <div class="col-2 d-none d-md-flex flex-column p-0 pe-2" style="height: 60%">
                 <h5 class="d-flex d-flex justify-content-center pe-3">Categorías</h5>
                 <div class="mt-2" id="categoria-scroll2" name="categoria"></div>
 
