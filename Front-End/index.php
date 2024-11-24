@@ -154,7 +154,6 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
             </button>
         </div>
     </div>
-
     
     <!--Offcanvas (Carrito)-->
     <div class="offcanvas offcanvas-end" id="carrito" value="">
@@ -183,16 +182,22 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
             </script>
     </div>
 
+    <!-- Scroll pantallas pequeñas -->
+    <div class="container-fluid d-md-none mt-2 d-flex" id="categoria-scroll" name="categoria"></div>
+
     <!-- Container con productos y categorías -->
-    <div class="container-fluid" id="productos-section">
-        <div class="row d-flex"  style="height: 95vh;">
-            <div class="col-10" style="height: 100%">
-                <div class="ps-2 pe-3" id="scroll-container"></div>
+    <div class="container-fluid" id="productos-section" style="height: auto">
+        <div class="row d-flex" id="row-productos">
+            <div class="col-sm-12 col-md-10" id="div-scroll-productos">
+                <div class="ps-2 pe-3" id="scroll-productos"></div>
             </div>
-            <div class="col-2 d-flex flex-column p-0 pe-2">
-                <h5 class="d-flex">Categorías</h5>
-                <div class="mt-2"id="categoria-scroll" name="categoria"></div>
-                <div class="d-flex justify-content-center align-items-end" style="height: 50%">
+            <div class="col-2 d-none d-md-flex flex-column p-0 pe-2" style="height: 60%">
+                <h5 class="d-flex d-flex justify-content-center pe-3">Categorías</h5>
+                <div class="mt-2" id="categoria-scroll2" name="categoria"></div>
+
+                <!-- Botón para mostrar el carrito -->
+
+                <div class="d-flex justify-content-center mt-3">
                     <button id="carrito-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" onclick="actualizarCarrito();">
                         <img src="./img/carrito.png" style="width: 45px">
                         <span id="cantidadCarrito">0</span>
@@ -201,6 +206,12 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
             </div>
         </div>
     </div>
+
+    <!-- Botón de carrito para pantallas pequeñas -->
+    <button class="d-md-none" id="fixed-carrito-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" onclick="actualizarCarrito();">
+        <img src="./img/carrito.png" style="width: 45px">
+        <span id="cantidadCarrito2">0</span>
+    </button>
 
     <!-- Modal del producto seleccionado-->
     <div class="modal fade" id="productModal" value="" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
@@ -274,7 +285,7 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                             </div>
                             <div class="mb-3">
                                 <label for="loginPass" class="form-label">Contraseña</label>
-                                <input type="password" style="width: 400px" class="form-control" id="loginPass" placeholder="Ingrese su contraseña."name="pass" required>
+                                <input type="password" style="width: 400px" class="form-control" id="loginPass" placeholder="Ingrese su contraseña." name="pass" required>
                             </div>
                             <div class="mt-2 mb-3">
                                 <button type="Button" class="btn-modals" id="login-button-modal" onclick="IniciarSesion()">Iniciar Sesión</button>
@@ -515,7 +526,7 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
                     <form id="reclamoForm">
                         <div class="mb-3">
                             <label for="reclamoTitulo" class="form-label">Titulo:</label>
-                            <input type="text" class="form-control" id="reclamoTitulo"></label>
+                            <input type="text" class="form-control" id="reclamoTitulo">
                         </div>
                         <div class="mb-3">
                             <label for="reclamoDescripcion" class="form-label">Descripción:</label>
@@ -530,52 +541,6 @@ if (isset($_SESSION['usuario_id']) && $_SESSION['perfil'] == 'Despachador') {
             </div>
         </div>
     </div>
-
-    <!-- Pide Ya -->
-    <div class="container-fluid d-flex justify-content-center mt-0 mb-2">
-        <button id="pideya-button">
-            ¡Pide Ya!<br>
-        </button>
-        <script>
-            document.getElementById("pideya-button").addEventListener("click", function() {
-            document.getElementById("productos-section").scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-                });
-            });
-            </script>
-    </div>
-    
-    <!-- Scroll pantallas pequeñas -->
-    <div class="container-fluid d-md-none mt-2 d-flex" id="categoria-scroll" name="categoria"></div>
-
-    <!-- Container con productos y categorías -->
-    <div class="container-fluid" id="productos-section" style="height: auto">
-        <div class="row d-flex" id="row-productos">
-            <div class="col-sm-12 col-md-10" id="div-scroll-productos">
-                <div class="ps-2 pe-3" id="scroll-productos"></div>
-            </div>
-            <div class="col-2 d-none d-md-flex flex-column p-0 pe-2" style="height: 60%">
-                <h5 class="d-flex d-flex justify-content-center pe-3">Categorías</h5>
-                <div class="mt-2" id="categoria-scroll2" name="categoria"></div>
-
-                <!-- Botón para mostrar el carrito -->
-
-                <div class="d-flex justify-content-center mt-3">
-                    <button id="carrito-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" onclick="actualizarCarrito();">
-                        <img src="./img/carrito.png" style="width: 45px">
-                        <span id="cantidadCarrito">0</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Botón de carrito para pantallas pequeñas -->
-    <button class="d-md-none" id="fixed-carrito-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#carrito" onclick="actualizarCarrito();">
-        <img src="./img/carrito.png" style="width: 45px">
-        <span id="cantidadCarrito2">0</span>
-    </button>
 
     <!-- Footer -->
     <footer class="d-none d-md-flex">

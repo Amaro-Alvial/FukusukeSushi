@@ -11,9 +11,11 @@ function optionCategoria(item){
 function optionProvincia(item) {
     optionsProvincia.push('<option value="' + item.id + '">' + item.nombre + '</option>');
 }
+
 function optionRegion(item) {
     optionsRegion.push('<option value="' + item.id + '">' + item.nombre + '</option>');
 }
+
 function optionComuna(item) {
     optionsComuna.push('<option value="' + item.id + '">' + item.nombre + '</option>');
 }
@@ -42,6 +44,7 @@ function getCategorias(){
         }
     })
 }
+
 async function cardProductos(item) {
     let precio = await GetUltimoPrecioHistoricoByIdProducto(item.id);
     let disponibilidad = await GetUltimoDisponibleHistoricoByIdProducto(item.id);
@@ -77,6 +80,7 @@ async function cardProductos(item) {
     `;
     document.getElementById('productos-container').insertAdjacentHTML('beforeend', cardProductos);
 }
+
 async function getProductosByIdCategoria(categoria) {
     const query = `
     query getProductosByIdCategoria($id: String){
@@ -109,6 +113,7 @@ async function getProductosByIdCategoria(categoria) {
         },
     });
 }
+
 function GetUltimoPrecioHistoricoByIdProducto(idProducto){
     let query = `
     query miQuery($id: String){
@@ -137,6 +142,7 @@ function GetUltimoPrecioHistoricoByIdProducto(idProducto){
         });
     });
 }
+
 function GetUltimoDisponibleHistoricoByIdProducto(idProducto){
     let query = `
     query miQuery($id: String){
@@ -165,6 +171,7 @@ function GetUltimoDisponibleHistoricoByIdProducto(idProducto){
         });
     });
 }
+
 function GetComunasByIdProvincia(idProvincia){
     let query = `
     query miQuery($input: String){
@@ -194,6 +201,7 @@ function GetComunasByIdProvincia(idProvincia){
         }
     });
 }
+
 function GetProvinciasByIdRegion(idRegion){
     let query = `
     query miQuery($input: String){
@@ -224,6 +232,7 @@ function GetProvinciasByIdRegion(idRegion){
         }
     });
 }
+
 function GetRegionById(idRegion){
     let query = `
     query miQuery($id: ID!){
@@ -251,6 +260,7 @@ function GetRegionById(idRegion){
         });
     });
 }
+
 function GetProvinciaById(idProvincia){
     let query = `
     query miQuery($id: ID!){
@@ -279,6 +289,7 @@ function GetProvinciaById(idProvincia){
         });
     });
 }
+
 function GetComunaById(idComuna){
     let query = `
     query miQuery($id: ID!){
@@ -307,6 +318,7 @@ function GetComunaById(idComuna){
         });
     });
 }
+
 function GetComunas(){
     let query = `
     query miQuery {
@@ -334,6 +346,7 @@ function GetComunas(){
         }
     });
 }
+
 function GetProvincias(){
     let query = `
     query miQuery {
@@ -362,6 +375,7 @@ function GetProvincias(){
         }
     });
 }
+
 function GetRegiones(){
     let query = `
     query miQuery {
@@ -389,6 +403,7 @@ function GetRegiones(){
         }
     });
 }
+
 function GetPerfilById(idPerfil){
     let query = `
     query miQuery($id: ID!){
@@ -416,6 +431,7 @@ function GetPerfilById(idPerfil){
         });
     });
 }
+
 function GetUsuarioById(idUsuario){
     let query = `
     query miQuery($id: ID!){
@@ -446,6 +462,7 @@ function GetUsuarioById(idUsuario){
         });
     });
 }
+
 function GetPersonaById(idPersona){
     let query = `
     query miQuery($id: ID!){
@@ -479,6 +496,7 @@ function GetPersonaById(idPersona){
         });
     });
 }
+
 function UpdPersona(idPersona, run, nombreCompleto, direccion, fechaNacimiento, sexo, telefono, comuna){
     let mutation = `
     mutation miMutation($id: ID!, $input: PersonaInput){
@@ -518,6 +536,7 @@ function UpdPersona(idPersona, run, nombreCompleto, direccion, fechaNacimiento, 
         }
     });
 }
+
 function UpdUsuario(idUsuario, email, pass, nombreUsuario, idPersona){
     let mutation = `
     mutation miMutation($id: ID! ,$input: UsuarioInput){
@@ -558,6 +577,7 @@ function UpdUsuario(idUsuario, email, pass, nombreUsuario, idPersona){
         });
     });
 }
+
 function AddReclamo(titulo, descripcion, cliente){
     let mutation = `
     mutation miMutation($input: ReclamoInput){
