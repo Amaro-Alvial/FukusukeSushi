@@ -1,19 +1,3 @@
-/*
-### BACK END ###
-1. Obtener carrito del cliente por su ID
-2. Obtener último despacho y último horarioCaja
-3. Crear la boleta, con la fecha y el cliente del carrito, y el despacho y horarioCaja de los querys
-4. Eliminar el carrito pero guardar la ID
-5. Obtener detalleCarritos del carrito por la ID
-6. Por cada detalleCarrito:
-    6.1. Crear un detalleCompra con la cantidad y el producto del detalleCarrito y la boleta obtenida antes
-    6.2 Eliminar el detalleCarrito
-
-### FRONT END ###
-1. Obtener la id del carrito del cliente
-2. Otro loop para cambiar el modal de detalle de compra y obtener el total
-3. Eso
-*/
 let inputsBoletaDetalle = {};
 
 async function setCompraFront(){
@@ -48,7 +32,13 @@ async function setCompraFront(){
         let precio = await GetUltimoPrecioHistoricoByIdProducto(prod.producto);
         total += precio.precio * prod.cantidad;
         liDetalle.push(creaListaDetalles(response.data.getProductoById.nombre, prod.cantidad, precio.precio));
-        prodsHaciaBoleta.push({id: prod.id, producto: prod.producto, cantidad: prod.cantidad})
+        prodsHaciaBoleta.push({
+            id: prod.id,
+            productoId: prod.producto,
+            productoNombre: response.data.getProductoById.nombre,
+            cantidad: prod.cantidad,
+            precio: precio.precio
+        });
     }
     document.getElementById('monto-pagar').textContent = '$' + total;
     document.getElementById('productosDetalleCompra').innerHTML = liDetalle.join("");
@@ -56,6 +46,8 @@ async function setCompraFront(){
     inputsBoletaDetalle['fecha'] = new Date().toISOString();
     inputsBoletaDetalle['productos'] = prodsHaciaBoleta;
 }
+
+
 
 function creaListaDetalles(nombre, cantidad, precio){
     li =`
@@ -121,6 +113,19 @@ async function getDespacho(){
         console.error("Error al buscar despacho: ", error);
     }
 }
+async function cargando(){
+    document.getElementById('spinnerOverlay').style.display = 'flex';
+    let chance = Math.random()
+    setTimeout(async function() {
+        if (chance < 0.9){
+            document.getElementById('spinnerOverlay').style.display = 'none';
+            //await cambiazo();
+            window.location.href='index.php'
+        } else {
+            alert("Erroorrr");
+        }
+    }, 3000);
+}
 
 async function cambiazo(){
     //  Crea la boleta
@@ -132,10 +137,35 @@ async function cambiazo(){
     let despachoCambiazo = await getDespacho();
     let idBoleta = await AddBoleta(fechaCambiazo, idCliente, horarioCambiazo, despachoCambiazo);
     for (let detalle of inputsBoletaDetalle.productos){
-        AddDetalleCarrito(idBoleta, detalle.producto, detalle.cantidad);
-        delDetalleCarrito(detalle.id);
+        await AddDetalleCarrito(idBoleta, detalle.productoId, detalle.cantidad);
+        await delDetalleCarrito(detalle.id);
     }
-    DelCarrito(inputsBoletaDetalle.carrito);
+    await DelCarrito(inputsBoletaDetalle.carrito);
+
+    mutation=`
+    mutation miMutation($idUsuario: ID!, $idBoleta: ID!){
+        correoBoleta(idUsuario: $idUsuario, idBoleta: $idBoleta) {
+            message
+        }
+    }
+    `;
+    try {
+        let response = await $.ajax({
+            url: 'http://localhost:8091/graphql',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                query: mutation,
+                variables: {
+                    idUsuario: idCliente,
+                    idBoleta: idBoleta
+                }
+            })
+        });
+        console.log(response);
+    } catch (error){
+        console.error("Error al enviar comprobante por correo:", error);
+    }
 }
 
 async function AddBoleta(fechaBoleta, clienteBoleta, horariocajaBoleta, despachoBoleta) {
@@ -240,3 +270,27 @@ async function DelCarrito(idCarrito){
         })
     })
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const metodoPagoInputs = document.querySelectorAll('input[name="metodoPago"]');
+
+    metodoPagoInputs.forEach(input => {
+        input.addEventListener('change', function () {
+            // Recorre todos los radios y encuentra el seleccionado
+            const metodoSeleccionado = document.querySelector('input[name="metodoPago"]:checked');
+
+            if (metodoSeleccionado) {
+                console.log("Método de pago seleccionado:", metodoSeleccionado.id);
+
+                // Dependiendo del ID seleccionado, puedes mostrar el formulario correspondiente
+                if (metodoSeleccionado.id === 'tarjetaCredito') {
+                    // Lógica para cuando se selecciona Tarjetas
+                    console.log("Pago con tarjeta seleccionado.");
+                } else if (metodoSeleccionado.id === 'onepay') {
+                    // Lógica para cuando se selecciona Onepay
+                    console.log("Pago con Onepay seleccionado.");
+                }
+            }
+        });
+    });
+});

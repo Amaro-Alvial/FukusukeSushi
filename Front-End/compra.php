@@ -1,7 +1,6 @@
 <?php
-session_start();
+require_once 'session.php';
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -26,68 +25,80 @@ session_start();
     <script src="./js/pagPrincipal.js"></script>
 </head>
 <body>
-    <header class="container-fluid row" style="height: 20px;">
-    <div class="col-9" style="background-color: #6C196B"></div>
-    <div class="col-1" style="background-color: #D3016C"></div>
-    <div class="col-2" style="background-color: #00C3B2"></div>
-    </header>
-    <div class="container-pago">
-        <div class="header-pago d-flex justify-content-between">
-            <div>
-                <h1>Estás pagando en:</h1>
-                <div class="d-flex justify-content-center">
-                    <img src="./img/logo/FUKUSUKE_LOGO.png" alt="Fukusuke Sushi" style="height: 45px">
-                </div>
-            </div>
-            <div>
-                <h1>Monto a pagar:</h1>
-                <p class="monto-pagar" id="monto-pagar">$</p>
-                <span class="btn-ver-detalle" data-toggle="modal" data-target="#detalleCompraModal">Ver detalle de compra</span>
-            </div>
-        </div>
-
-        <!-- Opciones de Pago -->
-        <div class="opciones-pago">
-            <h5>Selecciona tu medio de pago:</h5>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="metodoPago" id="tarjetaCredito" checked>
-                <label class="form-check-label" for="tarjetaCredito">
-                    Tarjetas (Crédito, Débito, Prepago)
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="metodoPago" id="onepay">
-                <label class="form-check-label" for="onepay">
-                    Onepay y otras billeteras digitales
-                </label>
-            </div>
-        </div>
-
-        <!-- Formulario de Pago -->
-        <div class="form-pago">
-            <form action="procesarPago.php" method="POST">
-                <div class="form-group">
-                    <label for="numeroTarjeta">Número de tarjeta</label>
-                    <input type="text" class="form-control" id="numeroTarjeta" name="numeroTarjeta" maxlength="16" placeholder="XXXX XXXX XXXX XXXX" required>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="fechaExpiracion">Fecha de Expiración (MM/AA)</label>
-                        <input type="text" class="form-control" id="fechaExpiracion" name="fechaExpiracion" maxlength="5" placeholder="MM/AA" required>
+    <div class="container-fluid row" style="height: 20px;">
+        <div class="col-9" style="background-color: #6C196B"></div>
+        <div class="col-1" style="background-color: #D3016C"></div>
+        <div class="col-2" style="background-color: #00C3B2"></div>
+    </div>
+    <div class="container">
+        <div class="container-pago row d-flex">
+            <div class="container col-12 col-xl-6">
+                <!-- Header de Pago -->
+                <div class="header-pago d-flex justify-content-between align-items-start">
+                    <div>
+                        <h1 class="d-none d-md-block">Estás pagando en:</h1>
+                        <h2 class="d-sm-block d-md-none">Estás pagando en:</h2>
+                        <div class="d-flex justify-content-center">
+                            <img class="d-none d-md-block" src="./img/logo/FUKUSUKE_LOGO.png" alt="Fukusuke Sushi" style="height: 45px">
+                            <p class="d-sm-block d-md-none">Fukusuke Sushi</p>
+                        </div>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="cvv">CVV</label>
-                        <input type="text" class="form-control" id="cvv" name="cvv" maxlength="3" required>
+                    <div>
+                        <h1 class="d-none d-md-block">Monto a pagar:</h1>
+                        <h2 class="d-sm-block d-md-none">Monto a pagar:</h2 >
+                        <p class="monto-pagar" id="monto-pagar">$</p>
+                        <span class="btn-ver-detalle" data-toggle="modal" data-target="#detalleCompraModal">Ver detalle de compra</span>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-pago btn-block" onclick="cambiazo();">Continuar</button>
-                <button type="button" class="btn btn-volver btn-block" onclick="window.location.href='index.php'">Volver</button>
-            </form>
+
+                <!-- Opciones de Pago -->
+                <div class="opciones-pago">
+                    <h5>Selecciona tu medio de pago:</h5>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="metodoPago" id="tarjetaCredito">
+                        <label class="form-check-label" for="tarjetaCredito">
+                            Tarjetas (Crédito, Débito, Prepago)
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="metodoPago" id="onepay">
+                        <label class="form-check-label" for="onepay">
+                            Onepay y otras billeteras digitales
+                        </label>
+                    </div>
+                </div>
+            </div>    
+
+            <div class="container col-12 col-xl-1" id="lado-enmedio"><br></div>
+
+            <div class="container col-12 col-xl-5" id="lado-derecho1">
+                <!-- Formulario de Pago -->
+                <div class="form-pago" id="form-pago">
+                <form>
+                        <div class="form-group">
+                            <label for="numeroTarjeta">Número de tarjeta</label>
+                            <input type="text" class="form-control" id="numeroTarjeta" name="numeroTarjeta" maxlength="16" placeholder="XXXX XXXX XXXX XXXX" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="fechaExpiracion">Fecha de Expiración</label>
+                                <input type="text" class="form-control" id="fechaExpiracion" name="fechaExpiracion" maxlength="5" placeholder="MM/AA" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="cvv">CVV</label>
+                                <input type="text" class="form-control" id="cvv" name="cvv" maxlength="3" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-pago btn-block" onclick="cargando();">Continuar</button>
+                        <button type="button" class="btn btn-volver btn-block" onclick="window.location.href='index.php'">Volver</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Modal para Detalle de Compra -->
-    <div class="modal fade detalle-compra-modal" id="detalleCompraModal" tabindex="-1" aria-labelledby="detalleCompraModalLabel" aria-hidden="true">
+    <div class="modal fade detalle-compra-modal" id="detalleCompraModal">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -105,6 +116,11 @@ session_start();
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Contenedor para el spinner -->
+    <div id="spinnerOverlay" class="overlay" style="display: none;">
+        <div class="spinner"></div>
     </div>
 
 </body>

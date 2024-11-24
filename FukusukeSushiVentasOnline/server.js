@@ -376,6 +376,7 @@ type Mutation{
     updReclamo(id: ID!, input:ReclamoInput): Reclamo
     delReclamo(id: ID!): Alert
     registrarUsuario(personaInput: PersonaInput!, usuarioInput: UsuarioInput!, usuarioPerfilInput: UsuarioPerfilInput!): UsuarioPerfil!
+    correoBoleta(idUsuario: ID!, idBoleta: ID!): Alert!
 }
 `;
 
@@ -1105,7 +1106,124 @@ const resolvers = {
                 throw error;
             }
         },
+        correoBoleta: async (obj, { idUsuario, idBoleta }, { models }) => {
+            const { Usuario, Boleta, DetalleCompra, Producto } = models;
+            let boleta = await Boleta.findById(idBoleta);
+            let usuario = await Usuario.findById(idUsuario);
+            let fechaBoleta = boleta.fecha;
+            let detalleCompras = await DetalleCompra.find({ boleta: idBoleta });
+            let prods = [];
         
+            for (let item of detalleCompras) {
+                // Para el nombre del producto
+                let producto = await Producto.findById(item.producto);
+                let nombreProducto = producto.nombre;
+        
+                // Para el precio del producto, accede a la query a través de `context`
+                let precioProd = await resolvers.Query.getUltimoPrecioHistoricoByIdProductoByFecha(obj, { id: item.producto, fecha: fechaBoleta });
+                
+                // Para la cantidad
+                let cantidadProd = item.cantidad;
+
+                prods.push({
+                    productoNombre: nombreProducto,
+                    precio: precioProd.precio,
+                    cantidad: cantidadProd
+                });
+            }
+            let correoHTML = tablaDetalleCompra(idBoleta, prods, usuario.nombreUsuario);
+            await enviarCorreoBoleta(usuario.email, usuario.nombreUsuario, correoHTML);
+            return {
+                message: "Correo de boleta enviado"
+            }
+        },
+    }
+}
+
+function tablaDetalleCompra(idBoleta, prods, nombreUsuario){
+    let trLista = [];
+    let totalBoleta = 0;
+    trLista.push(`
+        <style>
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+            th {
+                text-align: center;
+            }
+        </style>
+        <table style="width:100%>
+            <tr>
+                <th colspan="4">Detalle Compra</th>
+            </tr>
+            <tr>
+                <th>Producto</th>
+                <th>Precio Unitario</th>
+                <th>Cantidad</th>
+                <th>Total</th>
+            </tr>
+    `);
+    for (let i = 0; i < prods.length; i++){
+        let prod = prods[i];
+        let tr=`
+        <tr>
+            <td>${prod.productoNombre}</td>
+            <td>$${prod.precio}</td>
+            <td>${prod.cantidad} uds.</td>
+            <td>$${prod.precio * prod.cantidad}</td>
+        </tr>
+        `;
+        trLista.push(tr);
+        totalBoleta += prod.precio * prod.cantidad;
+    }
+    trLista.push(`
+            <tr>
+                <td colspan="3">Total</td>
+                <td>$${totalBoleta}</td>
+            </tr>
+        </table>
+    `);
+    let TablaHTML = trLista.join('');
+
+    return `
+    <h3>Hola ${nombreUsuario}</h3>
+    <p>Tu compra ha sido exitosa. ¡Buen provecho!</p>
+    <p>Lo mejor en sushi y al mejor precio</p>
+    <p>Saludos cordiales,</p>
+    <p>Equipo Fukusuke Sushi</p>
+    ` + TablaHTML + `
+    <br>
+    <p>PD: Para la cancelación del pedido debes realizar un reclamo indicando la ID de tu boleta, la cual es ${idBoleta}</p>
+    `
+}
+
+async function enviarCorreoBoleta(email, nombreUsuario, correoHTML) {
+    try {
+        const request = mailjet.post("send", { 'version': 'v3.1' }).request({
+            "Messages": [
+                {
+                    "From": {
+                        "Email": "no.reply.fukusukesushi@gmail.com",
+                        "Name": "Fukusuke Sushi"
+                    },
+                    "To": [
+                        {
+                            "Email": email,
+                            "Name": nombreUsuario
+                        }
+                    ],
+                    "Subject": "Confirmación de Compra",
+                    "TextPart": `Hola ${nombreUsuario}!,\n\nTu compra ha sido exitosa. ¡Buen provecho, crack!`,
+                    "HTMLPart": correoHTML
+                }
+            ]
+        });
+        await request;
+        console.log("Correo de boleta enviado a " + email);
+
+    } catch (error) {
+        console.error("Error al enviar el correo de boleta:", error);
     }
 }
 

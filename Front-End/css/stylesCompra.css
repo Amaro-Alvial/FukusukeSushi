@@ -2,9 +2,8 @@ body {
     background-color: #fefefe;
 }
 .container-pago {
-    max-width: 800px;
     background-color: white;
-    margin: 50px auto;
+    margin: 50px;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
@@ -18,6 +17,10 @@ body {
 }
 .header-pago h1 {
     font-size: 24px;
+    color: #5c2e91;
+}
+.header-pago h2 {
+    font-size: 20px;
     color: #5c2e91;
 }
 .monto-pagar {
@@ -79,4 +82,35 @@ body {
 .detalle-compra-modal .modal-body {
     max-height: 400px;
     overflow-y: auto;
+}
+
+/* Overlay para oscurecer el fondo */
+.overlay {
+    position: fixed;       /* Posiciona el overlay de forma fija en toda la pantalla */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Color de fondo con transparencia (oscurecimiento) */
+    display: flex;        /* Flexbox para centrar el contenido */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center;  /* Centra verticalmente */
+    z-index: 9999;        /* Asegura que esté por encima de otros elementos */
+}
+
+/* Spinner personalizado */
+.spinner {
+    height: 120px;
+    width: 120px;
+    border: 6px solid;
+    border-color: rgb(255, 255, 255) transparent rgb(255, 255, 255) transparent;
+    border-radius: 50%;
+    animation: spin 1.3s linear infinite;
+}
+
+/* Animación del spinner */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
